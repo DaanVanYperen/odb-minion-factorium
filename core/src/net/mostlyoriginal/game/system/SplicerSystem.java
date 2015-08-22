@@ -1,0 +1,42 @@
+package net.mostlyoriginal.game.system;
+
+import com.artemis.Aspect;
+import com.artemis.Entity;
+import com.artemis.annotations.Wire;
+import com.artemis.systems.IntervalEntityProcessingSystem;
+import net.mostlyoriginal.api.component.basic.Pos;
+import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
+import net.mostlyoriginal.game.G;
+import net.mostlyoriginal.game.component.Ingredient;
+import net.mostlyoriginal.game.component.Inventory;
+import net.mostlyoriginal.game.component.Splicer;
+import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
+
+/**
+ * @author Daan van Yperen
+ */
+@Wire
+public class SplicerSystem extends IntervalEntityProcessingSystem  {
+
+
+	protected GameScreenSetupSystem setupSystem;
+	protected M<Inventory> mInventory;
+	protected M<Pos> mPos;
+
+	public SplicerSystem() {
+		super(Aspect.all(Splicer.class, Inventory.class, Pos.class), 1f);
+	}
+
+	@Override
+	protected void process(Entity e) {
+		final Inventory inventory = mInventory.get(e);
+
+		if ( inventory.has(Ingredient.Type.CHICK, 1) )
+		{
+			final Pos pos = mPos.get(e);
+
+			inventory.dec(Ingredient.Type.CHICK, 1);
+			setupSystem.createChick(pos.x + G.TILES_W / 2, pos.y + G.TILES_H);
+		}
+	}
+}

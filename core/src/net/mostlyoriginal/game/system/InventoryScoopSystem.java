@@ -11,6 +11,7 @@ import net.mostlyoriginal.api.system.physics.CollisionSystem;
 import net.mostlyoriginal.game.component.Autopickup;
 import net.mostlyoriginal.game.component.Ingredient;
 import net.mostlyoriginal.game.component.Inventory;
+import net.mostlyoriginal.game.component.SpawnProtected;
 
 /**
  * @author Daan van Yperen
@@ -28,7 +29,7 @@ public class InventoryScoopSystem extends DualEntityProcessingSystem {
 	public InventoryScoopSystem() {
 
 		super(Aspect.all(Autopickup.class, Inventory.class, Pos.class, Bounds.class),
-				Aspect.all(Ingredient.class, Pos.class, Bounds.class));
+				Aspect.all(Ingredient.class, Pos.class, Bounds.class).exclude(SpawnProtected.class));
 	}
 
 	@Override
