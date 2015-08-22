@@ -41,16 +41,17 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	 *           5, 6, 7, 8 = clockwise corners (top-left first)
 	 *
 	 * Splicer = 9
+	 * Chick spawner = 10 up,11 right,12 down ,13 left
 	 */
 
 	private static int[][] map1 = new int[][] {
 		{0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,5,2,2,2,6,0},
+		{0,0,0,0,1,4,4,4,7,0},
 		{0,0,0,0,1,0,0,0,3,0},
-		{0,0,0,0,1,0,0,0,3,0},
-		{0,5,2,2,9,4,4,4,3,0},
-		{0,1,0,0,0,0,0,0,3,0},
-		{0,1,0,0,5,2,2,6,3,0},
+		{11,2,2,2,9,4,4,4,3,13},
+		{0,0,0,0, 0,0,0,0,0,0},
+		{0,5,2,2,5,2,2,6,3,0},
 		{0,1,0,0,1,0,0,3,3,0},
 		{0,1,0,0,1,0,0,3,3,0},
 		{0,1,0,0,8,4,4,7,3,0},
@@ -67,39 +68,44 @@ public class GameScreenSetupSystem extends PassiveSystem {
 			for (int y = -1; y < G.TILES_H+1; y++) {
 				int cx = (x) * G.TILE_SIZE;
 				int cy = (y) * G.TILE_SIZE + G.FOOTER_H;
-				switch(map[G.TILES_H - y][x + 1]) {
+				final int id = map[G.TILES_H - y][x + 1];
+				switch(id) {
 					case 0:;
 						break;
-					case 1 :
-						createBeltStraight(cx,cy,0);
-						break;
-					case 2 :
-						createBeltStraight(cx,cy,-90);
-						break;
-					case 3 :
-						createBeltStraight(cx,cy,-180);
-						break;
-					case 4 :
-						createBeltStraight(cx, cy, -270);
+					case 1:
+					case 2:
+					case 3:
+					case 4:
+						createBeltStraight(cx, cy, -90 * (id - 1));
 						break;
 					case 5 :
-						createBeltBend(cx, cy, 0);
-						break;
 					case 6 :
-						createBeltBend(cx,cy,-90);
-						break;
 					case 7 :
-						createBeltBend(cx,cy,-180);
-						break;
 					case 8 :
-						createBeltBend(cx,cy,-270);
+						createBeltBend(cx, cy, -90 * (id - 5));
 						break;
 					case 9 :
 						createSplicer(cx, cy);
 						break;
+					case 10 :
+					case 11 :
+					case 12 :
+					case 13 :
+						createDispenser(cx, cy, -90 * (id - 10), Ingredient.Type.CHICK, 999);
+						break;
 				}
 			}
 		}
+	}
+
+	private void createDispenser(int x, int y, int angle, Ingredient.Type type, int count) {
+		new EntityBuilder(world).with(
+				new Pos(x,y),
+				new Bounds(2,2,18,18),
+				new Inventory().inc(type,count),
+				new Conveyer(90f),
+				new Angle(angle),
+				new Dispenser()).build();
 	}
 
 	private void createBeltStraight(int x, int y, int angle) {
@@ -111,16 +117,15 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Angle(angle),
 				new Conveyer(90f)).build();
 
-
-		createChick(x, y);
+		createIngredient(x+G.TILE_SIZE/2, y+G.TILE_SIZE/2, Ingredient.Type.CHICK);
 	}
 
-	public void createChick(float x, float y) {
+	public void createIngredient(float x, float y, Ingredient.Type type) {
 		new EntityBuilder(world).with(
-				new Pos(x+G.TILE_SIZE/2,y+G.TILE_SIZE/2),
+				new Pos(x-3,y-3),
 				new Bounds(0,0,5,5),
-				new Anim("chick"),
-				new Ingredient(Ingredient.Type.CHICK),
+				new Anim("ingredient-" + type.name()),
+				new Ingredient(type),
 				new Renderable(LAYER_CONVEYABLE),
 				new SpawnProtected(),
 				new Physics()).build();
@@ -139,12 +144,14 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	private void createSplicer(int x, int y) {
 		new EntityBuilder(world).with(
 				new Pos(x-2,y-2),
-				new Bounds(0,0,25,26),
+				new Bounds(6,0,25-6,26),
 				new Anim("factory-splicer"),
 				new Inventory(),
 				new Autopickup(),
 				new Splicer(),
-				new Renderable(LAYER_FACTORIES)).build();
+				new Renderable(LAYER_FACTORIES),
+				new Angle(0f),
+				new Conveyer(90f)).build();
 	}
 
 	private void initBackground() {

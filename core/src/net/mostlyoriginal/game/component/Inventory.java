@@ -12,11 +12,16 @@ public class Inventory extends Component {
 		return ( items[type.ordinal()] >= count);
 	}
 
-	public void dec(Ingredient.Type type, int count) {
+	public Inventory dec(Ingredient.Type type, int count) {
 		final int index = type.ordinal();
 		items[index] -= count;
 		if ( items[index] < 0 ) items[index] = 0;
+		return this;
 	}
 
-
+	public Inventory inc(Ingredient.Type type, int count) {
+		final int index = type.ordinal();
+		items[index] += count;
+		return this;
+	}
 }

@@ -12,10 +12,7 @@ import net.mostlyoriginal.api.system.physics.PhysicsSystem;
 import net.mostlyoriginal.api.system.render.AnimRenderSystem;
 import net.mostlyoriginal.api.system.render.ClearScreenSystem;
 import net.mostlyoriginal.api.utils.builder.WorldConfigurationBuilder;
-import net.mostlyoriginal.game.system.ConveyerSystem;
-import net.mostlyoriginal.game.system.InventoryScoopSystem;
-import net.mostlyoriginal.game.system.SpawnProtectSystem;
-import net.mostlyoriginal.game.system.SplicerSystem;
+import net.mostlyoriginal.game.system.*;
 import net.mostlyoriginal.game.system.view.GameScreenAssetSystem;
 import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
 
@@ -56,6 +53,7 @@ public class GameScreen extends WorldScreen {
 			    new InventoryScoopSystem(),
 				new SplicerSystem(),
 				new SpawnProtectSystem(),
+				new DispenserSystem(),
 
 				renderBatchingSystem = new RenderBatchingSystem(),
 				new AnimRenderSystem(renderBatchingSystem),
