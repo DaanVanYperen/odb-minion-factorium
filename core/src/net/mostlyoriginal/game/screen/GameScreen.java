@@ -19,7 +19,7 @@ import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
  */
 public class GameScreen extends WorldScreen {
 
-	public static final String BACKGROUND_COLOR_HEX = "969291";
+	public static final String BACKGROUND_COLOR_HEX = "3e2336";
 
 	@Override
 	protected World createWorld() {
