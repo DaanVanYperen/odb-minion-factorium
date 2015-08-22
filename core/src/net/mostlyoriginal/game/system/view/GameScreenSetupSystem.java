@@ -7,10 +7,10 @@ import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.api.component.graphics.Renderable;
+import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.G;
-import net.mostlyoriginal.game.component.Conveyable;
 import net.mostlyoriginal.game.component.Conveyer;
 import net.mostlyoriginal.game.util.Anims;
 
@@ -105,7 +105,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	private void createBeltStraight(int x, int y, int angle) {
 		new EntityBuilder(world).with(
 				new Pos(x,y),
-				new Bounds(0,0,20,20),
+				new Bounds(2,2,18,18),
 				new Anim("belt-straight"),
 				new Renderable(1000),
 				new Angle(angle),
@@ -118,20 +118,20 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	private void createConveyable(int x, int y) {
 		new EntityBuilder(world).with(
 				new Pos(x+G.TILE_SIZE/2,y+G.TILE_SIZE/2),
-				new Bounds(0,0,6,6),
+				new Bounds(0,0,5,5),
 				new Anim("chick"),
 				new Renderable(LAYER_CONVEYABLE),
-				new Conveyable()).build();
+				new Physics()).build();
 	}
 
 	private void createBeltBend(int x, int y, int angle) {
 		new EntityBuilder(world).with(
 				new Pos(x,y),
-				new Bounds(0,0,20,20),
+				new Bounds(2,2,18,18),
 				new Anim("belt-bend"),
 				new Renderable(LAYER_CONVEYER),
 				new Angle(angle),
-				new Conveyer(0)).build();
+				new Conveyer(45)).build();
 	}
 
 	private void createSplicer(int x, int y) {
