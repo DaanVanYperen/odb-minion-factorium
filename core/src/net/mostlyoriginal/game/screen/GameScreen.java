@@ -8,6 +8,7 @@ import net.mostlyoriginal.api.screen.core.WorldScreen;
 import net.mostlyoriginal.api.system.camera.CameraSystem;
 import net.mostlyoriginal.api.system.graphics.ColorAnimationSystem;
 import net.mostlyoriginal.api.system.graphics.RenderBatchingSystem;
+import net.mostlyoriginal.api.system.mouse.MouseCursorSystem;
 import net.mostlyoriginal.api.system.physics.CollisionSystem;
 import net.mostlyoriginal.api.system.physics.PhysicsSystem;
 import net.mostlyoriginal.api.system.render.AnimRenderSystem;
@@ -47,6 +48,7 @@ public class GameScreen extends WorldScreen {
 				new GameScreenAssetSystem(),
 				new GameScreenSetupSystem(),
 
+				new MouseCursorSystem(),
 				new CollisionSystem(),
 				new ConveyerSystem(),
 				new PhysicsSystem(),
@@ -55,7 +57,10 @@ public class GameScreen extends WorldScreen {
 				new SplicerSystem(),
 				new SpawnProtectSystem(),
 				new DispenserSystem(),
+
+				new TapSystem(),
 				new DraggableSystem(),
+				new RotateSystem(),
 
 				new ColorAnimationSystem(),
 

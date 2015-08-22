@@ -8,6 +8,7 @@ import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.api.component.graphics.Renderable;
+import net.mostlyoriginal.api.component.mouse.MouseCursor;
 import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
@@ -35,8 +36,16 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	@Override
 	protected void initialize() {
 
+		initCursor();
 		initBackground();
 		initMap(map1);
+	}
+
+	private void initCursor() {
+		new EntityBuilder(world).with(
+				new MouseCursor(),
+				new Bounds(-3, -3, 3, 3),
+				new Pos()).build();
 	}
 
 	/**
@@ -120,7 +129,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				}
 
 				if ( e != null ) {
-					e.edit().add(new Draggable());
+					e.edit().add(new Draggable()).add(new Tappable()).add(new Rotatable());
 				}
 			}
 		}
