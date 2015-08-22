@@ -37,5 +37,7 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 		add("ingredient-CHICKBUNNY", 200, 31, 6, 9, 1);
 
 		add("factory-splicer", 20, 79, 25, 26, 2);
+
+		add("draggable-indicator", 60, 260,  20, 20, 1);
 	}
 }

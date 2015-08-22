@@ -1,5 +1,6 @@
 package net.mostlyoriginal.game.system.view;
 
+import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.EntityBuilder;
 import net.mostlyoriginal.api.component.basic.Angle;
@@ -25,6 +26,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	public static final int LAYER_CONVEYER = 1000;
 	public static final int LAYER_CONVEYABLE = 1500;
 	public static final int LAYER_FACTORIES = 2000;
+	public static final int LAYER_OVERLAYS = 2500;
 	GameScreenAssetSystem assetSystem;
 
 	M<Anim> mAnim;
@@ -73,6 +75,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				int cx = (x) * G.TILE_SIZE;
 				int cy = (y) * G.TILE_SIZE + G.FOOTER_H;
 				final int id = map[G.TILES_H - y][x + 1];
+
+				Entity e = null;
 				switch (id) {
 					case 0:
 						;
@@ -81,45 +85,49 @@ public class GameScreenSetupSystem extends PassiveSystem {
 					case 2:
 					case 3:
 					case 4:
-						createBeltStraight(cx, cy, -90 * (id - 1));
+						e = createBeltStraight(cx, cy, -90 * (id - 1));
 						break;
 					case 5:
 					case 6:
 					case 7:
 					case 8:
-						createBeltBend(cx, cy, -90 * (id - 5));
+						e = createBeltBend(cx, cy, -90 * (id - 5));
 						break;
 					case 9:
-						createSplicer(cx, cy);
+						e = createSplicer(cx, cy);
 						break;
 					case 10:
 					case 11:
 					case 12:
 					case 13:
-						createDispenser(cx, cy, -90 * (id - 10), Ingredient.Type.CHICK, 999);
+						e = createDispenser(cx, cy, -90 * (id - 10), Ingredient.Type.CHICK, 999);
 						break;
 					case 14:
 					case 15:
 					case 16:
 					case 17:
-						createDispenser(cx, cy, -90 * (id - 14), Ingredient.Type.BUNNY, 999);
+						e = createDispenser(cx, cy, -90 * (id - 14), Ingredient.Type.BUNNY, 999);
 						break;
 					case 18:
 					case 19:
 					case 20:
 					case 21:
-						createBeltBendInverse(cx, cy, -90 * (id - 18));
+						e = createBeltBendInverse(cx, cy, -90 * (id - 18));
 						break;
 					case 25:
-						createSink(cx, cy);
+						e = createSink(cx, cy);
 						break;
+				}
+
+				if ( e != null ) {
+					e.edit().add(new Draggable());
 				}
 			}
 		}
 	}
 
-	private void createDispenser(int x, int y, int angle, Ingredient.Type type, int count) {
-		new EntityBuilder(world).with(
+	private Entity createDispenser(int x, int y, int angle, Ingredient.Type type, int count) {
+		return new EntityBuilder(world).with(
 				new Pos(x, y),
 				new Bounds(2, 2, 18, 18),
 				new Inventory().inc(type, count),
@@ -128,8 +136,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Dispenser()).build();
 	}
 
-	private void createSink(int x, int y) {
-		new EntityBuilder(world).with(
+	private Entity createSink(int x, int y) {
+		return new EntityBuilder(world).with(
 				new Pos(x, y),
 				new Bounds(2, 2,16,16),
 				new Inventory(),
@@ -137,20 +145,18 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Sink()).build();
 	}
 
-	private void createBeltStraight(int x, int y, int angle) {
-		new EntityBuilder(world).with(
+	private Entity createBeltStraight(int x, int y, int angle) {
+		return new EntityBuilder(world).with(
 				new Pos(x, y),
 				new Bounds(2, 2, 18, 18),
 				new Anim("belt-straight"),
 				new Renderable(1000),
 				new Angle(angle),
 				new Conveyer(90f)).build();
-
-		createIngredient(x + G.TILE_SIZE / 2, y + G.TILE_SIZE / 2, Ingredient.Type.CHICK);
 	}
 
-	public void createIngredient(float x, float y, Ingredient.Type type) {
-		new EntityBuilder(world).with(
+	public Entity createIngredient(float x, float y, Ingredient.Type type) {
+		return new EntityBuilder(world).with(
 				new Pos(x - 3, y - 3),
 				new Bounds(0, 0, 5, 5),
 				new Anim("ingredient-" + type.name()),
@@ -160,8 +166,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Physics()).build();
 	}
 
-	private void createBeltBend(int x, int y, int angle) {
-		new EntityBuilder(world).with(
+	private Entity createBeltBend(int x, int y, int angle) {
+		return new EntityBuilder(world).with(
 				new Pos(x, y),
 				new Bounds(2, 2, 18, 18),
 				new Anim("belt-bend"),
@@ -170,8 +176,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Conveyer(45)).build();
 	}
 
-	private void createBeltBendInverse(int x, int y, int angle) {
-		new EntityBuilder(world).with(
+	private Entity createBeltBendInverse(int x, int y, int angle) {
+		return new EntityBuilder(world).with(
 				new Pos(x, y),
 				new Bounds(2, 2, 18, 18),
 				new Anim("belt-bend-inverse"),
@@ -180,8 +186,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Conveyer(45 + 180)).build();
 	}
 
-	private void createSplicer(int x, int y) {
-		new EntityBuilder(world).with(
+	private Entity createSplicer(int x, int y) {
+		return new EntityBuilder(world).with(
 				new Pos(x - 2, y - 2),
 				new Bounds(6, 0, 25 - 6, 26),
 				new Anim("factory-splicer"),
