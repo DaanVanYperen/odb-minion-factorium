@@ -30,7 +30,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 		for (int x = 0; x < G.TILES_W; x++) {
 			for (int y = 0; y < G.TILES_H; y++) {
-				createBackground(x * G.TILE_SIZE, y * G.TILE_SIZE, getBackgroundCellId(x, y));
+				createBackground(x * G.TILE_SIZE, y * G.TILE_SIZE + G.FOOTER_H, getBackgroundCellId(x, y));
 			}
 		}
 	}
