@@ -35,7 +35,7 @@ public class GameScreen extends WorldScreen {
 		RenderBatchingSystem renderBatchingSystem;
 		return new BaseSystem[]{
 
-				new CameraSystem(1),
+				new CameraSystem(2),
 
 				new ClearScreenSystem(Color.valueOf(BACKGROUND_COLOR_HEX)),
 				new GameScreenAssetSystem(),
