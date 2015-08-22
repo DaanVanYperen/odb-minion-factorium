@@ -11,7 +11,10 @@ import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.G;
+import net.mostlyoriginal.game.component.Autopickup;
 import net.mostlyoriginal.game.component.Conveyer;
+import net.mostlyoriginal.game.component.Ingredient;
+import net.mostlyoriginal.game.component.Inventory;
 import net.mostlyoriginal.game.util.Anims;
 
 /**
@@ -120,6 +123,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Pos(x+G.TILE_SIZE/2,y+G.TILE_SIZE/2),
 				new Bounds(0,0,5,5),
 				new Anim("chick"),
+				new Ingredient(Ingredient.Type.CHICK),
 				new Renderable(LAYER_CONVEYABLE),
 				new Physics()).build();
 	}
@@ -139,6 +143,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Pos(x-2,y-2),
 				new Bounds(0,0,25,26),
 				new Anim("factory-splicer"),
+				new Inventory(),
+				new Autopickup(),
 				new Renderable(LAYER_FACTORIES)).build();
 	}
 
