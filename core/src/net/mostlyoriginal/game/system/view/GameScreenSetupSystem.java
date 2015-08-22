@@ -31,26 +31,30 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	}
 
 	private static int[][] map1 = new int[][] {
-		{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0},
-		{0,0,5,2,2,6,0,0},
-		{0,0,1,0,0,3,0,0},
-		{0,0,1,0,0,3,0,0},
-		{0,0,8,4,4,7,0,0},
-		{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0}};
+		{0,0,0,0,0,0,0,0,0,0},
+		{0,5,2,0,0,0,0,2,6,0},
+		{0,1,0,0,0,0,0,0,3,0},
+		{0,1,0,0,0,0,0,0,0,0},
+		{0,1,0,0,0,0,0,0,0,0},
+		{0,1,0,0,0,0,0,0,0,0},
+		{0,1,0,0,5,2,2,6,0,0},
+		{0,1,0,0,1,0,0,3,0,0},
+		{0,1,0,0,1,0,0,3,0,0},
+		{0,1,0,0,8,4,4,7,0,0},
+		{0,1,0,0,1,0,0,0,0,0},
+		{0,1,0,0,1,0,0,0,3,0},
+		{0,8,4,0,1,0,0,4,7,0},
+		{0,0,0,0,1,0,0,0,0,0},
+	};
 
 	private void initMap(int[][] map) {
 
-		for (int x = 0; x < G.TILES_W; x++) {
-			for (int y = 0; y < G.TILES_H; y++) {
-				int cx = x * G.TILE_SIZE;
-				int cy = y * G.TILE_SIZE + G.HEADER_H;
-				switch(map[G.TILES_H - 1 - y][x]) {
+		// slightly offset so we can have out of bounds parts.
+		for (int x = -1; x < G.TILES_W+1; x++) {
+			for (int y = -1; y < G.TILES_H+1; y++) {
+				int cx = (x) * G.TILE_SIZE;
+				int cy = (y) * G.TILE_SIZE + G.FOOTER_H;
+				switch(map[G.TILES_H - y][x + 1]) {
 					case 0:;
 						break;
 					case 1 :
