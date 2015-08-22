@@ -30,5 +30,7 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 
 		add("belt-straight", 20, 200, 20, 20, 4).setFrameDuration(1 / 15f);
 		add("belt-bend", 20, 220, 20, 20, 2).setFrameDuration(1/15f);
+
+		add("chick", 160, 20, 6, 6, 1);
 	}
 }

@@ -3,12 +3,15 @@ package net.mostlyoriginal.game.system.view;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.EntityBuilder;
 import net.mostlyoriginal.api.component.basic.Angle;
+import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.api.component.graphics.Renderable;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.G;
+import net.mostlyoriginal.game.component.Conveyable;
+import net.mostlyoriginal.game.component.Conveyer;
 import net.mostlyoriginal.game.util.Anims;
 
 /**
@@ -18,6 +21,8 @@ import net.mostlyoriginal.game.util.Anims;
 public class GameScreenSetupSystem extends PassiveSystem {
 
 	public static final int CELL_SIZE = 20;
+	public static final int LAYER_CONVEYER = 1000;
+	public static final int LAYER_CONVEYABLE = 1500;
 	GameScreenAssetSystem assetSystem;
 
 	M<Anim> mAnim;
@@ -32,18 +37,18 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 	private static int[][] map1 = new int[][] {
 		{0,0,0,0,0,0,0,0,0,0},
-		{0,5,2,0,0,0,0,2,6,0},
+		{0,5,2,2,2,2,2,2,6,0},
 		{0,1,0,0,0,0,0,0,3,0},
-		{0,1,0,0,0,0,0,0,0,0},
-		{0,1,0,0,0,0,0,0,0,0},
-		{0,1,0,0,0,0,0,0,0,0},
-		{0,1,0,0,5,2,2,6,0,0},
-		{0,1,0,0,1,0,0,3,0,0},
-		{0,1,0,0,1,0,0,3,0,0},
-		{0,1,0,0,8,4,4,7,0,0},
-		{0,1,0,0,1,0,0,0,0,0},
+		{0,1,0,0,0,0,0,0,3,0},
+		{0,1,0,0,0,0,0,0,3,0},
+		{0,1,0,0,0,0,0,0,3,0},
+		{0,1,0,0,5,2,2,6,3,0},
+		{0,1,0,0,1,0,0,3,3,0},
+		{0,1,0,0,1,0,0,3,3,0},
+		{0,1,0,0,8,4,4,7,3,0},
 		{0,1,0,0,1,0,0,0,3,0},
-		{0,8,4,0,1,0,0,4,7,0},
+		{0,1,0,0,1,0,0,0,3,0},
+		{0,8,4,4,4,4,4,4,7,0},
 		{0,0,0,0,1,0,0,0,0,0},
 	};
 
@@ -89,17 +94,33 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	private void createBeltStraight(int x, int y, int angle) {
 		new EntityBuilder(world).with(
 				new Pos(x,y),
+				new Bounds(0,0,20,20),
 				new Anim("belt-straight"),
 				new Renderable(1000),
-				new Angle(angle)).build();
+				new Angle(angle),
+				new Conveyer(90f)).build();
+
+
+		createConveyable(x,y);
+	}
+
+	private void createConveyable(int x, int y) {
+		new EntityBuilder(world).with(
+				new Pos(x+G.TILE_SIZE/2,y+G.TILE_SIZE/2),
+				new Bounds(0,0,6,6),
+				new Anim("chick"),
+				new Renderable(LAYER_CONVEYABLE),
+				new Conveyable()).build();
 	}
 
 	private void createBeltBend(int x, int y, int angle) {
 		new EntityBuilder(world).with(
 				new Pos(x,y),
+				new Bounds(0,0,20,20),
 				new Anim("belt-bend"),
-				new Renderable(1000),
-				new Angle(angle)).build();
+				new Renderable(LAYER_CONVEYER),
+				new Angle(angle),
+				new Conveyer(0)).build();
 	}
 
 	private void initBackground() {
