@@ -11,6 +11,7 @@ import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.G;
+import net.mostlyoriginal.game.Sink;
 import net.mostlyoriginal.game.component.*;
 import net.mostlyoriginal.game.util.Anims;
 
@@ -39,17 +40,18 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	/**
 	 * Conveyer: 1 = up, 2 = right, 3 = down, 4 = left
 	 * 5, 6, 7, 8 = clockwise corners (top-left first)
-	 * 18,19,20,21 = counter clockwise corners (top-left first)
 	 * <p/>
 	 * Splicer = 9
 	 * Chick spawner = 10 up,11 right,12 down ,13 left
 	 * Bunny spawner = 14 up,15 right,16 down ,17 left
+	 * 18,19,20,21 = counter clockwise corners (top-left first)
+	 * Produce Receiver = 25
 	 */
 
 	private static int[][] map1 = new int[][]{
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 5, 2, 2, 2, 6, 0},
-			{0, 0, 0, 0, 1, 5, 4, 4, 7, 0},
+			{0, 0, 0, 0,25, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
 			{0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
 			{11, 2, 2, 2, 9, 4, 4, 4, 4, 17},
 			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -108,6 +110,9 @@ public class GameScreenSetupSystem extends PassiveSystem {
 					case 21:
 						createBeltBendInverse(cx, cy, -90 * (id - 18));
 						break;
+					case 25:
+						createSink(cx, cy);
+						break;
 				}
 			}
 		}
@@ -121,6 +126,15 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Conveyer(90f),
 				new Angle(angle),
 				new Dispenser()).build();
+	}
+
+	private void createSink(int x, int y) {
+		new EntityBuilder(world).with(
+				new Pos(x, y),
+				new Bounds(2, 2,16,16),
+				new Inventory(),
+				new Autopickup(),
+				new Sink()).build();
 	}
 
 	private void createBeltStraight(int x, int y, int angle) {
