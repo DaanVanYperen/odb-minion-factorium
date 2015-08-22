@@ -42,14 +42,15 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	 *
 	 * Splicer = 9
 	 * Chick spawner = 10 up,11 right,12 down ,13 left
+	 * Bunny spawner = 14 up,15 right,16 down ,17 left
 	 */
 
 	private static int[][] map1 = new int[][] {
 		{0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,5,2,2,2,6,0},
 		{0,0,0,0,1,4,4,4,7,0},
-		{0,0,0,0,1,0,0,0,3,0},
-		{11,2,2,2,9,4,4,4,3,13},
+		{0,0,0,0,1,0,0,0,0,0},
+		{11,2,2,2,9,4,4,4,4,17},
 		{0,0,0,0, 0,0,0,0,0,0},
 		{0,5,2,2,5,2,2,6,3,0},
 		{0,1,0,0,1,0,0,3,3,0},
@@ -92,6 +93,12 @@ public class GameScreenSetupSystem extends PassiveSystem {
 					case 12 :
 					case 13 :
 						createDispenser(cx, cy, -90 * (id - 10), Ingredient.Type.CHICK, 999);
+						break;
+					case 14 :
+					case 15 :
+					case 16 :
+					case 17 :
+						createDispenser(cx, cy, -90 * (id - 14), Ingredient.Type.BUNNY, 999);
 						break;
 				}
 			}

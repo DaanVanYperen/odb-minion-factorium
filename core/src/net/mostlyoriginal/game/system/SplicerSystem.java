@@ -33,12 +33,14 @@ public class SplicerSystem extends IntervalEntityProcessingSystem  {
 	protected void process(Entity e) {
 		final Inventory inventory = mInventory.get(e);
 
-		if ( inventory.has(Ingredient.Type.CHICK, 1) )
+		if ( inventory.has(Ingredient.Type.CHICK, 1) && inventory.has(Ingredient.Type.BUNNY, 1) )
 		{
 			final Pos pos = mPos.get(e);
 
 			inventory.dec(Ingredient.Type.CHICK, 1);
-			setupSystem.createIngredient(pos.x + G.TILE_SIZE / 2, pos.y + G.TILE_SIZE/2, Ingredient.Type.CHICK);
+			inventory.dec(Ingredient.Type.BUNNY, 1);
+
+			setupSystem.createIngredient(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE/2, Ingredient.Type.CHICKBUNNY);
 		}
 	}
 }
