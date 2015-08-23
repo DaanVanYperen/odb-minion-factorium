@@ -1,4 +1,4 @@
-package net.mostlyoriginal.game.system;
+package net.mostlyoriginal.game.system.drag;
 
 import com.artemis.Aspect;
 import com.artemis.AspectSubscriptionManager;

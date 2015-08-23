@@ -15,6 +15,11 @@ import net.mostlyoriginal.api.system.render.AnimRenderSystem;
 import net.mostlyoriginal.api.system.render.ClearScreenSystem;
 import net.mostlyoriginal.api.utils.builder.WorldConfigurationBuilder;
 import net.mostlyoriginal.game.system.*;
+import net.mostlyoriginal.game.system.drag.DragStartSystem;
+import net.mostlyoriginal.game.system.drag.DraggableIndicatorSystem;
+import net.mostlyoriginal.game.system.drag.TileDropSystem;
+import net.mostlyoriginal.game.system.tap.RotateSystem;
+import net.mostlyoriginal.game.system.tap.TapSystem;
 import net.mostlyoriginal.game.system.view.GameScreenAssetSystem;
 import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
 

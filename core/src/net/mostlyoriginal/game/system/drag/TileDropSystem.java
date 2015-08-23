@@ -1,4 +1,4 @@
-package net.mostlyoriginal.game.system;
+package net.mostlyoriginal.game.system.drag;
 
 import com.artemis.Aspect;
 import com.artemis.Entity;
@@ -9,6 +9,7 @@ import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.component.Dragging;
+import net.mostlyoriginal.game.system.tap.TapSystem;
 
 /**
  * @author Daan van Yperen
