@@ -23,6 +23,9 @@ public class TileDropSystem extends EntityProcessingSystem {
 	private int gridX;
 	private int gridY;
 
+	TapSystem tapSystem;
+	private boolean isDragging;
+
 	public TileDropSystem() {
 		super(Aspect.all(Dragging.class, Pos.class));
 	}
@@ -37,22 +40,50 @@ public class TileDropSystem extends EntityProcessingSystem {
 	}
 
 	@Override
-	protected void process(Entity e) {
-		if ( isWithinGrid() )
+	protected void end() {
+		super.end();
+		if (isDragging)
 		{
-			moveToLocation(e);
-
-			if ( !leftButtonDown && canDropHere(e) ) {
-				mDragging.remove(e);
-			}
+			tapSystem.abortPendingTaps();
 		}
-
 	}
 
-	private void moveToLocation(Entity e) {
+	@Override
+	protected void process(Entity e) {
+
+		if ( isWithinGrid() )
+		{
+			moveToDragLocation(e);
+
+			if ( !leftButtonDown ) {
+				if ( canDropHere(e) ) {
+					actuallyMoveSubject(e);
+				}
+				e.deleteFromWorld();
+			}
+		}
+	}
+
+	private void actuallyMoveSubject(Entity e) {
+		final Entity subject = world.getEntity(mDragging.get(e).entityId);
+		if ( subject != null )
+		{
+			moveToDragLocation(subject);
+		}
+	}
+
+	private void moveToDragLocation(Entity e) {
 		final Pos pos = mPos.get(e);
-		pos.x = gridX * G.TILE_SIZE;
-		pos.y = gridY * G.TILE_SIZE + G.FOOTER_H;
+		final int x = gridX * G.TILE_SIZE;
+		final int y = gridY * G.TILE_SIZE + G.FOOTER_H;
+
+		if ( pos.x != x || pos.y != y ) {
+			isDragging = true;
+		}
+
+		pos.x = x;
+		pos.y = y;
+
 	}
 
 	private boolean isWithinGrid() {

@@ -47,9 +47,14 @@ public class TapSystem extends DualEntityProcessingSystem {
 				leftButtonClicked = true;
 				beenDown = false;
 			} else {
-				leftButtonClicked = false;
+				abortPendingTaps();
 			}
 		}
+	}
+
+	public void abortPendingTaps() {
+		leftButtonClicked = false;
+		beenDown = false;
 	}
 
 	@Override
