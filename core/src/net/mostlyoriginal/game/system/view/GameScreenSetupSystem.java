@@ -3,8 +3,10 @@ package net.mostlyoriginal.game.system.view;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.EntityBuilder;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonWriter;
 import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
@@ -44,8 +46,9 @@ public class GameScreenSetupSystem extends PassiveSystem {
 		initCursor();
 		initBackground();
 
-		final Level level = new Level();
-		System.out.println((new Json()).toJson(level));
+		final Json json = new Json();
+		final Level level = json.fromJson(Level.class, Gdx.files.internal("level/level1.json"));
+		System.out.println(json.prettyPrint(level));
 		initMap(level);
 	}
 
