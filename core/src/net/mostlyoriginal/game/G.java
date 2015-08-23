@@ -12,7 +12,7 @@ public class G {
 	public static final int ZOOM = 2;
 
 	public static final int HEADER_H = TILE_SIZE;
-	public static final int FOOTER_H = TILE_SIZE * 2;
+	public static final int FOOTER_H = 2;
 
 	public static final int VIEPORT_HEIGHT = ZOOM * (TILES_H * TILE_SIZE + HEADER_H + FOOTER_H);
 	public static final int VIEPORT_WIDTH = ZOOM * (TILES_W * TILE_SIZE);

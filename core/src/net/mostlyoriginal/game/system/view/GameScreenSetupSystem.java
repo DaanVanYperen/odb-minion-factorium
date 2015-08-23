@@ -17,6 +17,7 @@ import net.mostlyoriginal.api.component.graphics.*;
 import net.mostlyoriginal.api.component.mouse.MouseCursor;
 import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.component.script.Schedule;
+import net.mostlyoriginal.api.component.ui.Label;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
@@ -87,6 +88,10 @@ public class GameScreenSetupSystem extends PassiveSystem {
 		//System.out.println(json.prettyPrint(new Level()));
 
 		final Level level = new Json().fromJson(Level.class, Gdx.files.internal("level/level" + levelIndex + ".json"));
+
+		final Label label = new Label("level " + levelIndex+ ": " + level.name);
+		label.fontName="5x5";
+		new EntityBuilder(world).with(new Pos(4, G.VIEPORT_HEIGHT/2 - 4), label, new Renderable(LAYER_OVERLAYS+1));
 
 		// spawn as entity so we can use it to track progress towards goal.
 		new EntityBuilder(world).with(level, new Inventory()).build();
@@ -399,6 +404,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				createBackground(x * G.TILE_SIZE, y * G.TILE_SIZE + G.FOOTER_H, getBackgroundCellId(x, y));
 			}
 		}
+		new EntityBuilder(world).with(new Pos(0, G.VIEPORT_HEIGHT/2 - G.HEADER_H), new Anim("header"), new Renderable(LAYER_OVERLAYS));
+		new EntityBuilder(world).with(new Pos(0, 0), new Anim("footer"), new Renderable(LAYER_OVERLAYS));
 	}
 
 	private String getBackgroundCellId(int x, int y) {
