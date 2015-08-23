@@ -68,6 +68,7 @@ public class GameScreen extends WorldScreen {
 				new DragStartSystem(),
 				new TileDropSystem(),
 				new RotateSystem(),
+				new GridOverlapHelperSystem(),
 
 				new ColorAnimationSystem(),
 

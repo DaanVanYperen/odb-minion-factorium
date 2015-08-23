@@ -31,8 +31,8 @@ public class DragStartSystem extends DualEntityProcessingSystem {
 
 	protected M<Anim> mAnim;
 	protected M<Pos> mPos;
-	protected M<Angle> mAngle
-			;
+	protected M<Angle> mAngle;
+	protected M<Bounds> mBounds;
 
 	private boolean leftButtonDown;
 	private EntitySubscription currentlyDragged;
@@ -77,6 +77,7 @@ public class DragStartSystem extends DualEntityProcessingSystem {
 	private void createDraggingIndicator(Entity draggable) {
 		final Anim sourceAnim = mAnim.get(draggable);
 		final Pos sourcePos = mPos.get(draggable);
+		final Bounds sourceBounds = mBounds.get(draggable);
 
 		final Anim anim = new Anim();
 		anim.id = sourceAnim.id;
@@ -87,9 +88,11 @@ public class DragStartSystem extends DualEntityProcessingSystem {
 		pos.x = sourcePos.x;
 		pos.y = sourcePos.y;
 
+
 		NO_ANGLE = new Angle(0);
 		new EntityBuilder(world)
 				.with(new Dragging(draggable), new Renderable(GameScreenSetupSystem.LAYER_DRAGGING),
+						new Bounds(sourceBounds.minx, sourceBounds.miny, sourceBounds.maxx, sourceBounds.maxy),
 						anim, pos, new Angle(mAngle.getSafe(draggable, NO_ANGLE).rotation), new Color(1f, 1f, 1f, 0.5f)
 				).build();
 	}

@@ -9,6 +9,7 @@ import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.component.Dragging;
+import net.mostlyoriginal.game.system.GridOverlapHelperSystem;
 import net.mostlyoriginal.game.system.tap.TapSystem;
 
 /**
@@ -21,6 +22,7 @@ public class TileDropSystem extends EntityProcessingSystem {
 
 	protected M<Dragging> mDragging;
 	protected M<Pos> mPos;
+	private GridOverlapHelperSystem gridOverlapHelperSystem;
 	private int gridX;
 	private int gridY;
 
@@ -92,6 +94,6 @@ public class TileDropSystem extends EntityProcessingSystem {
 	}
 
 	private boolean canDropHere(Entity e) {
-		return true;
+		return !gridOverlapHelperSystem.overlaps(e);
 	}
 }
