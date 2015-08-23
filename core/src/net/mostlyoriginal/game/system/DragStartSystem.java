@@ -53,7 +53,7 @@ public class DragStartSystem extends DualEntityProcessingSystem {
 		return !isUserDragging();
 	}
 
-	private boolean isUserDragging() {
+	public boolean isUserDragging() {
 		return currentlyDragged.getEntities().size() > 0;
 	}
 

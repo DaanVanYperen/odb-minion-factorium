@@ -22,6 +22,9 @@ public class DraggableIndicatorSystem extends EntityProcessingSystem {
 
 	protected M<Draggable> mDraggable;
 	protected M<Pos> mPos;
+	protected M<Invisible> mInvisible;
+
+	protected DragStartSystem dragStartSystem;
 
 	public DraggableIndicatorSystem() {
 		super(Aspect.all(Draggable.class));
@@ -34,10 +37,22 @@ public class DraggableIndicatorSystem extends EntityProcessingSystem {
 
 	private void updateIndicatorPos(Entity e) {
 		final Draggable draggable = mDraggable.get(e);
-		final Pos indicatorPos = mPos.get(draggable.indicator);
+		final Entity indicator = draggable.indicator;
+		final Pos indicatorPos = mPos.get(indicator);
 		final Pos topicPos = mPos.get(e);
 		indicatorPos.x = topicPos.x;
 		indicatorPos.y = topicPos.y;
+
+		if (shouldShowIndicators())
+		{
+			mInvisible.remove(indicator);
+		} else {
+			mInvisible.create(indicator);
+		}
+	}
+
+	private boolean shouldShowIndicators() {
+		return !dragStartSystem.isUserDragging();
 	}
 
 	@Override
