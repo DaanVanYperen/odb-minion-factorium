@@ -39,5 +39,8 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 		add("factory-splicer", 20, 79, 25, 26, 2);
 
 		add("draggable-indicator", 60, 260,  20, 20, 1);
+
+		add("factory-crusher", 20, 120, 17, 23, 2);
+		add("factory-shower", 20, 160, 10, 23, 5);
 	}
 }

@@ -17,8 +17,6 @@ import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.G;
-import net.mostlyoriginal.game.component.Level;
-import net.mostlyoriginal.game.component.Sink;
 import net.mostlyoriginal.game.component.*;
 import net.mostlyoriginal.game.util.Anims;
 
@@ -92,52 +90,66 @@ public class GameScreenSetupSystem extends PassiveSystem {
 			for (int y = -1; y < G.TILES_H + 1; y++) {
 				int cx = (x) * G.TILE_SIZE;
 				int cy = (y) * G.TILE_SIZE + G.FOOTER_H;
-				final char id = level.structure[(G.TILES_H - y)*2].charAt(x + 1);
-				final char id2 = level.structure[(G.TILES_H - y)*2+1].charAt(x + 1);
+				final char id = level.structure[(G.TILES_H - y) * 2].charAt(x + 1);
+				final char id2 = level.structure[(G.TILES_H - y) * 2 + 1].charAt(x + 1);
 
 				Entity e = null;
-				int angle=0;
+				int angle = 0;
 				switch (id) {
-					case '.':
+					case '.' :
 						break;
-					case '<':
+					case '<' :
 						angle -= 90;
-					case 'v':
+					case 'v' :
 						angle -= 90;
-					case '>':
+					case '>' :
 						angle -= 90;
-					case '^':
-						if ( id2 == 'c') {
+					case '^' :
+						if (id2 == 'c') {
 							e = createDispenser(cx, cy, angle, Ingredient.Type.CHICK, 999);
-						} else if ( id2 == 'b') {
-								e = createDispenser(cx, cy, angle, Ingredient.Type.BUNNY, 999);
+						} else if (id2 == 'b') {
+							e = createDispenser(cx, cy, angle, Ingredient.Type.BUNNY, 999);
 						} else {
 							e = createBeltStraight(cx, cy, angle);
+							if (id2 == '1') {
+								if (angle == -90 || angle == -270) {
+									createCrusherY(cx, cy);
+								} else {
+									createCrusherX(cx, cy);
+								}
+							}
+							if (id2 == '2') {
+								if (angle == -90 || angle == -270) {
+									createShowerY(cx, cy);
+								} else {
+									createShowerX(cx, cy);
+								}
+							}
 						}
+
 						break;
-					case '4':
+					case '4' :
 						angle -= 90;
-					case '3':
+					case '3' :
 						angle -= 90;
-					case '2':
+					case '2' :
 						angle -= 90;
-					case '1':
-						if ( id2 == 'i' )
-						{
+					case '1' :
+						if (id2 == 'i') {
 							e = createBeltBendInverse(cx, cy, angle);
 						} else e = createBeltBend(cx, cy, angle);
 
 						break;
-					case 'S':
+					case 'S' :
 						e = createSplicer(cx, cy);
 						break;
-					case 'X':
+					case 'X' :
 						e = createSink(cx, cy);
 						break;
 				}
 
 				switch (id2) {
-					case 'd':
+					case 'd' :
 						if (e != null) {
 							makeDraggable(e);
 						}
@@ -211,6 +223,48 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Angle(angle),
 				new Conveyer(45 + 180)).build();
 	}
+
+	private Entity createCrusherY(int x, int y) {
+		return new EntityBuilder(world).with(
+				new Pos(x, y + 1),
+				new Bounds(0, 0, 20, 20),
+				new Anim("factory-crusher"),
+				new Inventory(),
+				new Renderable(LAYER_FACTORIES),
+				new Angle(0f)).build();
+	}
+
+	private Entity createShowerY(int x, int y) {
+		return new EntityBuilder(world).with(
+				new Pos(x, y),
+				new Bounds(0, 0, 20, 20),
+				new Anim("factory-shower"),
+				new Inventory(),
+				new Renderable(LAYER_FACTORIES),
+				new Angle(0f)).build();
+	}
+
+
+	private Entity createCrusherX(int x, int y) {
+		return new EntityBuilder(world).with(
+				new Pos(x+2, y),
+				new Bounds(0, 0, 20, 20),
+				new Anim("factory-crusher"),
+				new Inventory(),
+				new Renderable(LAYER_FACTORIES),
+				new Angle(-90f)).build();
+	}
+
+	private Entity createShowerX(int x, int y) {
+		return new EntityBuilder(world).with(
+				new Pos(x+6, y),
+				new Bounds(0, 0, 20, 20),
+				new Anim("factory-shower"),
+				new Inventory(),
+				new Renderable(LAYER_FACTORIES),
+				new Angle(-90f)).build();
+	}
+
 
 	private Entity createSplicer(int x, int y) {
 		return new EntityBuilder(world).with(
