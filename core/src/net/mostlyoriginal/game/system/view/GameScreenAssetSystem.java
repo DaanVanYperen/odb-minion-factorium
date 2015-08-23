@@ -1,14 +1,6 @@
 package net.mostlyoriginal.game.system.view;
 
-import com.artemis.Entity;
-import com.artemis.World;
 import com.artemis.annotations.Wire;
-import com.artemis.utils.EntityBuilder;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import net.mostlyoriginal.api.component.basic.Pos;
-import net.mostlyoriginal.api.component.graphics.Anim;
-import net.mostlyoriginal.api.component.graphics.Renderable;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 
 /**
@@ -25,6 +17,22 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 	protected void initialize() {
 		super.initialize();
 
+		loadSounds(new String[]{
+				"button-play",
+				"button-rewind",
+				"chick-squeek",
+				"factory-1",
+				"factory-2",
+				"flatten-eye",
+				"hatching",
+				"highscore",
+				"hybrid-emerges",
+				"loss",
+				"shower",
+				"stamper",
+				"victory"
+		});
+
 		add("cell-empty", 20, 260, 20, 20, 1);
 		add("cell-empty2", 40, 260, 20, 20, 1);
 
@@ -40,7 +48,7 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 		add("ingredient-GOOGLIE_EYE", 175, 20, 3, 3, 1);
 		add("ingredient-MINION_PAINTED", 215, 31, 6, 9, 1);
 		add("ingredient-MINION_GOOGLED", 207, 31, 7, 9, 1);
-		add("ingredient-MINION_ENLARGED", 222, 27, 8,12, 1);
+		add("ingredient-MINION_ENLARGED", 222, 27, 8, 12, 1);
 
 		add("factory-splicer", 20, 79, 25, 26, 2);
 

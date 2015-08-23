@@ -3,6 +3,7 @@ package net.mostlyoriginal.game.system.machine;
 import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.math.MathUtils;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
@@ -15,6 +16,7 @@ import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.component.Gouger;
 import net.mostlyoriginal.game.component.Ingredient;
 import net.mostlyoriginal.game.component.SpawnProtected;
+import net.mostlyoriginal.game.system.view.GameScreenAssetSystem;
 import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
 
 /**
@@ -32,6 +34,7 @@ public class GougerSystem extends DualEntityProcessingSystem {
 	protected M<Physics> mPhysics;
 	protected M<Ingredient> mIngredient;
 	protected AbstractAssetSystem abstractAssetSystem;
+	private GameScreenAssetSystem gameScreenAssetSystem;
 
 	public GougerSystem() {
 
@@ -51,10 +54,15 @@ public class GougerSystem extends DualEntityProcessingSystem {
 
 		switch (mIngredient.get(ingredient).type) {
 			case CHICK:
+				playSfx();
 				final Pos pos = mPos.get(gouger);
 				setupSystem.createIngredientEject(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.BEAD_EYE, 0f);
 				setupSystem.createIngredientEject(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.BLIND_CHICK, -90f);
 				break;
 		}
+	}
+
+	private void playSfx() {
+		gameScreenAssetSystem.playSfx(MathUtils.randomBoolean() ? "factory-1" : "factory-2");
 	}
 }

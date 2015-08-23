@@ -1,11 +1,13 @@
 package net.mostlyoriginal.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import net.mostlyoriginal.game.screen.LevelScreen;
 
 public class GdxArtemisGame extends Game {
 
-	public static final int START_LEVEL = 5;
+	public static final int START_LEVEL = 6;
 	private static GdxArtemisGame instance;
 	private int levelIndex = START_LEVEL;
 
@@ -17,7 +19,15 @@ public class GdxArtemisGame extends Game {
 
 	public void restart() {
 		levelIndex = START_LEVEL-1;
+		playMusic();
 		nextLevel();
+	}
+
+	private void playMusic() {
+		final Music music = Gdx.audio.newMusic(Gdx.files.internal("sfx/music.mp3"));
+		music.setLooping(true);
+		music.play();
+		music.setVolume(0.3f);
 	}
 
 	public void nextLevel() {

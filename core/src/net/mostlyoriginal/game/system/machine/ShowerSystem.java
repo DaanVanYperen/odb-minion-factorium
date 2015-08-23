@@ -33,6 +33,7 @@ public class ShowerSystem extends DualEntityProcessingSystem {
 
 	GameScreenSetupSystem setupSystem;
 	private M<Ingredient> mIngredient;
+	private AbstractAssetSystem gameScreenAssetSystem;
 
 	public ShowerSystem() {
 
@@ -72,5 +73,6 @@ public class ShowerSystem extends DualEntityProcessingSystem {
 		mDrenched.create(ingredient);
 		mWet.create(ingredient).liquid = liquid;
 		mSpawnProtected.create(ingredient);
+		gameScreenAssetSystem.playSfx("shower");
 	}
 }

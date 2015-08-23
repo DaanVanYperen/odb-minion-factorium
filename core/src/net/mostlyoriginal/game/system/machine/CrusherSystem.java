@@ -4,6 +4,7 @@ import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.math.MathUtils;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
@@ -30,6 +31,7 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 	private M<Pos> mPos;
 	protected M<Anim> mAnim;
 	private AbstractAssetSystem abstractAssetSystem;
+	private AbstractAssetSystem gameScreenAssetSystem;
 
 	public CrusherSystem() {
 
@@ -54,6 +56,7 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 
 	private void act(Entity crusher, Entity ingredient) {
 
+		gameScreenAssetSystem.playSfx("stamper");
 		switch (mIngredient.get(ingredient).type) {
 			case GOOGLIE_EYE:
 				return;
@@ -80,5 +83,7 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 		final Pos newIngredient = mPos.get(ingredient);
 		newIngredient.x = sourcePos.x;
 		newIngredient.y = sourcePos.y;
+
+		gameScreenAssetSystem.playSfx("flatten-eye");
 	}
 }
