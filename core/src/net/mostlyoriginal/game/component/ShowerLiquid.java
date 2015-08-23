@@ -6,5 +6,6 @@ package net.mostlyoriginal.game.component;
 public enum ShowerLiquid {
 	PAINT,
 	WATER,
-	BLOOD;
+	BLOOD,
+	DUST, STEAM
 }

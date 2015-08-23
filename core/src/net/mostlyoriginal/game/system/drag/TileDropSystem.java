@@ -10,6 +10,9 @@ import net.mostlyoriginal.api.component.graphics.Color;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.component.Dragging;
+import net.mostlyoriginal.game.component.ShowerLiquid;
+import net.mostlyoriginal.game.component.Sprinkle;
+import net.mostlyoriginal.game.component.Wet;
 import net.mostlyoriginal.game.system.tap.TapSystem;
 
 /**
@@ -23,6 +26,7 @@ public class TileDropSystem extends EntityProcessingSystem {
 	protected M<Dragging> mDragging;
 	protected M<Pos> mPos;
 	protected M<Color> mColor;
+	protected M<Sprinkle> mSprinkle;
 	private GridOverlapHelperSystem gridOverlapHelperSystem;
 	private int gridX;
 	private int gridY;
@@ -86,6 +90,11 @@ public class TileDropSystem extends EntityProcessingSystem {
 		if ( subject != null )
 		{
 			moveToDragLocation(subject);
+
+			final Sprinkle sprinkle = mSprinkle.create(subject);
+			sprinkle.liquid = ShowerLiquid.DUST;
+			sprinkle.duration = 0.25f;
+
 		}
 	}
 

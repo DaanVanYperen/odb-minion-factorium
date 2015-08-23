@@ -10,9 +10,7 @@ import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.game.G;
-import net.mostlyoriginal.game.component.Ingredient;
-import net.mostlyoriginal.game.component.Inventory;
-import net.mostlyoriginal.game.component.Splicer;
+import net.mostlyoriginal.game.component.*;
 import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
 
 /**
@@ -25,6 +23,7 @@ public class SplicerSystem extends IntervalEntityProcessingSystem  {
 	protected GameScreenSetupSystem setupSystem;
 	protected M<Inventory> mInventory;
 	protected M<Pos> mPos;
+	protected M<Sprinkle> mSprinkle;
 	private AbstractAssetSystem gameScreenAssetSystem;
 
 
@@ -34,6 +33,11 @@ public class SplicerSystem extends IntervalEntityProcessingSystem  {
 
 	@Override
 	protected void process(Entity e) {
+
+		final Sprinkle sprinkle = mSprinkle.create(e);
+		sprinkle.liquid = ShowerLiquid.STEAM;
+		sprinkle.duration = 0.3f;
+
 		final Inventory inventory = mInventory.get(e);
 
 		if ( inventory.has(Ingredient.Type.CHICK, 1) && inventory.has(Ingredient.Type.BUNNY, 1) )

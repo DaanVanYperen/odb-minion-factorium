@@ -64,6 +64,12 @@ public class LiquidSystem extends EntityProcessingSystem {
 			sprinkle.cooldown = 0.1f;
 			final Pos pos = mPos.get(shower);
 			createLiquidParticle(pos.x + 4, pos.y + 8, false, sprinkle.liquid);
+			if ( sprinkle.liquid == ShowerLiquid.DUST )
+			{
+				for (int i = 0; i < 10; i++) {
+					createLiquidParticle(pos.x + 4, pos.y + 8, false, sprinkle.liquid);
+				}
+			}
 		}
 
 		sprinkle.duration -= world.delta;
@@ -95,6 +101,11 @@ public class LiquidSystem extends EntityProcessingSystem {
 					colorB = new Color(0f, 1f, 0f, 0.9f);
 				}
 				break;
+			case DUST:
+			case STEAM:
+				colorA = new Color(0.9f, 0.9f, 1f, MathUtils.random(0.75f, 0.9f));
+				colorB = new Color(0.9f, 0.9f, 1f, 0.9f);
+				break;
 			default:
 				if (MathUtils.random(0, 100) < 5 || drip) {
 					colorA = new Color(0.7f, 0.9f, 1f, MathUtils.random(0.75f, 0.9f));
@@ -116,18 +127,31 @@ public class LiquidSystem extends EntityProcessingSystem {
 			y += MathUtils.random(-1f, 1f);
 		}
 
+		if ( liquid == ShowerLiquid.STEAM )
+		{
+			v.y = 5;
+		}
+
+		if ( liquid == ShowerLiquid.DUST )
+		{
+			v.set(0, 10).setAngle(MathUtils.random(0,360));
+			x += v.x;
+			y += v.y;
+			v.scl(4);
+		}
+
 		final Physics physics = new Physics();
 		physics.vx = v.x;
 		physics.vy = v.y;
 		physics.vr = MathUtils.random(-1f, 1f);
-
 
 		return new EntityBuilder(world).with(
 				new Pos(x, y),
 				newColorAnimation(colorA, colorB, 0.5f),
 				new Color(),
 				anim,
-				new Renderable(GameScreenSetupSystem.LAYER_VAPOR),
+				new Renderable(liquid == ShowerLiquid.STEAM ? GameScreenSetupSystem.LAYER_OVERLAYS+1 :
+						liquid == ShowerLiquid.DUST ? GameScreenSetupSystem.LAYER_CONVEYER-1 : GameScreenSetupSystem.LAYER_VAPOR),
 				new Schedule().wait(0.5f).deleteFromWorld(),
 				new Angle(MathUtils.random(100)),
 				physics).build();
