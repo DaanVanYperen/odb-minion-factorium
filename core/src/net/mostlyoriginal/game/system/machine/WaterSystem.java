@@ -45,9 +45,10 @@ public class WaterSystem extends EntityProcessingSystem {
 
 		wet.cooldown -= world.delta;
 		if ( wet.cooldown <= 0 ) {
-			wet.cooldown = 0.5f;
+			wet.cooldown = 0.1f + (1 - (wet.duration / wet.DEFAULT_DURATION)) * 0.4f;
 			final Pos pos = mPos.get(e);
-			createWaterParticle(pos.x+4, pos.y+8, true);
+			createWaterParticle(pos.x+2, pos.y+8, true);
+			createWaterParticle(pos.x+2, pos.y+8, true);
 		}
 
 		wet.duration -= world.delta;
@@ -93,7 +94,7 @@ public class WaterSystem extends EntityProcessingSystem {
 		final Anim anim = new Anim("particle-water");
 		anim.scale = MathUtils.random(0.1f,0.5f);
 		if ( drip ) {
-			v.set(0, MathUtils.random(-7, -5));
+			v.set(0, MathUtils.random(-7, -3)).setAngle(MathUtils.random(-5,5));
 			anim.scale = MathUtils.random(0.1f,0.2f);
 			x += MathUtils.random(-5f,5f);
 			y += MathUtils.random(-1f,1f);

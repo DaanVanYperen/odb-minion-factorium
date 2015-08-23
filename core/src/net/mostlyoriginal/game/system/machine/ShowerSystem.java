@@ -56,6 +56,7 @@ public class ShowerSystem extends DualEntityProcessingSystem {
 	private boolean showerActive(Entity shower) {
 		final Anim anim = mAnim.get(shower);
 		final Animation animation = abstractAssetSystem.get(anim.id);
+		animation.setPlayMode(Animation.PlayMode.LOOP);
 		return animation.getKeyFrameIndex(anim.age) == 4;
 	}
 
