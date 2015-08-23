@@ -50,6 +50,8 @@ public class TileDropSystem extends EntityProcessingSystem {
 		if (isDragging)
 		{
 			tapSystem.abortPendingTaps();
+			if (!leftButtonDown)
+				isDragging = false;
 		}
 	}
 
