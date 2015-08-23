@@ -29,6 +29,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	public static final int CELL_SIZE = 20;
 	public static final int LAYER_CONVEYER = 1000;
 	public static final int LAYER_CONVEYABLE = 1500;
+	public static final int LAYER_VAPOR = 1999;
 	public static final int LAYER_FACTORIES = 2000;
 	public static final int LAYER_OVERLAYS = 2500;
 	public static final int LAYER_DRAGGING = 2600;

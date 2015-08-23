@@ -42,5 +42,7 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 
 		add("factory-crusher", 20, 120, 17, 23, 2);
 		add("factory-shower", 20, 160, 10, 23, 5);
+
+		add("particle-water", 80, 260, 8, 8, 1);
 	}
 }
