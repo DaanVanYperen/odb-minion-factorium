@@ -3,13 +3,12 @@ package net.mostlyoriginal.game.system;
 import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
-import com.artemis.systems.EntityProcessingSystem;
-import com.artemis.systems.IntervalEntityProcessingSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.DualEntityProcessingSystem;
 import net.mostlyoriginal.game.component.Inventory;
 import net.mostlyoriginal.game.component.Level;
 import net.mostlyoriginal.game.component.Sink;
+import net.mostlyoriginal.game.system.flow.LevelTransitionSystem;
 
 /**
  * Test victory conditions.

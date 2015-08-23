@@ -38,10 +38,12 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 
 		add("factory-splicer", 20, 79, 25, 26, 2);
 
-		add("draggable-indicator", 60, 260,  20, 20, 1);
+		add("draggable-indicator", 60, 260, 20, 20, 1);
 
 		add("factory-crusher", 20, 120, 17, 23, 2).setFrameDuration(1 / 2f);
 		add("factory-shower", 20, 160, 10, 23, 5).setFrameDuration(1 / 4f);
+
+		add("button-restart", 45, 300, 24, 24, 1);
 
 		add("particle-water", 80, 260, 8, 8, 1);
 	}

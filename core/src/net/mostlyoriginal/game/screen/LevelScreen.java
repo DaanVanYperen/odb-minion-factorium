@@ -21,7 +21,10 @@ import net.mostlyoriginal.game.system.drag.DragStartSystem;
 import net.mostlyoriginal.game.system.drag.DraggableIndicatorSystem;
 import net.mostlyoriginal.game.system.drag.GridOverlapHelperSystem;
 import net.mostlyoriginal.game.system.drag.TileDropSystem;
+import net.mostlyoriginal.game.system.flow.LevelTransitionSystem;
+import net.mostlyoriginal.game.system.flow.RetryLevelSystem;
 import net.mostlyoriginal.game.system.machine.*;
+import net.mostlyoriginal.game.system.tap.RetryButtonSystem;
 import net.mostlyoriginal.game.system.tap.RotateSystem;
 import net.mostlyoriginal.game.system.tap.TapSystem;
 import net.mostlyoriginal.game.system.view.GameScreenAssetSystem;
@@ -92,6 +95,9 @@ public class LevelScreen extends WorldScreen {
 				new SchedulerSystem(),
 				new LevelTransitionSystem(),
 				new VictorySystem(),
+
+				new RetryLevelSystem(),
+				new RetryButtonSystem(),
 		};
 	}
 }

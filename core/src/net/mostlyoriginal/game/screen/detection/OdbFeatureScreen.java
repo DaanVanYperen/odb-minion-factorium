@@ -13,7 +13,7 @@ import net.mostlyoriginal.api.system.script.SchedulerSystem;
 import net.mostlyoriginal.api.utils.builder.WorldConfigurationBuilder;
 import net.mostlyoriginal.game.GdxArtemisGame;
 import net.mostlyoriginal.game.system.detection.OdbFeatureDetectionSystem;
-import net.mostlyoriginal.game.system.logic.TransitionSystem;
+import net.mostlyoriginal.game.system.flow.TransitionSystem;
 import net.mostlyoriginal.game.system.view.FeatureScreenAssetSystem;
 import net.mostlyoriginal.game.system.view.FeatureScreenSetupSystem;
 

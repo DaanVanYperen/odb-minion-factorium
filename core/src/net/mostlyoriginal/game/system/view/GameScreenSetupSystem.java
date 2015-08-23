@@ -4,20 +4,21 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.EntityBuilder;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Json;
 import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
-import net.mostlyoriginal.api.component.graphics.Anim;
-import net.mostlyoriginal.api.component.graphics.Color;
-import net.mostlyoriginal.api.component.graphics.Renderable;
+import net.mostlyoriginal.api.component.graphics.*;
 import net.mostlyoriginal.api.component.mouse.MouseCursor;
 import net.mostlyoriginal.api.component.physics.Physics;
+import net.mostlyoriginal.api.component.script.Schedule;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.component.*;
+import net.mostlyoriginal.game.component.logic.RetryButton;
 import net.mostlyoriginal.game.util.Anims;
 
 /**
@@ -49,6 +50,24 @@ public class GameScreenSetupSystem extends PassiveSystem {
 		initCursor();
 		initBackground();
 		loadLevel(levelIndex);
+		initResetButton();
+	}
+
+	private void initResetButton() {
+		new EntityBuilder(world)
+				.with(new Tappable(), new RetryButton(), new Color())
+				.with(new Schedule().wait(2f).remove(Invisible.class).add(newColorAnimation(new Color(1f,1f,1f,0f), new Color(1f,1f,1f,1f),1f)), new Invisible())
+				.with(new Anim("button-restart"), new Bounds(0, 0, 24, 24), new Renderable(LAYER_OVERLAYS), new Pos(G.VIEPORT_WIDTH / G.ZOOM - 5 - 24, 5 + G.FOOTER_H)).build();
+	}
+
+
+	private ColorAnimation newColorAnimation(Color colorA, Color colorB, float speed) {
+		return new ColorAnimation(colorA, colorB, new InterpolationStrategy() {
+			@Override
+			public float apply(float v1, float v2, float a) {
+				return Interpolation.linear.apply(v1, v2, a);
+			}
+		}, speed, 1f / speed);
 	}
 
 	private void loadLevel(int levelIndex) {

@@ -27,4 +27,8 @@ public class GdxArtemisGame extends Game {
 	{
 		return instance;
 	}
+
+	public void retryLevel() {
+		setScreen(new LevelScreen(levelIndex));
+	}
 }
