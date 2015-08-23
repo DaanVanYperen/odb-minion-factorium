@@ -7,6 +7,7 @@ import com.artemis.World;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.IntBag;
 import net.mostlyoriginal.api.system.physics.CollisionSystem;
+import net.mostlyoriginal.game.component.Conveyer;
 import net.mostlyoriginal.game.component.Draggable;
 
 /**
@@ -19,7 +20,7 @@ public class GridOverlapHelperSystem extends EntitySystem {
 	private Entity flyweightEntity;
 
 	public GridOverlapHelperSystem() {
-		super(Aspect.all(Draggable.class));
+		super(Aspect.one(Draggable.class, Conveyer.class));
 	}
 
 	@Override
