@@ -28,6 +28,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	public static final int LAYER_CONVEYABLE = 1500;
 	public static final int LAYER_FACTORIES = 2000;
 	public static final int LAYER_OVERLAYS = 2500;
+	public static final int LAYER_DRAGGING = 2600;
 	GameScreenAssetSystem assetSystem;
 
 	M<Anim> mAnim;

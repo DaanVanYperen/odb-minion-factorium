@@ -19,6 +19,7 @@ import net.mostlyoriginal.api.system.core.DualEntityProcessingSystem;
 import net.mostlyoriginal.api.system.physics.CollisionSystem;
 import net.mostlyoriginal.game.component.Draggable;
 import net.mostlyoriginal.game.component.Dragging;
+import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
 
 /**
  * @author Daan van Yperen
@@ -88,7 +89,7 @@ public class DragStartSystem extends DualEntityProcessingSystem {
 
 		NO_ANGLE = new Angle(0);
 		new EntityBuilder(world)
-				.with(new Dragging(draggable), new Renderable(),
+				.with(new Dragging(draggable), new Renderable(GameScreenSetupSystem.LAYER_DRAGGING),
 						anim, pos, new Angle(mAngle.getSafe(draggable, NO_ANGLE).rotation), new Color(1f, 1f, 1f, 0.5f)
 				).build();
 	}
