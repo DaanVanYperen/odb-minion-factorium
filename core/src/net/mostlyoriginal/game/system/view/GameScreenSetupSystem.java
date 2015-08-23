@@ -165,8 +165,26 @@ public class GameScreenSetupSystem extends PassiveSystem {
 							if (id2 == '4') {
 								createPainter(cx, cy);
 							}
-							if (id2 == 'X') {
-								e = createSink(cx, cy,angle);
+							if (id2 == 'C') {
+								e = createSink(cx, cy,angle, Ingredient.Type.CHICK);
+							}
+							if (id2 == 'B') {
+								e = createSink(cx, cy,angle, Ingredient.Type.BUNNY);
+							}
+							if (id2 == 'G') {
+								e = createSink(cx, cy,angle, Ingredient.Type.GOOGLIE_EYE);
+							}
+							if (id2 == 'Y') {
+								e = createSink(cx, cy,angle, Ingredient.Type.BLIND_CHICK);
+							}
+							if (id2 == 'M') {
+								e = createSink(cx, cy,angle, Ingredient.Type.CHICKBUNNY);
+							}
+							if (id2 == 'G') {
+								e = createSink(cx, cy,angle, Ingredient.Type.GOOGLIE_EYE);
+							}
+							if (id2 == 'Z') {
+								e = createSink(cx, cy,angle, Ingredient.Type.MINION_ENLARGED);
 							}
 						}
 
@@ -244,8 +262,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 		//}
 	}
 
-	private Entity createSink(int x, int y, int angle) {
-		spawnPointer(x, y, angle-180, Ingredient.Type.BUNNY, true);
+	private Entity createSink(int x, int y, int angle, Ingredient.Type type) {
+		spawnPointer(x, y, angle-180, type, true);
 
 		return new EntityBuilder(world).with(
 				new Pos(x, y),
