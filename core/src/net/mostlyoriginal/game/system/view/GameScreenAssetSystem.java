@@ -69,7 +69,7 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 
 		add("particle-water", 80, 260, 8, 8, 1);
 
-		add("pointer", 80, 268, 12, 6, 1);
+		add("pointer", 80, 269, 14,10, 3).setFrameDuration(1/6f);
 		add("header",200, 60,160,20, 1);
 		add("footer",200,320,160,2, 1);
 

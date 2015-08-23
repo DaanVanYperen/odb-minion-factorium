@@ -258,8 +258,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 		vector2 = v2.set(0, -G.TILE_SIZE - 3).setAngle(i);
 
 		new EntityBuilder(world).with(
-				new Pos(x + 4 + vector2.x, y + 6  + vector2.y),
-				new Angle(i-90+(inverted?-180:0), 6, 4),
+				new Pos(x + 3 + vector2.x, y + 6  + vector2.y),
+				new Angle(i-90+(inverted?-180:0), 7, 5),
 				new Anim("pointer"),
 				new Color(1f,1f,1f,0.6f),
 				new Renderable(LAYER_CONVEYER + 1)
