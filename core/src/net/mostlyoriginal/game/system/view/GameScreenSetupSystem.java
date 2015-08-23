@@ -115,29 +115,18 @@ public class GameScreenSetupSystem extends PassiveSystem {
 							e = createBeltStraight(cx, cy, angle);
 						}
 						break;
-					case '1':
-						e = createBeltBend(cx, cy, 0);
-						break;
-					case '2':
-						e = createBeltBend(cx, cy, -90);
-						break;
-					case '3':
-						e = createBeltBend(cx, cy, -180);
-						break;
 					case '4':
-						e = createBeltBend(cx, cy, -270);
-						break;
-					case '5':
-						e = createBeltBendInverse(cx, cy, 0);
-						break;
-					case '6':
-						e = createBeltBendInverse(cx, cy, -90);
-						break;
-					case '7':
-						e = createBeltBendInverse(cx, cy, -180);
-						break;
-					case '8':
-						e = createBeltBendInverse(cx, cy, -270);
+						angle -= 90;
+					case '3':
+						angle -= 90;
+					case '2':
+						angle -= 90;
+					case '1':
+						if ( id2 == 'i' )
+						{
+							e = createBeltBendInverse(cx, cy, angle);
+						} else e = createBeltBend(cx, cy, angle);
+
 						break;
 					case 'S':
 						e = createSplicer(cx, cy);
