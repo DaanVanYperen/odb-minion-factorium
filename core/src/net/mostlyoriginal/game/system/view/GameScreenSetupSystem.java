@@ -145,6 +145,9 @@ public class GameScreenSetupSystem extends PassiveSystem {
 									createShowerX(cx, cy);
 								}
 							}
+							if (id2 == '3') {
+								createGouger(cx, cy);
+							}
 						}
 
 						break;
@@ -282,6 +285,16 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Renderable(LAYER_FACTORIES),
 				new Angle(-90f),
 				new Shower()).build();
+	}
+
+	private Entity createGouger(int x, int y) {
+		return new EntityBuilder(world).with(
+				new Pos(x-2, y-2),
+				new Bounds(0, 0, 20, 20),
+				new Anim("factory-gouger"),
+				new Renderable(LAYER_FACTORIES),
+				new Angle(0f),
+				new Gouger()).build();
 	}
 
 

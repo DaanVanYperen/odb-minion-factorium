@@ -75,6 +75,7 @@ public class LevelScreen extends WorldScreen {
 				new SplicerSystem(),
 				new CrusherSystem(),
 				new ShowerSystem(),
+				new GougerSystem(),
 
 				new SpawnProtectSystem(),
 				new DispenserSystem(),

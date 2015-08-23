@@ -35,6 +35,9 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 		add("ingredient-CHICK", 160, 20, 6, 6, 1);
 		add("ingredient-BUNNY", 160, 32, 6, 8, 1);
 		add("ingredient-CHICKBUNNY", 200, 31, 6, 9, 1);
+		add("ingredient-BLIND_CHICK", 167, 20, 6, 6, 1);
+		add("ingredient-BEAD_EYE", 179, 21, 1, 1, 1);
+		add("ingredient-GOOGLIE_EYE", 175, 20, 3, 3, 1);
 
 		add("factory-splicer", 20, 79, 25, 26, 2);
 
@@ -42,6 +45,7 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 
 		add("factory-crusher", 20, 120, 17, 23, 2).setFrameDuration(1 / 2f);
 		add("factory-shower", 20, 160, 10, 23, 5).setFrameDuration(1 / 4f);
+		add("factory-gouger", 20, 79, 25, 26, 2);
 
 		add("button-restart", 45, 300, 24, 24, 1);
 

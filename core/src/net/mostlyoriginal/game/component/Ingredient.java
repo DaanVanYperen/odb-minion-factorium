@@ -13,7 +13,7 @@ public class Ingredient extends Component {
 	}
 
 	public enum Type {
-		BUNNY, CHICK, CHICKBUNNY
+		BUNNY, CHICK, CHICKBUNNY, BEAD_EYE, GOOGLIE_EYE, BLIND_CHICK
 	}
 	public int count=1;
 }
