@@ -21,10 +21,7 @@ import net.mostlyoriginal.game.system.drag.DragStartSystem;
 import net.mostlyoriginal.game.system.drag.DraggableIndicatorSystem;
 import net.mostlyoriginal.game.system.drag.GridOverlapHelperSystem;
 import net.mostlyoriginal.game.system.drag.TileDropSystem;
-import net.mostlyoriginal.game.system.machine.ConveyerSystem;
-import net.mostlyoriginal.game.system.machine.DispenserSystem;
-import net.mostlyoriginal.game.system.machine.InventoryScoopSystem;
-import net.mostlyoriginal.game.system.machine.SplicerSystem;
+import net.mostlyoriginal.game.system.machine.*;
 import net.mostlyoriginal.game.system.tap.RotateSystem;
 import net.mostlyoriginal.game.system.tap.TapSystem;
 import net.mostlyoriginal.game.system.view.GameScreenAssetSystem;
@@ -71,7 +68,11 @@ public class LevelScreen extends WorldScreen {
 				new PhysicsSystem(),
 
 			    new InventoryScoopSystem(),
+
 				new SplicerSystem(),
+				new CrusherSystem(),
+				new ShowerSystem(),
+
 				new SpawnProtectSystem(),
 				new DispenserSystem(),
 

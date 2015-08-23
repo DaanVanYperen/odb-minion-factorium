@@ -229,9 +229,9 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Pos(x, y + 1),
 				new Bounds(0, 0, 20, 20),
 				new Anim("factory-crusher"),
-				new Inventory(),
 				new Renderable(LAYER_FACTORIES),
-				new Angle(0f)).build();
+				new Angle(0f),
+				new Crusher()).build();
 	}
 
 	private Entity createShowerY(int x, int y) {
@@ -239,9 +239,9 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Pos(x, y),
 				new Bounds(0, 0, 20, 20),
 				new Anim("factory-shower"),
-				new Inventory(),
 				new Renderable(LAYER_FACTORIES),
-				new Angle(0f)).build();
+				new Angle(0f),
+				new Shower()).build();
 	}
 
 
@@ -250,9 +250,9 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Pos(x+2, y),
 				new Bounds(0, 0, 20, 20),
 				new Anim("factory-crusher"),
-				new Inventory(),
 				new Renderable(LAYER_FACTORIES),
-				new Angle(-90f)).build();
+				new Angle(-90f),
+				new Crusher()).build();
 	}
 
 	private Entity createShowerX(int x, int y) {
@@ -260,9 +260,9 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Pos(x+6, y),
 				new Bounds(0, 0, 20, 20),
 				new Anim("factory-shower"),
-				new Inventory(),
 				new Renderable(LAYER_FACTORIES),
-				new Angle(-90f)).build();
+				new Angle(-90f),
+				new Shower()).build();
 	}
 
 
