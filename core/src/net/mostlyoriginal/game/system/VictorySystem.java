@@ -26,6 +26,7 @@ public class VictorySystem extends DualEntityProcessingSystem {
 	private StarSystem starSystem;
 	private float switchCooldown = 0;
 	private AbstractAssetSystem gameScreenAssetSystem;
+	private AbstractAssetSystem abstractAssetSystem;
 
 	public VictorySystem() {
 		super(Aspect.all(Level.class, Inventory.class),
@@ -61,6 +62,7 @@ public class VictorySystem extends DualEntityProcessingSystem {
 		if (recentlySinked && levelInventory.containsAtLeast(level.goals) ) {
 			// provide a little cooldown so user has time to submit above average.
 			switchCooldown = 2f;
+			abstractAssetSystem.playSfx("score");
 		}
 
 	}

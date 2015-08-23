@@ -14,6 +14,7 @@ import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.api.component.graphics.Color;
 import net.mostlyoriginal.api.component.graphics.Renderable;
 import net.mostlyoriginal.api.component.mouse.MouseCursor;
+import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.DualEntityProcessingSystem;
 import net.mostlyoriginal.api.system.physics.CollisionSystem;
@@ -37,6 +38,7 @@ public class DragStartSystem extends DualEntityProcessingSystem {
 	private boolean leftButtonDown;
 	private EntitySubscription currentlyDragged;
 	private Angle NO_ANGLE;
+	private AbstractAssetSystem abstractAssetSystem;
 
 	public DragStartSystem() {
 		super(Aspect.all(MouseCursor.class, Pos.class),
@@ -71,6 +73,7 @@ public class DragStartSystem extends DualEntityProcessingSystem {
 	protected void process(Entity mouse, Entity draggable) {
 		if (leftButtonDown && collisionSystem.overlaps(mouse, draggable)) {
 			createDraggingIndicator(draggable);
+			abstractAssetSystem.playSfx("drag");
 		}
 	}
 

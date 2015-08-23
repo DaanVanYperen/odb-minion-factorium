@@ -7,6 +7,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Gdx;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Color;
+import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.component.Dragging;
@@ -33,6 +34,7 @@ public class TileDropSystem extends EntityProcessingSystem {
 
 	TapSystem tapSystem;
 	private boolean isDragging;
+	private AbstractAssetSystem abstractAssetSystem;
 
 	public TileDropSystem() {
 		super(Aspect.all(Dragging.class, Pos.class));
@@ -68,6 +70,7 @@ public class TileDropSystem extends EntityProcessingSystem {
 
 			if ( !leftButtonDown ) {
 				if ( canDropHere(e) ) {
+					abstractAssetSystem.playSfx("drop");
 					actuallyMoveSubject(e);
 				}
 				e.deleteFromWorld();

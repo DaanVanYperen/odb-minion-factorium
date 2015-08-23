@@ -5,6 +5,7 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import net.mostlyoriginal.api.component.graphics.Anim;
+import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.game.component.Star;
 
@@ -18,6 +19,7 @@ public class StarSystem extends EntityProcessingSystem {
 
 	protected M<Star> mStar;
 	protected M<Anim> mAnim;
+	private AbstractAssetSystem abstractAssetSystem;
 
 	public StarSystem() {
 		super(Aspect.all(Anim.class, Star.class));
@@ -26,6 +28,7 @@ public class StarSystem extends EntityProcessingSystem {
 	public void setPoints(int points) {
 		if ( points != this.points ) {
 			this.points = points;
+			abstractAssetSystem.playSfx("woop");
 		}
 	}
 
