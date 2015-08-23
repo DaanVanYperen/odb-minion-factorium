@@ -134,6 +134,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 							e = createDispenser(cx, cy, angle, Ingredient.Type.BUNNY);
 						} else if (id2 == 'm') {
 							e = createDispenser(cx, cy, angle, Ingredient.Type.CHICKBUNNY);
+						} else if (id2 == 'g') {
+							e = createDispenser(cx, cy, angle, Ingredient.Type.GOOGLIE_EYE);
 						} else {
 							e = createBeltStraight(cx, cy, angle);
 							if (id2 == '1') {

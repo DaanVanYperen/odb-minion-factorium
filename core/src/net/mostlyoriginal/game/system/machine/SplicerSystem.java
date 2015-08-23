@@ -42,5 +42,15 @@ public class SplicerSystem extends IntervalEntityProcessingSystem  {
 
 			setupSystem.createIngredient(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE/2, Ingredient.Type.CHICKBUNNY);
 		}
+
+		if ( inventory.has(Ingredient.Type.MINION_PAINTED, 1) && inventory.has(Ingredient.Type.GOOGLIE_EYE, 1) )
+		{
+			final Pos pos = mPos.get(e);
+
+			inventory.dec(Ingredient.Type.CHICK, 1);
+			inventory.dec(Ingredient.Type.BUNNY, 1);
+
+			setupSystem.createIngredient(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE/2, Ingredient.Type.MINION_GOOGLED);
+		}
 	}
 }

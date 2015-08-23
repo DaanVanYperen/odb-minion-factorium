@@ -3,18 +3,10 @@ package net.mostlyoriginal.game.system.machine;
 import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
-import com.artemis.utils.EntityBuilder;
 import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
-import net.mostlyoriginal.api.component.graphics.*;
-import net.mostlyoriginal.api.component.physics.Physics;
-import net.mostlyoriginal.api.component.script.Schedule;
+import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.DualEntityProcessingSystem;
@@ -33,10 +25,14 @@ public class ShowerSystem extends DualEntityProcessingSystem {
 	protected M<Wet> mWet;
 	protected M<Drenched> mDrenched;
 	protected M<Anim> mAnim;
+	protected M<Pos> mPos;
 	protected M<SpawnProtected> mSpawnProtected;
 	protected AbstractAssetSystem abstractAssetSystem;
 	protected M<Sprinkle> mSprinkle;
 	protected M<Shower> mShower;
+
+	GameScreenSetupSystem setupSystem;
+	private M<Ingredient> mIngredient;
 
 	public ShowerSystem() {
 
@@ -46,7 +42,7 @@ public class ShowerSystem extends DualEntityProcessingSystem {
 
 	@Override
 	protected void process(Entity shower, Entity ingredient) {
-		if ( showerActive(shower) ) {
+		if (showerActive(shower)) {
 			mSprinkle.create(shower).liquid = mShower.get(shower).liquid;
 			if (ingredient.isActive() && collisionSystem.overlaps(shower, ingredient)) {
 				act(shower, ingredient);
@@ -62,8 +58,19 @@ public class ShowerSystem extends DualEntityProcessingSystem {
 	}
 
 	private void act(Entity showery, Entity ingredient) {
+		final ShowerLiquid liquid = mShower.get(showery).liquid;
+		switch (liquid) {
+			case PAINT:
+				if (mIngredient.get(ingredient).type == Ingredient.Type.CHICKBUNNY) {
+					// replace minion with correct type.
+					final Pos sourcePos = mPos.get(ingredient);
+					ingredient.deleteFromWorld();
+					ingredient = setupSystem.createIngredient(sourcePos.x + 3, sourcePos.y + 3, Ingredient.Type.MINION_PAINTED);
+					break;
+				}
+		}
 		mDrenched.create(ingredient);
-		mWet.create(ingredient).liquid = mShower.get(showery).liquid;
+		mWet.create(ingredient).liquid = liquid;
 		mSpawnProtected.create(ingredient);
 	}
 }

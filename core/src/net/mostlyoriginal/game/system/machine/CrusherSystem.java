@@ -12,10 +12,10 @@ import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.DualEntityProcessingSystem;
 import net.mostlyoriginal.api.system.physics.CollisionSystem;
 import net.mostlyoriginal.game.G;
-import net.mostlyoriginal.game.component.*;
+import net.mostlyoriginal.game.component.Crusher;
+import net.mostlyoriginal.game.component.Ingredient;
+import net.mostlyoriginal.game.component.SpawnProtected;
 import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
-
-import java.time.temporal.TemporalAmount;
 
 /**
  * @author Daan van Yperen
@@ -39,8 +39,7 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 
 	@Override
 	protected void process(Entity factory, Entity ingredient) {
-		if ( crusherActive(factory) && ingredient.isActive() && collisionSystem.overlaps(factory,ingredient))
-		{
+		if (crusherActive(factory) && ingredient.isActive() && collisionSystem.overlaps(factory, ingredient)) {
 			act(factory, ingredient);
 		}
 	}
@@ -55,22 +54,31 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 
 	private void act(Entity crusher, Entity ingredient) {
 
-		final Pos sourcePos = mPos.get(ingredient);
 		switch (mIngredient.get(ingredient).type) {
 			case GOOGLIE_EYE:
 				return;
-			case BEAD_EYE:
-				ingredient.deleteFromWorld();
-				final Pos pos = mPos.get(crusher);
-				ingredient = setupSystem.createIngredient(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.GOOGLIE_EYE);
-				final Pos newIngredient = mPos.get(ingredient);
-				newIngredient.x = sourcePos.x;
-				newIngredient.y = sourcePos.y;
+			case BEAD_EYE: {
+				replace(crusher, ingredient, Ingredient.Type.GOOGLIE_EYE);
 				break;
+			}
+			case MINION_GOOGLED: {
+				replace(crusher, ingredient, Ingredient.Type.MINION_ENLARGED);
+				break;
+			}
 			default:
 				ingredient.deleteFromWorld();
 				break;
 		}
 
+	}
+
+	private void replace(Entity crusher, Entity ingredient, Ingredient.Type type) {
+		final Pos sourcePos = mPos.get(ingredient);
+		ingredient.deleteFromWorld();
+		final Pos pos = mPos.get(crusher);
+		ingredient = setupSystem.createIngredient(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, type);
+		final Pos newIngredient = mPos.get(ingredient);
+		newIngredient.x = sourcePos.x;
+		newIngredient.y = sourcePos.y;
 	}
 }
