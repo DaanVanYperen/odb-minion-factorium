@@ -34,15 +34,12 @@ public class SplicerSystem extends IntervalEntityProcessingSystem  {
 	@Override
 	protected void process(Entity e) {
 
-		final Sprinkle sprinkle = mSprinkle.create(e);
-		sprinkle.liquid = ShowerLiquid.STEAM;
-		sprinkle.duration = 0.3f;
 
 		final Inventory inventory = mInventory.get(e);
 
 		if ( inventory.has(Ingredient.Type.CHICK, 1) && inventory.has(Ingredient.Type.BUNNY, 1) )
 		{
-			playSfx();
+			playSfx(e);
 			final Pos pos = mPos.get(e);
 
 			inventory.dec(Ingredient.Type.CHICK, 1);
@@ -53,7 +50,7 @@ public class SplicerSystem extends IntervalEntityProcessingSystem  {
 
 		if ( inventory.has(Ingredient.Type.MINION_PAINTED, 1) && inventory.has(Ingredient.Type.GOOGLIE_EYE, 1) )
 		{
-			playSfx();
+			playSfx(e);
 			final Pos pos = mPos.get(e);
 			inventory.dec(Ingredient.Type.MINION_PAINTED, 1);
 			inventory.dec(Ingredient.Type.GOOGLIE_EYE, 1);
@@ -62,7 +59,10 @@ public class SplicerSystem extends IntervalEntityProcessingSystem  {
 		}
 	}
 
-	private void playSfx() {
+	private void playSfx(Entity e) {
+		final Sprinkle sprinkle = mSprinkle.create(e);
+		sprinkle.liquid = ShowerLiquid.STEAM;
+		sprinkle.duration = 0.3f;
 		gameScreenAssetSystem.playSfx(MathUtils.randomBoolean() ? "factory-1" : "factory-2");
 		gameScreenAssetSystem.playSfx("hybrid-emerges");
 	}

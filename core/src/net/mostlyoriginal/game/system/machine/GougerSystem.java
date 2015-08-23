@@ -13,9 +13,7 @@ import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.DualEntityProcessingSystem;
 import net.mostlyoriginal.api.system.physics.CollisionSystem;
 import net.mostlyoriginal.game.G;
-import net.mostlyoriginal.game.component.Gouger;
-import net.mostlyoriginal.game.component.Ingredient;
-import net.mostlyoriginal.game.component.SpawnProtected;
+import net.mostlyoriginal.game.component.*;
 import net.mostlyoriginal.game.system.view.GameScreenAssetSystem;
 import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
 
@@ -33,6 +31,7 @@ public class GougerSystem extends DualEntityProcessingSystem {
 	protected M<Pos> mPos;
 	protected M<Physics> mPhysics;
 	protected M<Ingredient> mIngredient;
+	protected M<Sprinkle> mSprinkle;
 	protected AbstractAssetSystem abstractAssetSystem;
 	private GameScreenAssetSystem gameScreenAssetSystem;
 
@@ -46,6 +45,9 @@ public class GougerSystem extends DualEntityProcessingSystem {
 	protected void process(Entity gouger, Entity ingredient) {
 		if (ingredient.isActive() && collisionSystem.overlaps(gouger, ingredient)) {
 			act(gouger, ingredient);
+			final Sprinkle sprinkle = mSprinkle.create(gouger);
+			sprinkle.liquid = ShowerLiquid.STEAM;
+			sprinkle.duration = 0.3f;
 		}
 	}
 
