@@ -5,7 +5,7 @@ import com.artemis.Component;
 /**
  * @author Daan van Yperen
  */
-public class Wet extends Component {
-	public float cooldown;
-	public float duration = 2;
+public class Sprinkle extends Component {
+	public float cooldown = 0;
+	public float duration = 0.01f;
 }

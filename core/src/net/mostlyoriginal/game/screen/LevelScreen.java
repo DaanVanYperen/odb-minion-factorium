@@ -83,6 +83,7 @@ public class LevelScreen extends WorldScreen {
 				new RotateSystem(),
 				new GridOverlapHelperSystem(),
 
+				new WaterSystem(),
 				new ColorAnimationSystem(),
 
 				renderBatchingSystem = new RenderBatchingSystem(),
