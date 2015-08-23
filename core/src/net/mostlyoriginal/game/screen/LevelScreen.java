@@ -50,12 +50,12 @@ public class LevelScreen extends WorldScreen {
 			    .dependsOn(ExtendedComponentMapperPlugin.class)
 				.with(
 						// Replace with your own systems!
-						instanceDancingManSystems()
+						instanceGameSystems()
 				).build());
 	}
 
 	/** Just get a basic dancing man going! */
-	private BaseSystem[] instanceDancingManSystems() {
+	private BaseSystem[] instanceGameSystems() {
 		RenderBatchingSystem renderBatchingSystem;
 		return new BaseSystem[]{
 
