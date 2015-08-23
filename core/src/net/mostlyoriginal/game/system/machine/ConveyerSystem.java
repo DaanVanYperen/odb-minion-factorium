@@ -3,14 +3,18 @@ package net.mostlyoriginal.game.system.machine;
 import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
+import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.api.component.physics.Physics;
+import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.DualEntityProcessingSystem;
 import net.mostlyoriginal.api.system.physics.CollisionSystem;
+import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.component.Conveyable;
 import net.mostlyoriginal.game.component.Conveyer;
 
@@ -21,7 +25,9 @@ import net.mostlyoriginal.game.component.Conveyer;
 public class ConveyerSystem extends DualEntityProcessingSystem {
 
 	public static final int CONVEY_SPEED = 20;
+	public static final int SAFETY_BORDER_VELOCITY = 10;
 	public static final int CORRECTION_SPEED = 5;
+	public static final int SAFETY_BORDER_PIXELS = 8;
 	CollisionSystem collisionSystem;
 
 	public M<Pos> mPos;
@@ -29,6 +35,9 @@ public class ConveyerSystem extends DualEntityProcessingSystem {
 	public M<Conveyer> mConveyer;
 	public M<Bounds> mBounds;
 	public M<Physics> mPhysics;
+	protected M<Anim> mAnim;
+
+	AbstractAssetSystem assetSystem;
 
 	public ConveyerSystem() {
 		super(Aspect.all(Conveyer.class, Bounds.class, Pos.class),
@@ -37,8 +46,7 @@ public class ConveyerSystem extends DualEntityProcessingSystem {
 
 	@Override
 	protected void process(Entity belt, Entity conveyable) {
-		if ( collisionSystem.overlaps(belt,conveyable))
-		{
+		if (collisionSystem.overlaps(belt, conveyable)) {
 			convey(belt, conveyable);
 		}
 	}
@@ -51,8 +59,9 @@ public class ConveyerSystem extends DualEntityProcessingSystem {
 
 		// apply force along belt direction.
 
-		final float beltAngle = getAngle(belt);
-		vec.set(CONVEY_SPEED,0).setAngle(beltAngle);
+		float beltAngle = getAngle(belt);
+		vec.set(CONVEY_SPEED, 0).setAngle(beltAngle);
+
 /*		final Pos itemPos = mPos.get(item);
 		final Pos beltPos = mPos.get(belt);
 
@@ -70,6 +79,32 @@ public class ConveyerSystem extends DualEntityProcessingSystem {
 		final Physics physics = mPhysics.get(item);
 		physics.vx = vec.x;
 		physics.vy = vec.y;
+
+		gravitateItemsAwayFromEdge(item, belt);
+	}
+
+	private void gravitateItemsAwayFromEdge(Entity item, Entity belt) {
+		float beltAngle = getAngle(belt);
+		Physics physics = mPhysics.get(item);
+		final Pos pos = mPos.get(item);
+
+		final TextureRegion frame = assetSystem.get(mAnim.get(item).id).getKeyFrame(0);
+
+		final int x = (int) (pos.x + frame.getRegionWidth() / 2);
+		final int y = (int) (pos.y + frame.getRegionHeight() / 2 - G.FOOTER_H);
+
+		System.out.println(x + "," + y + " " + x % G.TILE_SIZE + "," + y % G.TILE_SIZE);
+
+		beltAngle = Math.abs(beltAngle);
+		if (beltAngle == 0 || beltAngle == 180) {
+			if (y % G.TILE_SIZE <= SAFETY_BORDER_PIXELS) physics.vy = SAFETY_BORDER_VELOCITY;
+			if (y % G.TILE_SIZE >= G.TILE_SIZE - SAFETY_BORDER_PIXELS) physics.vy = -SAFETY_BORDER_VELOCITY;
+		}
+
+		if (beltAngle == 90 || beltAngle == 270) {
+			if (x % G.TILE_SIZE <= SAFETY_BORDER_PIXELS) physics.vx = SAFETY_BORDER_VELOCITY;
+			if (x % G.TILE_SIZE >= G.TILE_SIZE - SAFETY_BORDER_PIXELS) physics.vx = -SAFETY_BORDER_VELOCITY;
+		}
 	}
 
 	private float getAngle(Entity belt) {
