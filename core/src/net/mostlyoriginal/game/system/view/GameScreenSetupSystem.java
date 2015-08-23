@@ -132,6 +132,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 							e = createDispenser(cx, cy, angle, Ingredient.Type.CHICK);
 						} else if (id2 == 'b') {
 							e = createDispenser(cx, cy, angle, Ingredient.Type.BUNNY);
+						} else if (id2 == 'm') {
+							e = createDispenser(cx, cy, angle, Ingredient.Type.CHICKBUNNY);
 						} else {
 							e = createBeltStraight(cx, cy, angle);
 							if (id2 == '1') {
@@ -150,6 +152,9 @@ public class GameScreenSetupSystem extends PassiveSystem {
 							}
 							if (id2 == '3') {
 								createGouger(cx, cy);
+							}
+							if (id2 == '4') {
+								createPainter(cx, cy);
 							}
 						}
 
@@ -290,6 +295,18 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Renderable(LAYER_FACTORIES),
 				new Angle(-90f),
 				new Shower()).build();
+	}
+
+	private Entity createPainter(int x, int y) {
+		final Shower shower = new Shower();
+		shower.liquid = ShowerLiquid.PAINT;
+		return new EntityBuilder(world).with(
+				new Pos(x, y),
+				new Bounds(0, 0, 20, 20),
+				new Anim("factory-shower"),
+				new Renderable(LAYER_FACTORIES),
+				new Angle(0f),
+				shower).build();
 	}
 
 	private Entity createGouger(int x, int y) {

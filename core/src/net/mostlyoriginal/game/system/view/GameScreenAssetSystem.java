@@ -38,6 +38,9 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 		add("ingredient-BLIND_CHICK", 167, 20, 6, 6, 1);
 		add("ingredient-BEAD_EYE", 179, 21, 1, 1, 1);
 		add("ingredient-GOOGLIE_EYE", 175, 20, 3, 3, 1);
+		add("ingredient-MINION_PAINTED", 215, 31, 6, 9, 1);
+		add("ingredient-MINION_GOOGLED", 207, 31, 7, 9, 1);
+		add("ingredient-MINION_ENLARGED", 222, 27, 8,12, 1);
 
 		add("factory-splicer", 20, 79, 25, 26, 2);
 

@@ -9,4 +9,5 @@ public class Wet extends Component {
 	public static final int DEFAULT_DURATION = 2;
 	public float cooldown;
 	public float duration = DEFAULT_DURATION;
+	public ShowerLiquid liquid = ShowerLiquid.WATER;
 }

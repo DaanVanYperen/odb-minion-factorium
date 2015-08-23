@@ -36,6 +36,7 @@ public class ShowerSystem extends DualEntityProcessingSystem {
 	protected M<SpawnProtected> mSpawnProtected;
 	protected AbstractAssetSystem abstractAssetSystem;
 	protected M<Sprinkle> mSprinkle;
+	protected M<Shower> mShower;
 
 	public ShowerSystem() {
 
@@ -46,7 +47,7 @@ public class ShowerSystem extends DualEntityProcessingSystem {
 	@Override
 	protected void process(Entity shower, Entity ingredient) {
 		if ( showerActive(shower) ) {
-			mSprinkle.create(shower);
+			mSprinkle.create(shower).liquid = mShower.get(shower).liquid;
 			if (ingredient.isActive() && collisionSystem.overlaps(shower, ingredient)) {
 				act(shower, ingredient);
 			}
@@ -62,7 +63,7 @@ public class ShowerSystem extends DualEntityProcessingSystem {
 
 	private void act(Entity showery, Entity ingredient) {
 		mDrenched.create(ingredient);
-		mWet.create(ingredient);
+		mWet.create(ingredient).liquid = mShower.get(showery).liquid;
 		mSpawnProtected.create(ingredient);
 	}
 }

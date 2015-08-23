@@ -5,7 +5,7 @@ import net.mostlyoriginal.game.screen.LevelScreen;
 
 public class GdxArtemisGame extends Game {
 
-	public static final int START_LEVEL = 4;
+	public static final int START_LEVEL = 5;
 	private static GdxArtemisGame instance;
 	private int levelIndex = START_LEVEL;
 
