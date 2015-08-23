@@ -49,7 +49,6 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 		initCursor();
 		initBackground();
-		levelIndex = 1;
 		loadLevel(levelIndex);
 	}
 

@@ -57,7 +57,6 @@ public class LevelScreen extends WorldScreen {
 	/** Just get a basic dancing man going! */
 	private BaseSystem[] instanceDancingManSystems() {
 		RenderBatchingSystem renderBatchingSystem;
-		levelIndex = 1;
 		return new BaseSystem[]{
 
 				new CameraSystem(G.ZOOM),
