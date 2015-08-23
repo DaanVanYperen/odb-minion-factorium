@@ -11,7 +11,7 @@ public class DesktopLauncher {
 		config.width = G.VIEPORT_WIDTH;
 		config.height = G.VIEPORT_HEIGHT;
 		config.resizable = false;
-		config.title = "Minion Factory";
+		config.title = "Minion Factorium";
 		new LwjglApplication(new GdxArtemisGame(), config);
 	}
 }

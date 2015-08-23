@@ -38,4 +38,12 @@ public class Inventory extends Component {
 		}
 		return true;
 	}
+
+	public int totalItems() {
+		int count=0;
+		for (int i = 0, s= Ingredient.Type.values().length; i < s; i++) {
+			count += items[i];
+		}
+		return count;
+	}
 }

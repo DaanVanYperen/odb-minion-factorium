@@ -19,6 +19,7 @@ import net.mostlyoriginal.api.system.script.SchedulerSystem;
 import net.mostlyoriginal.api.utils.builder.WorldConfigurationBuilder;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.system.SpawnProtectSystem;
+import net.mostlyoriginal.game.system.StarSystem;
 import net.mostlyoriginal.game.system.VictorySystem;
 import net.mostlyoriginal.game.system.drag.DragStartSystem;
 import net.mostlyoriginal.game.system.drag.DraggableIndicatorSystem;
@@ -95,6 +96,8 @@ public class LevelScreen extends WorldScreen {
 
 				new LiquidSystem(),
 				new ColorAnimationSystem(),
+
+				new StarSystem(),
 
 				renderBatchingSystem = new RenderBatchingSystem(),
 				new AnimRenderSystem(renderBatchingSystem),

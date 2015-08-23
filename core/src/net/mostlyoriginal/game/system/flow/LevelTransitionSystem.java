@@ -29,7 +29,6 @@ public class LevelTransitionSystem extends EntityProcessingSystem {
 	/** Transition to screen after delay in seconds. */
 	public void transition(float delay) {
 		new EntityBuilder(world).with(new Schedule().wait(delay).add(new Transition()));
-		gameScreenAssetSystem.playSfx("victory");
 	}
 
 	@Override

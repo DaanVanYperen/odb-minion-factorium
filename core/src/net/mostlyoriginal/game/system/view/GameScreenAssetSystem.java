@@ -66,5 +66,9 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 		add("pointer", 80, 268, 12, 6, 1);
 		add("header",200, 60,160,20, 1);
 		add("footer",200,320,160,2, 1);
+
+		add("star-0",173,60,11,11, 1);
+		add("star-1",186,60,11,11, 1);
+
 	}
 }

@@ -60,8 +60,17 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 		initCursor();
 		initBackground();
+		initStars();
 		loadLevel(levelIndex);
 		initResetButton();
+	}
+
+	private void initStars() {
+		for (int i = 0; i < 5; i++) {
+			new EntityBuilder(world).with(new Anim("star-0"),
+					new Star(i),
+					new Pos(G.VIEPORT_WIDTH/2 - 13*5 + i*13 - 2,G.VIEPORT_HEIGHT/2-11 - 2), new Renderable(LAYER_OVERLAYS+4));
+		}
 	}
 
 	private void initResetButton() {
