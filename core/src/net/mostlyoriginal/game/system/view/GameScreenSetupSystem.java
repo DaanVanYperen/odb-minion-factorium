@@ -40,15 +40,18 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	M<Anim> mAnim;
 
 
+
+
 	@Override
 	protected void initialize() {
 
 		initCursor();
 		initBackground();
+		loadLevel(1);
+	}
 
-		final Json json = new Json();
-		final Level level = json.fromJson(Level.class, Gdx.files.internal("level/level1.json"));
-		System.out.println(json.prettyPrint(level));
+	private void loadLevel(int levelIndex) {
+		final Level level = new Json().fromJson(Level.class, Gdx.files.internal("level/level"+levelIndex+".json"));
 		initMap(level);
 	}
 
