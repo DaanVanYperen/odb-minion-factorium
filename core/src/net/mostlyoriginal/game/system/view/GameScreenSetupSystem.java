@@ -221,7 +221,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	public Entity createIngredient(float x, float y, Ingredient.Type type) {
 		return new EntityBuilder(world).with(
 				new Pos(x - 3, y - 3),
-				new Bounds(0, 0, 5, 5),
+				new Bounds(0, 0, 3, 3),
 				new Anim("ingredient-" + type.name()),
 				new Ingredient(type),
 				new Renderable(LAYER_CONVEYABLE),
@@ -253,7 +253,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	private Entity createCrusherY(int x, int y) {
 		return new EntityBuilder(world).with(
 				new Pos(x, y + 1),
-				new Bounds(0, 0, 20, 20),
+				new Bounds(5, 0, 15, 20),
 				new Anim("factory-crusher"),
 				new Renderable(LAYER_FACTORIES),
 				new Angle(0f),
@@ -274,7 +274,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	private Entity createCrusherX(int x, int y) {
 		return new EntityBuilder(world).with(
 				new Pos(x+2, y),
-				new Bounds(0, 0, 20, 20),
+				new Bounds(0, 5, 20, 15),
 				new Anim("factory-crusher"),
 				new Renderable(LAYER_FACTORIES),
 				new Angle(-90f),
