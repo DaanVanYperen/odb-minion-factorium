@@ -4,6 +4,8 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.EntityBuilder;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -15,12 +17,15 @@ import net.mostlyoriginal.api.component.graphics.*;
 import net.mostlyoriginal.api.component.mouse.MouseCursor;
 import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.component.script.Schedule;
+import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.component.*;
 import net.mostlyoriginal.game.component.logic.RetryButton;
 import net.mostlyoriginal.game.util.Anims;
+
+import java.time.temporal.TemporalAmount;
 
 /**
  * @author Daan van Yperen
@@ -38,6 +43,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	GameScreenAssetSystem assetSystem;
 
 	protected M<Physics> mPhysics;
+	private Vector2 vector2;
+	private AbstractAssetSystem abstractAssetSystem;
 
 	public GameScreenSetupSystem(int levelIndex) {
 		this.levelIndex = levelIndex;
@@ -158,6 +165,9 @@ public class GameScreenSetupSystem extends PassiveSystem {
 							if (id2 == '4') {
 								createPainter(cx, cy);
 							}
+							if (id2 == 'X') {
+								e = createSink(cx, cy,angle);
+							}
 						}
 
 						break;
@@ -175,9 +185,6 @@ public class GameScreenSetupSystem extends PassiveSystem {
 						break;
 					case 'S' :
 						e = createSplicer(cx, cy);
-						break;
-					case 'X' :
-						e = createSink(cx, cy);
 						break;
 				}
 
@@ -199,6 +206,9 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	}
 
 	private Entity createDispenser(int x, int y, int angle, Ingredient.Type type) {
+
+		spawnPointer(x, y, angle, type, false);
+
 		return new EntityBuilder(world).with(
 				new Pos(x, y),
 				new Bounds(2, 2, 18, 18),
@@ -207,7 +217,36 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Dispenser(type)).build();
 	}
 
-	private Entity createSink(int x, int y) {
+	private void spawnPointer(int x, int y, int angle, Ingredient.Type type, boolean inverted) {
+		int i =angle+90;
+		vector2 = v2.set(0, -G.TILE_SIZE - 3).setAngle(i);
+
+		new EntityBuilder(world).with(
+				new Pos(x + 4 + vector2.x, y + 6  + vector2.y),
+				new Angle(i-90+(inverted?-180:0), 6, 4),
+				new Anim("pointer"),
+				new Color(1f,1f,1f,0.6f),
+				new Renderable(LAYER_CONVEYER + 1)
+		).build();
+
+//		for (i =0; i>-360; i--) {
+			vector2 = v2.set(0, -G.TILE_SIZE + 4).setAngle(i);
+
+		final String id = "ingredient-" + type.name();
+		final Animation animation = abstractAssetSystem.get(id);
+		final TextureRegion region = animation.getKeyFrames()[0];
+		new EntityBuilder(world).with(
+					new Pos(x + vector2.x + 10 - region.getRegionWidth()/2, y + 10 + vector2.y - region.getRegionHeight()/2),
+					new Color(1f, 1f, 1f, 0.8f),
+					new Anim(id),
+					new Renderable(LAYER_CONVEYER + 2)
+			).build();
+		//}
+	}
+
+	private Entity createSink(int x, int y, int angle) {
+		spawnPointer(x, y, angle-180, Ingredient.Type.BUNNY, true);
+
 		return new EntityBuilder(world).with(
 				new Pos(x, y),
 				new Bounds(2, 2, 16, 16),

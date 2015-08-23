@@ -61,5 +61,7 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 		add("button-restart", 45, 300, 24, 24, 1);
 
 		add("particle-water", 80, 260, 8, 8, 1);
+
+		add("pointer", 80, 268, 12, 6, 1);
 	}
 }
