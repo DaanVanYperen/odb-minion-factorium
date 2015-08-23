@@ -34,6 +34,8 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 	private AbstractAssetSystem abstractAssetSystem;
 	protected M<SpawnProtected> mSpawnProtected;
 	protected M<Wet> mWet;
+	protected M<Sprinkle> mSprinkle;
+	protected M<Crusher> mCrusher;
 
 	public CrusherSystem() {
 
@@ -43,9 +45,21 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 
 	@Override
 	protected void process(Entity factory, Entity ingredient) {
-		if (crusherActive(factory) && ingredient.isActive() && collisionSystem.overlaps(factory, ingredient)) {
-			act(factory, ingredient);
-		}
+		final Crusher crusher = mCrusher.get(factory);
+		if (crusherActive(factory)) {
+			if ( !crusher.down )
+			{
+				final Sprinkle sprinkle = mSprinkle.create(factory);
+				sprinkle.liquid = ShowerLiquid.DUST;
+				sprinkle.duration = 0.125f;
+				crusher.down = true;
+			}
+
+			if (ingredient.isActive() && collisionSystem.overlaps(factory, ingredient)) {
+				act(factory, ingredient);
+
+			}
+		} else crusher.down =false;
 	}
 
 	private boolean crusherActive(Entity crusher) {

@@ -6,4 +6,5 @@ import com.artemis.Component;
  * @author Daan van Yperen
  */
 public class Crusher extends Component {
+	public boolean down=false;
 }
