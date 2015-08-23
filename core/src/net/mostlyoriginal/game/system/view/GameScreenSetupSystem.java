@@ -4,6 +4,7 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.EntityBuilder;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Json;
 import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
@@ -15,6 +16,7 @@ import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.G;
+import net.mostlyoriginal.game.Level;
 import net.mostlyoriginal.game.Sink;
 import net.mostlyoriginal.game.component.*;
 import net.mostlyoriginal.game.util.Anims;
@@ -41,7 +43,10 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 		initCursor();
 		initBackground();
-		initMap(map1);
+
+		final Level level = new Level();
+		System.out.println((new Json()).toJson(level));
+		initMap(level);
 	}
 
 	private void initCursor() {
@@ -62,80 +67,83 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	 * Produce Receiver = 25
 	 */
 
-	private static int[][] map1 = new int[][]{
-			{0, 0, 0, 0,25, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-			{11, 2, 2, 2, 9, 4, 4, 4, 4, 17},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{ 0,18, 4,19, 0, 0, 5, 2, 6, 0},
-			{ 0, 3, 0, 1, 0, 0, 1, 0, 3, 0},
-			{ 0,21, 2,20, 0, 0, 8, 4, 7, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-			{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-	};
 
-	private void initMap(int[][] map) {
+	private void initMap(Level level) {
 
 		// slightly offset so we can have out of bounds parts.
 		for (int x = -1; x < G.TILES_W + 1; x++) {
 			for (int y = -1; y < G.TILES_H + 1; y++) {
 				int cx = (x) * G.TILE_SIZE;
 				int cy = (y) * G.TILE_SIZE + G.FOOTER_H;
-				final int id = map[G.TILES_H - y][x + 1];
+				final char id = level.structure[(G.TILES_H - y)*2].charAt(x + 1);
+				final char id2 = level.structure[(G.TILES_H - y)*2+1].charAt(x + 1);
 
 				Entity e = null;
+				int angle=0;
 				switch (id) {
-					case 0:
-						;
+					case '.':
 						break;
-					case 1:
-					case 2:
-					case 3:
-					case 4:
-						e = createBeltStraight(cx, cy, -90 * (id - 1));
+					case '<':
+						angle -= 90;
+					case 'v':
+						angle -= 90;
+					case '>':
+						angle -= 90;
+					case '^':
+						if ( id2 == 'c') {
+							e = createDispenser(cx, cy, angle, Ingredient.Type.CHICK, 999);
+						} else if ( id2 == 'b') {
+								e = createDispenser(cx, cy, angle, Ingredient.Type.BUNNY, 999);
+						} else {
+							e = createBeltStraight(cx, cy, angle);
+						}
 						break;
-					case 5:
-					case 6:
-					case 7:
-					case 8:
-						e = createBeltBend(cx, cy, -90 * (id - 5));
+					case '1':
+						e = createBeltBend(cx, cy, 0);
 						break;
-					case 9:
+					case '2':
+						e = createBeltBend(cx, cy, -90);
+						break;
+					case '3':
+						e = createBeltBend(cx, cy, -180);
+						break;
+					case '4':
+						e = createBeltBend(cx, cy, -270);
+						break;
+					case '5':
+						e = createBeltBendInverse(cx, cy, 0);
+						break;
+					case '6':
+						e = createBeltBendInverse(cx, cy, -90);
+						break;
+					case '7':
+						e = createBeltBendInverse(cx, cy, -180);
+						break;
+					case '8':
+						e = createBeltBendInverse(cx, cy, -270);
+						break;
+					case 'S':
 						e = createSplicer(cx, cy);
 						break;
-					case 10:
-					case 11:
-					case 12:
-					case 13:
-						e = createDispenser(cx, cy, -90 * (id - 10), Ingredient.Type.CHICK, 999);
-						break;
-					case 14:
-					case 15:
-					case 16:
-					case 17:
-						e = createDispenser(cx, cy, -90 * (id - 14), Ingredient.Type.BUNNY, 999);
-						break;
-					case 18:
-					case 19:
-					case 20:
-					case 21:
-						e = createBeltBendInverse(cx, cy, -90 * (id - 18));
-						break;
-					case 25:
+					case 'X':
 						e = createSink(cx, cy);
 						break;
 				}
 
-				if ( e != null ) {
-					e.edit().add(new Draggable()).add(new Tappable()).add(new Rotatable());
+				switch (id2) {
+					case 'd':
+						if (e != null) {
+							makeDraggable(e);
+						}
+						break;
 				}
+
 			}
 		}
+	}
+
+	private void makeDraggable(Entity e) {
+		e.edit().add(new Draggable()).add(new Tappable()).add(new Rotatable());
 	}
 
 	private Entity createDispenser(int x, int y, int angle, Ingredient.Type type, int count) {
@@ -151,7 +159,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	private Entity createSink(int x, int y) {
 		return new EntityBuilder(world).with(
 				new Pos(x, y),
-				new Bounds(2, 2,16,16),
+				new Bounds(2, 2, 16, 16),
 				new Inventory(),
 				new Autopickup(),
 				new Sink()).build();
@@ -225,12 +233,12 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	}
 
 	private void createBackground(int x, int y, String id) {
-		final float c = MathUtils.sin(x+y)*0.025f + 0.975f;
+		final float c = MathUtils.sin(x + y) * 0.025f + 0.975f;
 		Anims.createAnimAt(world,
 				x,
 				y,
 				id,
-				1).edit().add(new Color(c,c,c,1f));
+				1).edit().add(new Color(c, c, c, 1f));
 	}
 
 }
