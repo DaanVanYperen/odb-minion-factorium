@@ -161,7 +161,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 					case '2' :
 						angle -= 90;
 					case '1' :
-						if (id2 == 'i') {
+						if (id2 == 'i' || id2 == 'I') {
 							e = createBeltBendInverse(cx, cy, angle);
 						} else e = createBeltBend(cx, cy, angle);
 
@@ -176,6 +176,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 				switch (id2) {
 					case 'd' :
+					case 'I' :
 						if (e != null) {
 							makeDraggable(e);
 						}
