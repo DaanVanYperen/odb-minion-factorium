@@ -59,7 +59,9 @@ public class GameScreen extends WorldScreen {
 				new DispenserSystem(),
 
 				new TapSystem(),
-				new DraggableSystem(),
+				new DraggableIndicatorSystem(),
+				new DragStartSystem(),
+				new TileDropSystem(),
 				new RotateSystem(),
 
 				new ColorAnimationSystem(),

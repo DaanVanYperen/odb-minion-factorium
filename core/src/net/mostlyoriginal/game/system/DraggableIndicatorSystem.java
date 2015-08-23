@@ -13,15 +13,17 @@ import net.mostlyoriginal.game.component.Draggable;
 import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
 
 /**
+ * Manages and updates draggable indicators.
+ *
  * @author Daan van Yperen
  */
 @Wire
-public class DraggableSystem extends EntityProcessingSystem {
+public class DraggableIndicatorSystem extends EntityProcessingSystem {
 
 	protected M<Draggable> mDraggable;
 	protected M<Pos> mPos;
 
-	public DraggableSystem() {
+	public DraggableIndicatorSystem() {
 		super(Aspect.all(Draggable.class));
 	}
 
