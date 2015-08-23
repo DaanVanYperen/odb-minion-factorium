@@ -49,6 +49,7 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 		add("ingredient-MINION_PAINTED", 215, 31, 6, 9, 1);
 		add("ingredient-MINION_GOOGLED", 207, 31, 7, 9, 1);
 		add("ingredient-MINION_ENLARGED", 222, 27, 8, 12, 1);
+		add("ingredient-BLOOD", 119, 30, 10, 8, 1);
 
 		add("factory-splicer", 20, 79, 25, 26, 2);
 

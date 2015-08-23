@@ -23,13 +23,13 @@ import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
  * @author Daan van Yperen
  */
 @Wire
-public class WaterSystem extends EntityProcessingSystem {
+public class LiquidSystem extends EntityProcessingSystem {
 
 	protected M<Pos> mPos;
 	protected M<Wet> mWet;
 	protected M<Sprinkle> mSprinkle;
 
-	public WaterSystem() {
+	public LiquidSystem() {
 		super(Aspect.all(Pos.class).one(Sprinkle.class, Wet.class));
 	}
 
@@ -82,6 +82,10 @@ public class WaterSystem extends EntityProcessingSystem {
 		final Color colorB;
 
 		switch (liquid) {
+			case BLOOD:
+				colorA = new Color(1f, 0f, 0f, MathUtils.random(0.8f, 0.9f));
+				colorB = new Color(1f, 0f, 0f, 0.9f);
+				break;
 			case PAINT:
 				if (MathUtils.random(0, 100) < 5 || drip) {
 					colorA = new Color(0.5f, 0.9f, 0.5f, MathUtils.random(0.75f, 0.9f));

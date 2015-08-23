@@ -5,6 +5,7 @@ import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.math.MathUtils;
+import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
@@ -13,10 +14,9 @@ import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.DualEntityProcessingSystem;
 import net.mostlyoriginal.api.system.physics.CollisionSystem;
 import net.mostlyoriginal.game.G;
-import net.mostlyoriginal.game.component.Crusher;
-import net.mostlyoriginal.game.component.Ingredient;
-import net.mostlyoriginal.game.component.SpawnProtected;
+import net.mostlyoriginal.game.component.*;
 import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
+import sun.rmi.server.InactiveGroupException;
 
 /**
  * @author Daan van Yperen
@@ -30,8 +30,10 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 	private GameScreenSetupSystem setupSystem;
 	private M<Pos> mPos;
 	protected M<Anim> mAnim;
+	protected M<Angle> mAngle;
 	private AbstractAssetSystem abstractAssetSystem;
-	private AbstractAssetSystem gameScreenAssetSystem;
+	protected M<SpawnProtected> mSpawnProtected;
+	protected M<Wet> mWet;
 
 	public CrusherSystem() {
 
@@ -56,7 +58,7 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 
 	private void act(Entity crusher, Entity ingredient) {
 
-		gameScreenAssetSystem.playSfx("stamper");
+		abstractAssetSystem.playSfx("stamper");
 		switch (mIngredient.get(ingredient).type) {
 			case GOOGLIE_EYE:
 				return;
@@ -69,13 +71,14 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 				break;
 			}
 			default:
-				ingredient.deleteFromWorld();
+				ingredient = replace(crusher, ingredient, Ingredient.Type.BLOOD);
+				//ingredient.deleteFromWorld();
 				break;
 		}
 
 	}
 
-	private void replace(Entity crusher, Entity ingredient, Ingredient.Type type) {
+	private Entity replace(Entity crusher, Entity ingredient, Ingredient.Type type) {
 		final Pos sourcePos = mPos.get(ingredient);
 		ingredient.deleteFromWorld();
 		final Pos pos = mPos.get(crusher);
@@ -84,6 +87,15 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 		newIngredient.x = sourcePos.x;
 		newIngredient.y = sourcePos.y;
 
-		gameScreenAssetSystem.playSfx("flatten-eye");
+
+		if ( type == Ingredient.Type.BLOOD) {
+			mSpawnProtected.create(ingredient);
+			mAngle.create(ingredient).rotation = MathUtils.random(0,360f);
+			mWet.create(ingredient).liquid = ShowerLiquid.BLOOD;
+			abstractAssetSystem.playSfx("chick-squeek");
+		} else {
+			abstractAssetSystem.playSfx("flatten-eye");
+		}
+		return ingredient;
 	}
 }

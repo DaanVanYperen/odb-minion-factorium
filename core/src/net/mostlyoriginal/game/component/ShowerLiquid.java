@@ -5,5 +5,6 @@ package net.mostlyoriginal.game.component;
  */
 public enum ShowerLiquid {
 	PAINT,
-	WATER;
+	WATER,
+	BLOOD;
 }
