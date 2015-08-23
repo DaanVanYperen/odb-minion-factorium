@@ -1,6 +1,5 @@
 {
-  "height": 14,
-  "width": 10,
+  "name": "Untitled",
   "structure": [
     "..........",
     "          ",
@@ -31,6 +30,9 @@
     "..........",
     "          "
   ],
+  "input": {
+    "items": [ 0, 0, 0 ]
+  },
   "goals": {
     "items": [ 0, 0, 0 ]
   }

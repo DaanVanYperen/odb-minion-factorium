@@ -8,6 +8,7 @@ import java.io.Serializable;
  * @author Daan van Yperen
  */
 public class Level extends Component {
+	public String name;
 	public int height;
 	public int width;
 	public String[] structure;
