@@ -24,4 +24,18 @@ public class Inventory extends Component {
 		items[index] += count;
 		return this;
 	}
+
+	public void emptyInto(Inventory target) {
+		for (int i = 0, s= Ingredient.Type.values().length; i < s; i++) {
+			target.items[i] += items[i];
+			items[i] = 0;
+		}
+	}
+
+	public boolean containsAtLeast(Inventory goals) {
+		for (int i = 0, s= Ingredient.Type.values().length; i < s; i++) {
+			if (items[i] < goals.items[i]) return false;
+		}
+		return true;
+	}
 }

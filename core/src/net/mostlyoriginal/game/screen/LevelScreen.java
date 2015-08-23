@@ -13,6 +13,7 @@ import net.mostlyoriginal.api.system.physics.CollisionSystem;
 import net.mostlyoriginal.api.system.physics.PhysicsSystem;
 import net.mostlyoriginal.api.system.render.AnimRenderSystem;
 import net.mostlyoriginal.api.system.render.ClearScreenSystem;
+import net.mostlyoriginal.api.system.script.SchedulerSystem;
 import net.mostlyoriginal.api.utils.builder.WorldConfigurationBuilder;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.system.*;
@@ -87,7 +88,9 @@ public class LevelScreen extends WorldScreen {
 				renderBatchingSystem = new RenderBatchingSystem(),
 				new AnimRenderSystem(renderBatchingSystem),
 
+				new SchedulerSystem(),
 				new LevelTransitionSystem(),
+				new VictorySystem(),
 		};
 	}
 }

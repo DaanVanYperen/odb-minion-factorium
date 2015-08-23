@@ -6,7 +6,6 @@ import com.artemis.utils.EntityBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonWriter;
 import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
@@ -18,8 +17,8 @@ import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.G;
-import net.mostlyoriginal.game.Level;
-import net.mostlyoriginal.game.Sink;
+import net.mostlyoriginal.game.component.Level;
+import net.mostlyoriginal.game.component.Sink;
 import net.mostlyoriginal.game.component.*;
 import net.mostlyoriginal.game.util.Anims;
 
@@ -55,7 +54,16 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	}
 
 	private void loadLevel(int levelIndex) {
-		final Level level = new Json().fromJson(Level.class, Gdx.files.internal("level/level"+levelIndex+".json"));
+
+		//final Json json = new Json();
+		//json.setUsePrototypes(false);
+		//System.out.println(json.prettyPrint(new Level()));
+
+		final Level level = new Json().fromJson(Level.class, Gdx.files.internal("level/level" + levelIndex + ".json"));
+
+		// spawn as entity so we can use it to track progress towards goal.
+		new EntityBuilder(world).with(level, new Inventory()).build();
+
 		initMap(level);
 	}
 
