@@ -130,6 +130,8 @@ public class LiquidSystem extends EntityProcessingSystem {
 		if ( liquid == ShowerLiquid.STEAM )
 		{
 			v.y = 5;
+			x+= 10;
+			y+= 5+MathUtils.random(13);
 		}
 
 		if ( liquid == ShowerLiquid.DUST )
