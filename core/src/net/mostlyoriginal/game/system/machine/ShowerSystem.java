@@ -70,6 +70,14 @@ public class ShowerSystem extends DualEntityProcessingSystem {
 					break;
 				}
 		}
+
+		// wash away blood.
+		if ( mIngredient.get(ingredient).type == Ingredient.Type.BLOOD )
+		{
+			ingredient.deleteFromWorld();
+			return;
+		}
+
 		mDrenched.create(ingredient);
 		mWet.create(ingredient).liquid = liquid;
 		mSpawnProtected.create(ingredient);
