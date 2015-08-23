@@ -8,5 +8,5 @@ import com.artemis.Component;
  * @author Daan van Yperen
  */
 public class SpawnProtected extends Component {
-	public float cooldown = 1f;
+	public float cooldown = 2f;
 }

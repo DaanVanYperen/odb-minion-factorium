@@ -6,6 +6,7 @@ import com.artemis.utils.EntityBuilder;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
 import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
@@ -35,6 +36,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	public static final int LAYER_OVERLAYS = 2500;
 	public static final int LAYER_DRAGGING = 2600;
 	GameScreenAssetSystem assetSystem;
+
+	protected M<Physics> mPhysics;
 
 	public GameScreenSetupSystem(int levelIndex) {
 		this.levelIndex = levelIndex;
@@ -222,6 +225,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				new Anim("ingredient-" + type.name()),
 				new Ingredient(type),
 				new Renderable(LAYER_CONVEYABLE),
+				new Conveyable(),
 				new SpawnProtected(),
 				new Physics()).build();
 	}
@@ -333,4 +337,19 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				1).edit().add(new Color(c, c, c, 1f));
 	}
 
+	Vector2 v2 = new Vector2();
+
+	public Entity createIngredientEject(float x, float y, Ingredient.Type type, float angle) {
+		final Entity ingredient = createIngredient(x, y, type);
+
+		ingredient.edit().remove(Conveyable.class).add(new Schedule().wait(2f).add(new Conveyable()));
+
+		final Physics physics = mPhysics.get(ingredient);
+
+		v2.set(50,0).setAngle(-angle+90);
+		physics.vx = v2.x;
+		physics.vy = v2.y;
+
+		return ingredient;
+	}
 }

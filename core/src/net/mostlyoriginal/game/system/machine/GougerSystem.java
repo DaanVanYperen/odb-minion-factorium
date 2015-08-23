@@ -6,6 +6,7 @@ import com.artemis.annotations.Wire;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
+import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.DualEntityProcessingSystem;
@@ -28,6 +29,7 @@ public class GougerSystem extends DualEntityProcessingSystem {
 
 	protected M<Anim> mAnim;
 	protected M<Pos> mPos;
+	protected M<Physics> mPhysics;
 	protected M<Ingredient> mIngredient;
 	protected AbstractAssetSystem abstractAssetSystem;
 
@@ -50,8 +52,8 @@ public class GougerSystem extends DualEntityProcessingSystem {
 		switch (mIngredient.get(ingredient).type) {
 			case CHICK:
 				final Pos pos = mPos.get(gouger);
-				setupSystem.createIngredient(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.BEAD_EYE);
-				setupSystem.createIngredient(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.BLIND_CHICK);
+				setupSystem.createIngredientEject(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.BEAD_EYE, 0f);
+				setupSystem.createIngredientEject(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.BLIND_CHICK, -90f);
 				break;
 		}
 	}

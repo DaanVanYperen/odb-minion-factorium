@@ -11,6 +11,7 @@ import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.DualEntityProcessingSystem;
 import net.mostlyoriginal.api.system.physics.CollisionSystem;
+import net.mostlyoriginal.game.component.Conveyable;
 import net.mostlyoriginal.game.component.Conveyer;
 
 /**
@@ -31,7 +32,7 @@ public class ConveyerSystem extends DualEntityProcessingSystem {
 
 	public ConveyerSystem() {
 		super(Aspect.all(Conveyer.class, Bounds.class, Pos.class),
-				Aspect.all(Physics.class, Bounds.class, Pos.class));
+				Aspect.all(Physics.class, Bounds.class, Pos.class, Conveyable.class));
 	}
 
 	@Override
