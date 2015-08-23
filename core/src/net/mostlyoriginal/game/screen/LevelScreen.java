@@ -18,6 +18,7 @@ import net.mostlyoriginal.api.system.render.LabelRenderSystem;
 import net.mostlyoriginal.api.system.script.SchedulerSystem;
 import net.mostlyoriginal.api.utils.builder.WorldConfigurationBuilder;
 import net.mostlyoriginal.game.G;
+import net.mostlyoriginal.game.system.ConveyableExpirationSystem;
 import net.mostlyoriginal.game.system.SpawnProtectSystem;
 import net.mostlyoriginal.game.system.StarSystem;
 import net.mostlyoriginal.game.system.VictorySystem;
@@ -75,6 +76,7 @@ public class LevelScreen extends WorldScreen {
 				new MouseCursorSystem(),
 				new CollisionSystem(),
 				new ConveyerSystem(),
+				new ConveyableExpirationSystem(),
 				new PhysicsSystem(),
 
 				new InventoryScoopSystem(),

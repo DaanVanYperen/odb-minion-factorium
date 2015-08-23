@@ -63,26 +63,27 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 			case GOOGLIE_EYE:
 				return;
 			case BEAD_EYE: {
-				replace(crusher, ingredient, Ingredient.Type.GOOGLIE_EYE);
+				replace(ingredient, Ingredient.Type.GOOGLIE_EYE);
 				break;
 			}
 			case MINION_GOOGLED: {
-				replace(crusher, ingredient, Ingredient.Type.MINION_ENLARGED);
+				replace(ingredient, Ingredient.Type.MINION_ENLARGED);
 				break;
 			}
 			default:
-				ingredient = replace(crusher, ingredient, Ingredient.Type.BLOOD);
+				ingredient = replace(ingredient, Ingredient.Type.BLOOD);
 				//ingredient.deleteFromWorld();
 				break;
 		}
 
 	}
 
-	private Entity replace(Entity crusher, Entity ingredient, Ingredient.Type type) {
+	public Entity replace( Entity ingredient, Ingredient.Type type) {
+
 		final Pos sourcePos = mPos.get(ingredient);
 		ingredient.deleteFromWorld();
-		final Pos pos = mPos.get(crusher);
-		ingredient = setupSystem.createIngredient(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, type);
+
+		ingredient = setupSystem.createIngredient(0,0, type);
 		final Pos newIngredient = mPos.get(ingredient);
 		newIngredient.x = sourcePos.x;
 		newIngredient.y = sourcePos.y;

@@ -36,6 +36,7 @@ public class ConveyerSystem extends DualEntityProcessingSystem {
 	public M<Bounds> mBounds;
 	public M<Physics> mPhysics;
 	protected M<Anim> mAnim;
+	protected M<Conveyable> mConveyable;
 
 	AbstractAssetSystem assetSystem;
 
@@ -58,6 +59,7 @@ public class ConveyerSystem extends DualEntityProcessingSystem {
 	private void convey(Entity belt, Entity item) {
 
 		// apply force along belt direction.
+		mConveyable.get(item).touchedAgo = 0;
 
 		float beltAngle = getAngle(belt);
 		vec.set(CONVEY_SPEED, 0).setAngle(beltAngle);
@@ -92,8 +94,6 @@ public class ConveyerSystem extends DualEntityProcessingSystem {
 
 		final int x = (int) (pos.x + frame.getRegionWidth() / 2);
 		final int y = (int) (pos.y + frame.getRegionHeight() / 2 - G.FOOTER_H);
-
-		System.out.println(x + "," + y + " " + x % G.TILE_SIZE + "," + y % G.TILE_SIZE);
 
 		beltAngle = Math.abs(beltAngle);
 		if (beltAngle == 0 || beltAngle == 180) {

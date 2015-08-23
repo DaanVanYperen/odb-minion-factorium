@@ -25,7 +25,7 @@ public class SpawnProtectSystem extends EntityProcessingSystem {
 		spawnProtected.cooldown -= world.delta;
 		if ( spawnProtected.cooldown <= 0 )
 		{
-			e.edit().remove(SpawnProtected.class);
+			mSpawnProtected.remove(e);
 		}
 
 	}
