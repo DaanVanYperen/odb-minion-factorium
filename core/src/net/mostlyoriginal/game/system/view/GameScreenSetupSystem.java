@@ -266,7 +266,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 		).build();
 
 //		for (i =0; i>-360; i--) {
-			vector2 = v2.set(0, -G.TILE_SIZE + 4).setAngle(i);
+			vector2 = v2.set(-15, -G.TILE_SIZE + 4).setAngle(i);
 
 		final String id = "ingredient-" + type.name();
 		final Animation animation = abstractAssetSystem.get(id);
