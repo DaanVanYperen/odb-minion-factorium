@@ -14,6 +14,7 @@ import net.mostlyoriginal.api.system.physics.PhysicsSystem;
 import net.mostlyoriginal.api.system.render.AnimRenderSystem;
 import net.mostlyoriginal.api.system.render.ClearScreenSystem;
 import net.mostlyoriginal.api.utils.builder.WorldConfigurationBuilder;
+import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.system.*;
 import net.mostlyoriginal.game.system.drag.DragStartSystem;
 import net.mostlyoriginal.game.system.drag.DraggableIndicatorSystem;
@@ -28,9 +29,14 @@ import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
  *
  * @author Daan van Yperen
  */
-public class GameScreen extends WorldScreen {
+public class LevelScreen extends WorldScreen {
 
 	public static final String BACKGROUND_COLOR_HEX = "3e2336";
+	private int levelIndex;
+
+	public LevelScreen(int levelIndex) {
+		this.levelIndex = levelIndex;
+	}
 
 	@Override
 	protected World createWorld() {
@@ -45,13 +51,14 @@ public class GameScreen extends WorldScreen {
 	/** Just get a basic dancing man going! */
 	private BaseSystem[] instanceDancingManSystems() {
 		RenderBatchingSystem renderBatchingSystem;
+		levelIndex = 1;
 		return new BaseSystem[]{
 
-				new CameraSystem(2),
+				new CameraSystem(G.ZOOM),
 
 				new ClearScreenSystem(Color.valueOf(BACKGROUND_COLOR_HEX)),
 				new GameScreenAssetSystem(),
-				new GameScreenSetupSystem(),
+				new GameScreenSetupSystem(levelIndex),
 
 				new MouseCursorSystem(),
 				new CollisionSystem(),

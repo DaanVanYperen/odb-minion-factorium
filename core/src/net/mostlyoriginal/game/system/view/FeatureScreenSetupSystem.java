@@ -11,7 +11,7 @@ import net.mostlyoriginal.api.component.graphics.InterpolationStrategy;
 import net.mostlyoriginal.api.component.script.Schedule;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.component.detection.OdbFeatureComponent;
-import net.mostlyoriginal.game.screen.GameScreen;
+import net.mostlyoriginal.game.screen.LevelScreen;
 import net.mostlyoriginal.game.system.detection.OdbFeatureDetectionSystem;
 import net.mostlyoriginal.game.system.logic.TransitionSystem;
 import net.mostlyoriginal.game.util.Anims;
@@ -136,7 +136,7 @@ public class FeatureScreenSetupSystem extends PassiveSystem {
 	public static final int DISPLAY_SECONDS = 2;
 
 	private void scheduleTransitionToGameScreen() {
-		world.getSystem(TransitionSystem.class).transition(GameScreen.class, DISPLAY_SECONDS);
+		world.getSystem(TransitionSystem.class).transition(LevelScreen.class, DISPLAY_SECONDS);
 	}
 
 }

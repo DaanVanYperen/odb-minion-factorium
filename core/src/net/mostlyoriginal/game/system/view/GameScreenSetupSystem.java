@@ -37,9 +37,12 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	public static final int LAYER_DRAGGING = 2600;
 	GameScreenAssetSystem assetSystem;
 
+	public GameScreenSetupSystem(int levelIndex) {
+		this.levelIndex = levelIndex;
+	}
+
 	M<Anim> mAnim;
-
-
+	private int levelIndex;
 
 
 	@Override
@@ -47,7 +50,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 		initCursor();
 		initBackground();
-		loadLevel(1);
+		levelIndex = 1;
+		loadLevel(levelIndex);
 	}
 
 	private void loadLevel(int levelIndex) {

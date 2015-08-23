@@ -1,12 +1,12 @@
 package net.mostlyoriginal.game;
 
 import com.badlogic.gdx.Game;
-import net.mostlyoriginal.game.screen.GameScreen;
-import net.mostlyoriginal.game.screen.detection.OdbFeatureScreen;
+import net.mostlyoriginal.game.screen.LevelScreen;
 
 public class GdxArtemisGame extends Game {
 
 	private static GdxArtemisGame instance;
+	private int levelIndex;
 
 	@Override
 	public void create() {
@@ -15,7 +15,12 @@ public class GdxArtemisGame extends Game {
 	}
 
 	public void restart() {
-		setScreen(new GameScreen());
+		levelIndex = 0;
+		nextLevel();
+	}
+
+	public void nextLevel() {
+		setScreen(new LevelScreen(++levelIndex));
 	}
 
 	public static GdxArtemisGame getInstance()
