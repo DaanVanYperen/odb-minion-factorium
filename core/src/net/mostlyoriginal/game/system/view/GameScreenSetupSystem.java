@@ -98,9 +98,13 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 		final Level level = new Json().fromJson(Level.class, Gdx.files.internal("level/level" + levelIndex + ".json"));
 
-		final Label label = new Label("level " + levelIndex+ ": " + level.name);
+		Label label = new Label("level " + levelIndex);
 		label.fontName="5x5";
-		new EntityBuilder(world).with(new Pos(4, G.VIEPORT_HEIGHT/2 - 4), label, new Renderable(LAYER_OVERLAYS+1));
+		new EntityBuilder(world).with(new Color("eed6ee"), new Pos(4, G.VIEPORT_HEIGHT/2 - 2), label, new Renderable(LAYER_OVERLAYS+1));
+
+		label = new Label(level.name);
+		label.fontName="5x5";
+		new EntityBuilder(world).with(new Color("ffe6ff"),new Pos(4, G.VIEPORT_HEIGHT/2 - 9), label, new Renderable(LAYER_OVERLAYS+1));
 
 		// spawn as entity so we can use it to track progress towards goal.
 		new EntityBuilder(world).with(level, new Inventory()).build();
