@@ -7,6 +7,8 @@ import com.artemis.systems.EntityProcessingSystem;
 import net.mostlyoriginal.api.component.graphics.Anim;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
+import net.mostlyoriginal.game.component.ShowerLiquid;
+import net.mostlyoriginal.game.component.Sprinkle;
 import net.mostlyoriginal.game.component.Star;
 
 /**
@@ -19,6 +21,7 @@ public class StarSystem extends EntityProcessingSystem {
 
 	protected M<Star> mStar;
 	protected M<Anim> mAnim;
+	protected M<Sprinkle> mSprinkle;
 	private AbstractAssetSystem abstractAssetSystem;
 
 	public StarSystem() {
@@ -35,6 +38,13 @@ public class StarSystem extends EntityProcessingSystem {
 	@Override
 	protected void process(Entity e) {
 		final Star star = mStar.get(e);
-		mAnim.get(e).id = (star.point < points) ? "star-1" : "star-0";
+		final boolean glow = star.point < points;
+		if ( mAnim.get(e).id.equals("star-0") && glow)
+		{
+			final Sprinkle sprinkle = mSprinkle.create(e);
+			sprinkle.liquid = ShowerLiquid.SPARKLE;
+			sprinkle.duration = 1f;
+		}
+		mAnim.get(e).id = glow ? "star-1" : "star-0";
 	}
 }

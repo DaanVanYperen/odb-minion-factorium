@@ -101,6 +101,10 @@ public class LiquidSystem extends EntityProcessingSystem {
 					colorB = new Color(0f, 1f, 0f, 0.9f);
 				}
 				break;
+			case SPARKLE:
+				colorA = new Color(1f, 0.8f, 0.4f, MathUtils.random(0.9f, 1f));
+				colorB = new Color(1f, 0.8f, 0.4f, 0.9f);
+				break;
 			case DUST:
 			case STEAM:
 				colorA = new Color(0.9f, 0.9f, 1f, MathUtils.random(0.75f, 0.9f));
@@ -142,6 +146,14 @@ public class LiquidSystem extends EntityProcessingSystem {
 			v.scl(4);
 		}
 
+		if ( liquid == ShowerLiquid.SPARKLE )
+		{
+			v.set(0, 10).setAngle(MathUtils.random(0,360));
+			x += v.x;
+			y += v.y;
+			v.scl(4);
+		}
+
 		final Physics physics = new Physics();
 		physics.vx = v.x;
 		physics.vy = v.y;
@@ -153,6 +165,7 @@ public class LiquidSystem extends EntityProcessingSystem {
 				new Color(),
 				anim,
 				new Renderable(liquid == ShowerLiquid.STEAM ? GameScreenSetupSystem.LAYER_OVERLAYS+1 :
+						liquid == ShowerLiquid.SPARKLE ? GameScreenSetupSystem.LAYER_OVERLAYS+100 :
 						liquid == ShowerLiquid.DUST ? GameScreenSetupSystem.LAYER_CONVEYER-1 : GameScreenSetupSystem.LAYER_VAPOR),
 				new Schedule().wait(0.5f).deleteFromWorld(),
 				new Angle(MathUtils.random(100)),

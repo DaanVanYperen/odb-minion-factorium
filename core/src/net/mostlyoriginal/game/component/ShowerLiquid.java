@@ -7,5 +7,5 @@ public enum ShowerLiquid {
 	PAINT,
 	WATER,
 	BLOOD,
-	DUST, STEAM
+	DUST, SPARKLE, STEAM
 }
