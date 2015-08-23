@@ -16,7 +16,6 @@ import net.mostlyoriginal.api.system.physics.CollisionSystem;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.component.*;
 import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
-import sun.rmi.server.InactiveGroupException;
 
 /**
  * @author Daan van Yperen

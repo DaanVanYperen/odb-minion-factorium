@@ -16,6 +16,9 @@
 	<extend-configuration-property name="artemis.reflect.include" value="net.mostlyoriginal.api" />
 
 	<extend-configuration-property name="gdx.reflect.include" value="net.mostlyoriginal.api.step" />
+	<extend-configuration-property name="gdx.reflect.include" value="net.mostlyoriginal.game.component.Level" />
+	<extend-configuration-property name="gdx.reflect.include" value="com.artemis.Component" />
+	<extend-configuration-property name="gdx.reflect.include" value="net.mostlyoriginal.game.component.Inventory" />
 
 	<inherits name='GdxArtemisGame' />
 	<entry-point class='net.mostlyoriginal.game.client.HtmlLauncher' />
