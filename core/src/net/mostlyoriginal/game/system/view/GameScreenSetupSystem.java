@@ -107,9 +107,9 @@ public class GameScreenSetupSystem extends PassiveSystem {
 						angle -= 90;
 					case '^' :
 						if (id2 == 'c') {
-							e = createDispenser(cx, cy, angle, Ingredient.Type.CHICK, 999);
+							e = createDispenser(cx, cy, angle, Ingredient.Type.CHICK);
 						} else if (id2 == 'b') {
-							e = createDispenser(cx, cy, angle, Ingredient.Type.BUNNY, 999);
+							e = createDispenser(cx, cy, angle, Ingredient.Type.BUNNY);
 						} else {
 							e = createBeltStraight(cx, cy, angle);
 							if (id2 == '1') {
@@ -165,14 +165,13 @@ public class GameScreenSetupSystem extends PassiveSystem {
 		e.edit().add(new Draggable()).add(new Tappable()).add(new Rotatable());
 	}
 
-	private Entity createDispenser(int x, int y, int angle, Ingredient.Type type, int count) {
+	private Entity createDispenser(int x, int y, int angle, Ingredient.Type type) {
 		return new EntityBuilder(world).with(
 				new Pos(x, y),
 				new Bounds(2, 2, 18, 18),
-				new Inventory().inc(type, count),
 				new Conveyer(90f),
 				new Angle(angle),
-				new Dispenser()).build();
+				new Dispenser(type)).build();
 	}
 
 	private Entity createSink(int x, int y) {

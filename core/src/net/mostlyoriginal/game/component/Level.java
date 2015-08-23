@@ -12,4 +12,5 @@ public class Level extends Component {
 	public int width;
 	public String[] structure;
 	public Inventory goals = new Inventory();
+	public Inventory input = new Inventory();
 }
