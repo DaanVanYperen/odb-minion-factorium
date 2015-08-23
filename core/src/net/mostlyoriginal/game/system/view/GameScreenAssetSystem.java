@@ -30,7 +30,13 @@ public class GameScreenAssetSystem extends AbstractAssetSystem {
 				"loss",
 				"shower",
 				"stamper",
-				"victory"
+				"victory",
+
+				"drag",
+				"drop",
+				"rotate",
+				"score",
+				"woop"
 		});
 
 		add("cell-empty", 20, 260, 20, 20, 1);
