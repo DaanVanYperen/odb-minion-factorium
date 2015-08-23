@@ -3,10 +3,12 @@ package net.mostlyoriginal.game.system.view;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.utils.EntityBuilder;
+import com.badlogic.gdx.math.MathUtils;
 import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
+import net.mostlyoriginal.api.component.graphics.Color;
 import net.mostlyoriginal.api.component.graphics.Renderable;
 import net.mostlyoriginal.api.component.mouse.MouseCursor;
 import net.mostlyoriginal.api.component.physics.Physics;
@@ -223,11 +225,12 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	}
 
 	private void createBackground(int x, int y, String id) {
+		final float c = MathUtils.sin(x+y)*0.025f + 0.975f;
 		Anims.createAnimAt(world,
 				x,
 				y,
 				id,
-				1);
+				1).edit().add(new Color(c,c,c,1f));
 	}
 
 }
