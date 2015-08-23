@@ -10,7 +10,6 @@ import net.mostlyoriginal.api.component.graphics.Color;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.component.Dragging;
-import net.mostlyoriginal.game.system.GridOverlapHelperSystem;
 import net.mostlyoriginal.game.system.tap.TapSystem;
 
 /**

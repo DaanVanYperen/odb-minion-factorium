@@ -18,7 +18,12 @@ import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.system.*;
 import net.mostlyoriginal.game.system.drag.DragStartSystem;
 import net.mostlyoriginal.game.system.drag.DraggableIndicatorSystem;
+import net.mostlyoriginal.game.system.drag.GridOverlapHelperSystem;
 import net.mostlyoriginal.game.system.drag.TileDropSystem;
+import net.mostlyoriginal.game.system.machine.ConveyerSystem;
+import net.mostlyoriginal.game.system.machine.DispenserSystem;
+import net.mostlyoriginal.game.system.machine.InventoryScoopSystem;
+import net.mostlyoriginal.game.system.machine.SplicerSystem;
 import net.mostlyoriginal.game.system.tap.RotateSystem;
 import net.mostlyoriginal.game.system.tap.TapSystem;
 import net.mostlyoriginal.game.system.view.GameScreenAssetSystem;
@@ -81,6 +86,8 @@ public class LevelScreen extends WorldScreen {
 
 				renderBatchingSystem = new RenderBatchingSystem(),
 				new AnimRenderSystem(renderBatchingSystem),
+
+				new LevelTransitionSystem(),
 		};
 	}
 }
