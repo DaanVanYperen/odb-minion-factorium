@@ -22,6 +22,7 @@ import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.G;
+import net.mostlyoriginal.game.GdxArtemisGame;
 import net.mostlyoriginal.game.component.*;
 import net.mostlyoriginal.game.component.logic.RetryButton;
 import net.mostlyoriginal.game.util.Anims;
@@ -109,6 +110,19 @@ public class GameScreenSetupSystem extends PassiveSystem {
 		if (level.tutorial )
 		{
 			new EntityBuilder(world).with(new Pos(75, 115), new Anim("mouse"), new Renderable(LAYER_OVERLAYS+1));
+		}
+
+		if (level.scoreboard )
+		{
+			label = new Label("Winner!");
+			label.fontName="5x5";
+			new EntityBuilder(world).with(new Color("000000"),new Pos(G.VIEPORT_WIDTH/4 - 20, G.VIEPORT_HEIGHT/4 + 30), label, new Renderable(LAYER_OVERLAYS+1));
+			label = new Label(GdxArtemisGame.getInstance().starsCollected + " stars!");
+			label.fontName="5x5";
+			new EntityBuilder(world).with(new Color("000000"),new Pos(G.VIEPORT_WIDTH/4 - 20, G.VIEPORT_HEIGHT/4 - 9 + 30), label, new Renderable(LAYER_OVERLAYS+1));
+			label = new Label("(You monster)");
+			label.fontName="5x5";
+			new EntityBuilder(world).with(new Color("000000"),new Pos(G.VIEPORT_WIDTH/4 - 35, G.VIEPORT_HEIGHT/4 - 18 + 30), label, new Renderable(LAYER_OVERLAYS+1));
 		}
 
 		// spawn as entity so we can use it to track progress towards goal.

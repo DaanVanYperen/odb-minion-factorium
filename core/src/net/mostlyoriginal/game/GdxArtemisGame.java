@@ -7,9 +7,10 @@ import net.mostlyoriginal.game.screen.LevelScreen;
 
 public class GdxArtemisGame extends Game {
 
-	public static final int START_LEVEL = 1;
+	public static final int START_LEVEL = 6;
 	private static GdxArtemisGame instance;
 	private int levelIndex = START_LEVEL;
+	public int starsCollected = 0;
 
 	@Override
 	public void create() {
@@ -18,9 +19,10 @@ public class GdxArtemisGame extends Game {
 	}
 
 	public void restart() {
-		levelIndex = START_LEVEL-1;
+		levelIndex = START_LEVEL - 1;
+		starsCollected = 0;
 		playMusic();
-		nextLevel();
+		nextLevel(0);
 	}
 
 	private void playMusic() {
@@ -30,12 +32,12 @@ public class GdxArtemisGame extends Game {
 		music.setVolume(0.3f);
 	}
 
-	public void nextLevel() {
+	public void nextLevel(int starsCollected) {
 		setScreen(new LevelScreen(++levelIndex));
+		this.starsCollected += starsCollected;
 	}
 
-	public static GdxArtemisGame getInstance()
-	{
+	public static GdxArtemisGame getInstance() {
 		return instance;
 	}
 
