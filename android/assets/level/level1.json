@@ -1,5 +1,6 @@
 {
   "name": "Shower or Bust",
+  "tutorial": true,
   "structure": [
     ".......^..",
     "       B  ",

@@ -106,6 +106,11 @@ public class GameScreenSetupSystem extends PassiveSystem {
 		label.fontName="5x5";
 		new EntityBuilder(world).with(new Color("ffe6ff"),new Pos(4, G.VIEPORT_HEIGHT/2 - 9), label, new Renderable(LAYER_OVERLAYS+1));
 
+		if (level.tutorial )
+		{
+			new EntityBuilder(world).with(new Pos(75, 115), new Anim("mouse"), new Renderable(LAYER_OVERLAYS+1));
+		}
+
 		// spawn as entity so we can use it to track progress towards goal.
 		new EntityBuilder(world).with(level, new Inventory()).build();
 
