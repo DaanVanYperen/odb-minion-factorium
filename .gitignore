@@ -63,3 +63,7 @@ build/
 ## OS Specific
 .DS_Store
 /matrix
+/blog
+/raw-assets/full-minion-factorium-sound-capture.mp3
+/raw-assets/video.avi
+/android/assets/sfx/*.sfk
