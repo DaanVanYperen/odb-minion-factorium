@@ -4,7 +4,6 @@ import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
-import com.artemis.utils.EntityBuilder;
 import com.badlogic.gdx.math.Interpolation;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.*;
@@ -62,13 +61,13 @@ public class DraggableIndicatorSystem extends EntityProcessingSystem {
 		draggable.indicator =
 				builder.create(world).Anim("draggable-indicator")
 						.Renderable(GameScreenSetupSystem.LAYER_OVERLAYS)
-						.Color("000000").Pos(0,0).build();
+						.Tint("000000").Pos(0,0).build();
 
-		draggable.indicator.edit().add(newColorAnimation(new Color("3e233600"), new Color(1f,1f,1f,1f),1f));
+		draggable.indicator.edit().add(newTintAnimation(new Tint("3e233600"), new Tint(1f, 1f, 1f, 1f), 1f));
 	}
 
-	private ColorAnimation newColorAnimation(Color colorA, Color colorB, float speed) {
-		return new ColorAnimation(colorA, colorB, new InterpolationStrategy() {
+	private ColorAnimation newTintAnimation(Tint TintA, Tint TintB, float speed) {
+		return new ColorAnimation(TintA, TintB, new InterpolationStrategy() {
 			@Override
 			public float apply(float v1, float v2, float a) {
 				return Interpolation.exp5Out.apply(v1, v2, a);

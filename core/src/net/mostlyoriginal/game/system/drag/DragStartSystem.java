@@ -11,8 +11,8 @@ import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
-import net.mostlyoriginal.api.component.graphics.Color;
 import net.mostlyoriginal.api.component.graphics.Renderable;
+import net.mostlyoriginal.api.component.graphics.Tint;
 import net.mostlyoriginal.api.component.mouse.MouseCursor;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
@@ -20,6 +20,7 @@ import net.mostlyoriginal.api.system.core.DualEntityProcessingSystem;
 import net.mostlyoriginal.api.system.physics.CollisionSystem;
 import net.mostlyoriginal.game.component.Draggable;
 import net.mostlyoriginal.game.component.Dragging;
+import net.mostlyoriginal.game.component.common.JamBuilder;
 import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
 
 /**
@@ -39,6 +40,8 @@ public class DragStartSystem extends DualEntityProcessingSystem {
 	private EntitySubscription currentlyDragged;
 	private Angle NO_ANGLE;
 	private AbstractAssetSystem abstractAssetSystem;
+
+	JamBuilder builder = new JamBuilder();
 
 	public DragStartSystem() {
 		super(Aspect.all(MouseCursor.class, Pos.class),
@@ -78,21 +81,24 @@ public class DragStartSystem extends DualEntityProcessingSystem {
 	}
 
 	private void createDraggingIndicator(Entity draggable) {
-		final Anim sourceAnim = mAnim.get(draggable);
 		final Bounds sourceBounds = mBounds.get(draggable);
+		final Pos sourcePos = mPos.get(draggable);
 
-		final Anim anim = new Anim();
+		NO_ANGLE = new Angle(0);
+		Entity indicator =
+				builder.create(world)
+				.Pos(sourcePos.xy.x, sourcePos.xy.y)
+				.Dragging(draggable)
+				.Renderable(GameScreenSetupSystem.LAYER_DRAGGING)
+				.Bounds(sourceBounds.minx, sourceBounds.miny, sourceBounds.maxx, sourceBounds.maxy)
+				.Angle(mAngle.getSafe(draggable, NO_ANGLE).rotation)
+				.Tint(1f, 1f, 1f, 0.5f).build();
+
+		final Anim sourceAnim = mAnim.get(draggable);
+		Anim anim = mAnim.create(indicator);
 		anim.id = sourceAnim.id;
 		anim.speed = sourceAnim.speed;
 		anim.age = sourceAnim.age;
-
-		NO_ANGLE = new Angle(0);
-		Entity indicator = new EntityBuilder(world)
-				.with(Pos.class)
-				.with(new Dragging(draggable), new Renderable(GameScreenSetupSystem.LAYER_DRAGGING),
-						new Bounds(sourceBounds.minx, sourceBounds.miny, sourceBounds.maxx, sourceBounds.maxy),
-						anim, new Angle(mAngle.getSafe(draggable, NO_ANGLE).rotation), new Color(1f, 1f, 1f, 0.5f)
-				).build();
 
 		mPos.mirror(indicator, draggable);
 	}

@@ -6,14 +6,13 @@ import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.Gdx;
 import net.mostlyoriginal.api.component.basic.Pos;
-import net.mostlyoriginal.api.component.graphics.Color;
+import net.mostlyoriginal.api.component.graphics.Tint;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.component.Dragging;
 import net.mostlyoriginal.game.component.ShowerLiquid;
 import net.mostlyoriginal.game.component.Sprinkle;
-import net.mostlyoriginal.game.component.Wet;
 import net.mostlyoriginal.game.system.tap.TapSystem;
 
 /**
@@ -26,7 +25,7 @@ public class TileDropSystem extends EntityProcessingSystem {
 
 	protected M<Dragging> mDragging;
 	protected M<Pos> mPos;
-	protected M<Color> mColor;
+	protected M<Tint> mTint;
 	protected M<Sprinkle> mSprinkle;
 	private GridOverlapHelperSystem gridOverlapHelperSystem;
 	private int gridX;
@@ -79,12 +78,12 @@ public class TileDropSystem extends EntityProcessingSystem {
 	}
 
 	private void tintIndicator(Entity e) {
-		final Color color = mColor.create(e);
+		final Tint tint = mTint.create(e);
 		if ( canDropHere(e) )
 		{
-			color.set(1f,1f,1f,0.7f);
+			tint.set(1f, 1f, 1f, 0.7f);
 		} else {
-			color.set(1f,0f,0f,0.7f);
+			tint.set(1f, 0f, 0f, 0.7f);
 		}
 	}
 

@@ -8,8 +8,8 @@ import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
-import net.mostlyoriginal.api.component.graphics.Color;
 import net.mostlyoriginal.api.component.graphics.Renderable;
+import net.mostlyoriginal.api.component.graphics.Tint;
 import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.component.ui.Font;
 import net.mostlyoriginal.api.component.ui.Label;
@@ -203,9 +203,9 @@ public class JamBuilder<T extends JamBuilder> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public final T Color(float r, float g, float b, float a) {
-		Color color = add(Color.class);
-		color.set(r, g, b, a);
+	public final T Tint(float r, float g, float b, float a) {
+		Tint tint = add(Tint.class);
+		tint.set(r, g, b, a);
 		return (T) this;
 	}
 
@@ -224,9 +224,16 @@ public class JamBuilder<T extends JamBuilder> {
 	}
 
 	@SuppressWarnings("unchecked")
-	public T Color(String hex) {
-		Color color = add(Color.class);
-		color.setHex(hex);
+	public T Tint(String hex) {
+		Tint tint = add(Tint.class);
+		tint.setHex(hex);
+		return (T) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T Tint(Tint value) {
+		Tint tint = add(Tint.class);
+		tint.set(value);
 		return (T) this;
 	}
 
@@ -241,6 +248,13 @@ public class JamBuilder<T extends JamBuilder> {
 	public T Font(String name) {
 		Font font = add(Font.class);
 		font.fontName = name;
+		return (T) this;
+	}
+
+	@SuppressWarnings("unchecked")
+	public T Dragging(Entity draggable) {
+		Dragging dragging = add(Dragging.class);
+		dragging.entityId = draggable.getId();
 		return (T) this;
 	}
 }

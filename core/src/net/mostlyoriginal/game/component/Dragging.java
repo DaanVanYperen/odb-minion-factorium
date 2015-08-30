@@ -13,6 +13,7 @@ public class Dragging extends Component {
 	@EntityId
 	public int entityId;
 
+	public Dragging() {}
 	public Dragging(Entity subject) {
 		this.entityId = subject.getId();
 	}

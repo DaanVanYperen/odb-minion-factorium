@@ -9,9 +9,9 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
-import net.mostlyoriginal.api.component.graphics.Color;
 import net.mostlyoriginal.api.component.graphics.ColorAnimation;
 import net.mostlyoriginal.api.component.graphics.InterpolationStrategy;
+import net.mostlyoriginal.api.component.graphics.Tint;
 import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.component.script.Schedule;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
@@ -87,39 +87,39 @@ public class LiquidSystem extends EntityProcessingSystem {
 
 		v.set(MathUtils.random(20, 30), 0).setAngle(MathUtils.random(0, 359));
 
-		final Color colorA;
-		final Color colorB;
+		final Tint colorA;
+		final Tint colorB;
 
 		switch (liquid) {
 			case BLOOD:
-				colorA = new Color(1f, 0f, 0f, MathUtils.random(0.8f, 0.9f));
-				colorB = new Color(1f, 0f, 0f, 0.9f);
+				colorA = new Tint(1f, 0f, 0f, MathUtils.random(0.8f, 0.9f));
+				colorB = new Tint(1f, 0f, 0f, 0.9f);
 				break;
 			case PAINT:
 				if (MathUtils.random(0, 100) < 5 || drip) {
-					colorA = new Color(0.5f, 0.9f, 0.5f, MathUtils.random(0.75f, 0.9f));
-					colorB = new Color(0.5f, 0.9f, 0.5f, 0.9f);
+					colorA = new Tint(0.5f, 0.9f, 0.5f, MathUtils.random(0.75f, 0.9f));
+					colorB = new Tint(0.5f, 0.9f, 0.5f, 0.9f);
 				} else {
-					colorA = new Color(0f, 1f, 0f, MathUtils.random(0.75f, 0.9f));
-					colorB = new Color(0f, 1f, 0f, 0.9f);
+					colorA = new Tint(0f, 1f, 0f, MathUtils.random(0.75f, 0.9f));
+					colorB = new Tint(0f, 1f, 0f, 0.9f);
 				}
 				break;
 			case SPARKLE:
-				colorA = new Color(1f, 0.8f, 0.4f, MathUtils.random(0.9f, 1f));
-				colorB = new Color(1f, 0.8f, 0.4f, 0.9f);
+				colorA = new Tint(1f, 0.8f, 0.4f, MathUtils.random(0.9f, 1f));
+				colorB = new Tint(1f, 0.8f, 0.4f, 0.9f);
 				break;
 			case DUST:
 			case STEAM:
-				colorA = new Color(0.9f, 0.9f, 1f, MathUtils.random(0.75f, 0.9f));
-				colorB = new Color(0.9f, 0.9f, 1f, 0.9f);
+				colorA = new Tint(0.9f, 0.9f, 1f, MathUtils.random(0.75f, 0.9f));
+				colorB = new Tint(0.9f, 0.9f, 1f, 0.9f);
 				break;
 			default:
 				if (MathUtils.random(0, 100) < 5 || drip) {
-					colorA = new Color(0.7f, 0.9f, 1f, MathUtils.random(0.75f, 0.9f));
-					colorB = new Color(0.9f, 0.9f, 1f, 0.9f);
+					colorA = new Tint(0.7f, 0.9f, 1f, MathUtils.random(0.75f, 0.9f));
+					colorB = new Tint(0.9f, 0.9f, 1f, 0.9f);
 				} else {
-					colorA = new Color(0f, 0f, 1f, MathUtils.random(0.75f, 0.9f));
-					colorB = new Color(0f, 0f, 1f, 0.9f);
+					colorA = new Tint(0f, 0f, 1f, MathUtils.random(0.75f, 0.9f));
+					colorB = new Tint(0f, 0f, 1f, 0.9f);
 				}
 				break;
 		}
@@ -161,7 +161,7 @@ public class LiquidSystem extends EntityProcessingSystem {
 
 		Entity entity = jamBuilder.create(world)
 				.Pos(x, y)
-				.Color("000000")
+				.Tint("000000")
 				.Renderable(liquid == ShowerLiquid.STEAM ? GameScreenSetupSystem.LAYER_OVERLAYS + 1 :
 						liquid == ShowerLiquid.SPARKLE ? GameScreenSetupSystem.LAYER_OVERLAYS + 100 :
 								liquid == ShowerLiquid.DUST ? GameScreenSetupSystem.LAYER_CONVEYER - 1 : GameScreenSetupSystem.LAYER_VAPOR)
@@ -179,7 +179,7 @@ public class LiquidSystem extends EntityProcessingSystem {
 
 	}
 
-	private ColorAnimation newColorAnimation(Color colorA, Color colorB, float speed) {
+	private ColorAnimation newColorAnimation(Tint colorA, Tint colorB, float speed) {
 		return new ColorAnimation(colorA, colorB, new InterpolationStrategy() {
 			@Override
 			public float apply(float v1, float v2, float a) {

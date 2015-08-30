@@ -16,8 +16,6 @@ import net.mostlyoriginal.api.component.graphics.*;
 import net.mostlyoriginal.api.component.mouse.MouseCursor;
 import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.component.script.Schedule;
-import net.mostlyoriginal.api.component.ui.Font;
-import net.mostlyoriginal.api.component.ui.Label;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
@@ -77,7 +75,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 	private void initResetButton() {
 		Entity entity = builder.create(world)
-				.with(Tappable.class, RetryButton.class, Color.class, Invisible.class)
+				.with(Tappable.class, RetryButton.class, Tint.class, Invisible.class)
 				.Anim("button-restart")
 				.Bounds(0, 0, 24, 24)
 				.Renderable(LAYER_OVERLAYS)
@@ -87,11 +85,11 @@ public class GameScreenSetupSystem extends PassiveSystem {
 		entity.edit().add(new Schedule()
 				.wait(2f)
 				.remove(Invisible.class)
-				.add(newColorAnimation(new Color(1f, 1f, 1f, 0f), new Color(1f, 1f, 1f, 1f), 1f)));
+				.add(newColorAnimation(new Tint(1f, 1f, 1f, 0f), new Tint(1f, 1f, 1f, 1f), 1f)));
 	}
 
 
-	private ColorAnimation newColorAnimation(Color colorA, Color colorB, float speed) {
+	private ColorAnimation newColorAnimation(Tint colorA, Tint colorB, float speed) {
 		return new ColorAnimation(colorA, colorB, new InterpolationStrategy() {
 			@Override
 			public float apply(float v1, float v2, float a) {
@@ -109,17 +107,17 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 		final Level level = new Json().fromJson(Level.class, Gdx.files.internal("level/level" + levelIndex + ".json"));
 
-		builder.create(world).Color("eed6ee").Label("level " + levelIndex).Font("5x5").Pos(4, G.VIEPORT_HEIGHT / 2 - 2).Renderable(LAYER_OVERLAYS + 1);
-		builder.create(world).Color("ffe6ff").Label(level.name).Font("5x5").Pos(4, G.VIEPORT_HEIGHT / 2 - 9).Renderable(LAYER_OVERLAYS + 1);
+		builder.create(world).Tint("eed6ee").Label("level " + levelIndex).Font("5x5").Pos(4, G.VIEPORT_HEIGHT / 2 - 2).Renderable(LAYER_OVERLAYS + 1);
+		builder.create(world).Tint("ffe6ff").Label(level.name).Font("5x5").Pos(4, G.VIEPORT_HEIGHT / 2 - 9).Renderable(LAYER_OVERLAYS + 1);
 
 		if (level.tutorial) {
 			builder.create(world).Pos(75, 115).Anim("mouse").Renderable(LAYER_OVERLAYS + 1);
 		}
 
 		if (level.scoreboard) {
-			builder.create(world).Color("000000").Label("Winner!").Font("5x5").Pos(G.VIEPORT_WIDTH / 4 - 20, G.VIEPORT_HEIGHT / 4 + 30).Renderable(LAYER_OVERLAYS + 1);
-			builder.create(world).Color("000000").Label(GdxArtemisGame.getInstance().starsCollected + " stars!").Font("5x5").Pos(G.VIEPORT_WIDTH / 4 - 20, G.VIEPORT_HEIGHT / 4 - 9 + 30).Renderable(LAYER_OVERLAYS + 1);
-			builder.create(world).Color("000000").Label("(You monster)").Font("5x5").Pos(G.VIEPORT_WIDTH / 4 - 35, G.VIEPORT_HEIGHT / 4 - 18 + 30).Renderable(LAYER_OVERLAYS + 1);
+			builder.create(world).Tint("000000").Label("Winner!").Font("5x5").Pos(G.VIEPORT_WIDTH / 4 - 20, G.VIEPORT_HEIGHT / 4 + 30).Renderable(LAYER_OVERLAYS + 1);
+			builder.create(world).Tint("000000").Label(GdxArtemisGame.getInstance().starsCollected + " stars!").Font("5x5").Pos(G.VIEPORT_WIDTH / 4 - 20, G.VIEPORT_HEIGHT / 4 - 9 + 30).Renderable(LAYER_OVERLAYS + 1);
+			builder.create(world).Tint("000000").Label("(You monster)").Font("5x5").Pos(G.VIEPORT_WIDTH / 4 - 35, G.VIEPORT_HEIGHT / 4 - 18 + 30).Renderable(LAYER_OVERLAYS + 1);
 		}
 
 		// spawn as entity so we can use it to track progress towards goal.
@@ -277,7 +275,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				.Pos(x + 3 + vector2.x, y + 6 + vector2.y)
 				.Angle(i - 90 + (inverted ? -180 : 0), 7, 5)
 				.Anim("pointer")
-				.Color(1f, 1f, 1f, 0.6f)
+				.Tint(1f, 1f, 1f, 0.6f)
 				.Renderable(LAYER_CONVEYER + 1)
 				.build();
 
@@ -288,7 +286,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 		final TextureRegion region = animation.getKeyFrames()[0];
 		builder.create(world)
 				.Pos(x + vector2.x + 10 - region.getRegionWidth() / 2, y + 10 + vector2.y - region.getRegionHeight() / 2)
-				.Color(1f, 1f, 1f, 0.8f)
+				.Tint(1f, 1f, 1f, 0.8f)
 				.Anim(id)
 				.Renderable(LAYER_CONVEYER + 2)
 				.build();
@@ -450,11 +448,11 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 	private void createBackground(int x, int y, String id) {
 		final float c = MathUtils.sin(x + y) * 0.025f + 0.975f;
-		Anims.createAnimAt(world,
+		new JamBuilder<>().edit(Anims.createAnimAt(world,
 				x,
 				y,
 				id,
-				1).edit().add(new Color(c, c, c, 1f));
+				1)).Tint(c, c, c, 1f);
 	}
 
 	Vector2 v2 = new Vector2();

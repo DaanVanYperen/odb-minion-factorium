@@ -5,11 +5,12 @@ import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Interpolation;
-import net.mostlyoriginal.api.component.graphics.Color;
 import net.mostlyoriginal.api.component.graphics.ColorAnimation;
+import net.mostlyoriginal.api.component.graphics.Tint;
 import net.mostlyoriginal.api.component.graphics.InterpolationStrategy;
 import net.mostlyoriginal.api.component.script.Schedule;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
+import net.mostlyoriginal.game.component.common.JamBuilder;
 import net.mostlyoriginal.game.component.detection.OdbFeatureComponent;
 import net.mostlyoriginal.game.screen.LevelScreen;
 import net.mostlyoriginal.game.system.detection.OdbFeatureDetectionSystem;
@@ -23,16 +24,17 @@ import net.mostlyoriginal.game.util.Anims;
 public class FeatureScreenSetupSystem extends PassiveSystem {
 
 	public static final int FEATURE_BORDER_MARGIN = 1;
-	public static final Color COLOR_FEATURE_FADED = new Color(0.8f, 1.0f, 1.0f, 0.3f);
-	public static final Color COLOR_FEATURE_OFF = new Color(0.8f, 1.0f, 1.0f, 0.0f);
-	public static final Color COLOR_FEATURE_ON_OFF_COLOR = new Color(0.8f, 1.0f, 1.0f, 1.0f);
-	public static final Color COLOR_FEATURE_ON = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-	public static final Color COLOR_LOGO_FADED = new Color(1.0f, 1.0f, 1.0f, 0.0f);
-	public static final Color COLOR_LOGO_FULL = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+	public static final Tint Tint_FEATURE_FADED = new Tint(0.8f, 1.0f, 1.0f, 0.3f);
+	public static final Tint Tint_FEATURE_OFF = new Tint(0.8f, 1.0f, 1.0f, 0.0f);
+	public static final Tint Tint_FEATURE_ON_OFF_Tint = new Tint(0.8f, 1.0f, 1.0f, 1.0f);
+	public static final Tint Tint_FEATURE_ON = new Tint(1.0f, 1.0f, 1.0f, 1.0f);
+	public static final Tint Tint_LOGO_FADED = new Tint(1.0f, 1.0f, 1.0f, 0.0f);
+	public static final Tint Tint_LOGO_FULL = new Tint(1.0f, 1.0f, 1.0f, 1.0f);
 	FeatureScreenAssetSystem assetSystem;
 	TagManager tagManager;
 
 	private int iconIndex;
+	private JamBuilder builder = new JamBuilder();
 
 
 	@Override
@@ -78,28 +80,32 @@ public class FeatureScreenSetupSystem extends PassiveSystem {
 				scale);
 
 		if (state) {
+			builder.edit(entity)
+					.Tint(Tint_FEATURE_OFF);
+
 			entity.edit()
-					.add(new Color(COLOR_FEATURE_OFF))
 					.add(new Schedule()
 							.wait(0.5f + iconIndex * 0.1f)
-							.add(newFeatureOnColorAnimation(COLOR_FEATURE_OFF, COLOR_FEATURE_ON_OFF_COLOR, 2.0f))
+							.add(newFeatureOnTintAnimation(Tint_FEATURE_OFF, Tint_FEATURE_ON_OFF_Tint, 2.0f))
 							.wait((1.0f / 2.0f))
-							.add(newFeatureOnColorAnimation(COLOR_FEATURE_ON_OFF_COLOR, COLOR_FEATURE_ON, 4.0f))
+							.add(newFeatureOnTintAnimation(Tint_FEATURE_ON_OFF_Tint, Tint_FEATURE_ON, 4.0f))
 							.wait((1.0f / 4.0f))
 							.remove(ColorAnimation.class));
 		} else {
+			builder.edit(entity)
+					.Tint(Tint_FEATURE_OFF);
+
 			entity.edit()
-					.add(new Color(COLOR_FEATURE_OFF))
 					.add(new Schedule()
 							.wait(0.5f + iconIndex * 0.1f)
-							.add(newFeatureOnColorAnimation(COLOR_FEATURE_OFF, COLOR_FEATURE_FADED, 2.0f))
+							.add(newFeatureOnTintAnimation(Tint_FEATURE_OFF, Tint_FEATURE_FADED, 2.0f))
 							.wait((1.0f / 2.0f))
 							.remove(ColorAnimation.class));
 		}
 	}
 
-	private ColorAnimation newFeatureOnColorAnimation(Color colorA, Color colorB, float speed) {
-		return new ColorAnimation(colorA, colorB, new InterpolationStrategy() {
+	private ColorAnimation newFeatureOnTintAnimation(Tint TintA, Tint TintB, float speed) {
+		return new ColorAnimation(TintA, TintB, new InterpolationStrategy() {
 			@Override
 			public float apply(float v1, float v2, float a) {
 				return Interpolation.linear.apply(v1, v2, a);
@@ -117,15 +123,16 @@ public class FeatureScreenSetupSystem extends PassiveSystem {
 				"logo",
 				Anims.scaleToScreenRounded(0.8f, FeatureScreenAssetSystem.LOGO_WIDTH));
 
+		builder.edit(entity).Tint(Tint_LOGO_FADED);
+
 		entity.edit()
-				.add(new Color(COLOR_LOGO_FADED))
 				.add(new Schedule()
-						.add(newLogoAppearColorAnimation())
+						.add(newLogoAppearTintAnimation())
 						.wait(0.5f));
 	}
 
-	private ColorAnimation newLogoAppearColorAnimation() {
-		return new ColorAnimation(COLOR_LOGO_FADED, COLOR_LOGO_FULL, new InterpolationStrategy() {
+	private ColorAnimation newLogoAppearTintAnimation() {
+		return new ColorAnimation(Tint_LOGO_FADED, Tint_LOGO_FULL, new InterpolationStrategy() {
 			@Override
 			public float apply(float v1, float v2, float a) {
 				return Interpolation.fade.apply(v1, v2, a);
