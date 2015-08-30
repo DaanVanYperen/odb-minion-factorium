@@ -85,17 +85,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 		entity.edit().add(new Schedule()
 				.wait(2f)
 				.remove(Invisible.class)
-				.add(newColorAnimation(new Tint(1f, 1f, 1f, 0f), new Tint(1f, 1f, 1f, 1f), 1f)));
-	}
-
-
-	private ColorAnimation newColorAnimation(Tint colorA, Tint colorB, float speed) {
-		return new ColorAnimation(colorA, colorB, new InterpolationStrategy() {
-			@Override
-			public float apply(float v1, float v2, float a) {
-				return Interpolation.linear.apply(v1, v2, a);
-			}
-		}, speed, 1f / speed);
+				.tween(new Tint(1f, 1f, 1f, 0f), new Tint(1f, 1f, 1f, 1f), 1f));
 	}
 
 	private void loadLevel(int levelIndex) {

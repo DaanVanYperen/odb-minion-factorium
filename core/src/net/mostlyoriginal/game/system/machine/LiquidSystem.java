@@ -9,8 +9,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.Anim;
-import net.mostlyoriginal.api.component.graphics.ColorAnimation;
-import net.mostlyoriginal.api.component.graphics.InterpolationStrategy;
 import net.mostlyoriginal.api.component.graphics.Tint;
 import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.component.script.Schedule;
@@ -162,29 +160,22 @@ public class LiquidSystem extends EntityProcessingSystem {
 		Entity entity = jamBuilder.create(world)
 				.Pos(x, y)
 				.Tint("000000")
-				.Renderable(liquid == ShowerLiquid.STEAM ? GameScreenSetupSystem.LAYER_OVERLAYS + 1 :
-						liquid == ShowerLiquid.SPARKLE ? GameScreenSetupSystem.LAYER_OVERLAYS + 100 :
-								liquid == ShowerLiquid.DUST ? GameScreenSetupSystem.LAYER_CONVEYER - 1 : GameScreenSetupSystem.LAYER_VAPOR)
-				.Angle(MathUtils.random(100)).build();
+				.Renderable(
+						liquid == ShowerLiquid.STEAM ? GameScreenSetupSystem.LAYER_OVERLAYS + 1 :
+								liquid == ShowerLiquid.SPARKLE ? GameScreenSetupSystem.LAYER_OVERLAYS + 100 :
+										liquid == ShowerLiquid.DUST ? GameScreenSetupSystem.LAYER_CONVEYER - 1 : GameScreenSetupSystem.LAYER_VAPOR)
+				.Angle(MathUtils.random(100))
+				.build();
 
-		entity.edit().add(
-				newColorAnimation(colorA, colorB, 0.5f))
+		entity.edit()
 				.add(anim)
 				.add(new Schedule()
+						.tween(colorA, colorB, 0.5f, Interpolation.exp5Out)
 						.wait(0.5f)
 						.deleteFromWorld())
 				.add(physics);
 
 		return entity;
 
-	}
-
-	private ColorAnimation newColorAnimation(Tint colorA, Tint colorB, float speed) {
-		return new ColorAnimation(colorA, colorB, new InterpolationStrategy() {
-			@Override
-			public float apply(float v1, float v2, float a) {
-				return Interpolation.exp5Out.apply(v1, v2, a);
-			}
-		}, speed, -1);
 	}
 }

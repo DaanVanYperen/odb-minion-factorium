@@ -5,9 +5,7 @@ import com.artemis.annotations.Wire;
 import com.artemis.managers.TagManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Interpolation;
-import net.mostlyoriginal.api.component.graphics.ColorAnimation;
 import net.mostlyoriginal.api.component.graphics.Tint;
-import net.mostlyoriginal.api.component.graphics.InterpolationStrategy;
 import net.mostlyoriginal.api.component.script.Schedule;
 import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.component.common.JamBuilder;
@@ -86,11 +84,10 @@ public class FeatureScreenSetupSystem extends PassiveSystem {
 			entity.edit()
 					.add(new Schedule()
 							.wait(0.5f + iconIndex * 0.1f)
-							.add(newFeatureOnTintAnimation(Tint_FEATURE_OFF, Tint_FEATURE_ON_OFF_Tint, 2.0f))
-							.wait((1.0f / 2.0f))
-							.add(newFeatureOnTintAnimation(Tint_FEATURE_ON_OFF_Tint, Tint_FEATURE_ON, 4.0f))
-							.wait((1.0f / 4.0f))
-							.remove(ColorAnimation.class));
+							.tween(Tint_FEATURE_OFF, Tint_FEATURE_ON_OFF_Tint, 0.5f)
+							.wait(0.5f)
+							.tween(Tint_FEATURE_ON_OFF_Tint, Tint_FEATURE_ON, 0.25f)
+							.wait(0.25f));
 		} else {
 			builder.edit(entity)
 					.Tint(Tint_FEATURE_OFF);
@@ -98,19 +95,8 @@ public class FeatureScreenSetupSystem extends PassiveSystem {
 			entity.edit()
 					.add(new Schedule()
 							.wait(0.5f + iconIndex * 0.1f)
-							.add(newFeatureOnTintAnimation(Tint_FEATURE_OFF, Tint_FEATURE_FADED, 2.0f))
-							.wait((1.0f / 2.0f))
-							.remove(ColorAnimation.class));
+							.tween(Tint_FEATURE_OFF, Tint_FEATURE_FADED, 0.5f));
 		}
-	}
-
-	private ColorAnimation newFeatureOnTintAnimation(Tint TintA, Tint TintB, float speed) {
-		return new ColorAnimation(TintA, TintB, new InterpolationStrategy() {
-			@Override
-			public float apply(float v1, float v2, float a) {
-				return Interpolation.linear.apply(v1, v2, a);
-			}
-		}, speed, 1f / speed);
 	}
 
 	public void addLogo() {
@@ -127,17 +113,8 @@ public class FeatureScreenSetupSystem extends PassiveSystem {
 
 		entity.edit()
 				.add(new Schedule()
-						.add(newLogoAppearTintAnimation())
+						.tween(Tint_LOGO_FADED, Tint_LOGO_FULL, 0.5f, Interpolation.fade)
 						.wait(0.5f));
-	}
-
-	private ColorAnimation newLogoAppearTintAnimation() {
-		return new ColorAnimation(Tint_LOGO_FADED, Tint_LOGO_FULL, new InterpolationStrategy() {
-			@Override
-			public float apply(float v1, float v2, float a) {
-				return Interpolation.fade.apply(v1, v2, a);
-			}
-		}, 2f, 0.5f);
 	}
 
 	public static final int DISPLAY_SECONDS = 2;

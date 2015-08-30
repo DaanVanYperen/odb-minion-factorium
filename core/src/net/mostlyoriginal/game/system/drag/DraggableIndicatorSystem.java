@@ -7,6 +7,7 @@ import com.artemis.systems.EntityProcessingSystem;
 import com.badlogic.gdx.math.Interpolation;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.*;
+import net.mostlyoriginal.api.component.script.Schedule;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.game.component.Draggable;
 import net.mostlyoriginal.game.component.common.JamBuilder;
@@ -63,16 +64,10 @@ public class DraggableIndicatorSystem extends EntityProcessingSystem {
 						.Renderable(GameScreenSetupSystem.LAYER_OVERLAYS)
 						.Tint("000000").Pos(0,0).build();
 
-		draggable.indicator.edit().add(newTintAnimation(new Tint("3e233600"), new Tint(1f, 1f, 1f, 1f), 1f));
-	}
-
-	private ColorAnimation newTintAnimation(Tint TintA, Tint TintB, float speed) {
-		return new ColorAnimation(TintA, TintB, new InterpolationStrategy() {
-			@Override
-			public float apply(float v1, float v2, float a) {
-				return Interpolation.exp5Out.apply(v1, v2, a);
-			}
-		}, speed, -1);
+		// @todo loop
+		draggable.indicator.edit().add(
+				new Schedule().tween(new Tint("3e233600"), new Tint(1f, 1f, 1f, 1f), 1f, Interpolation.exp5Out)
+		);
 	}
 
 	@Override
