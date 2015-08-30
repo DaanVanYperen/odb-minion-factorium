@@ -10,6 +10,7 @@ public class Conveyer extends Component {
 	// direction of conveyance.
 	public float direction;
 
+	public Conveyer() {}
 	public Conveyer(float direction) {
 		this.direction = direction;
 	}

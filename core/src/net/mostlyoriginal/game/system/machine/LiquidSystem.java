@@ -4,19 +4,21 @@ import com.artemis.Aspect;
 import com.artemis.Entity;
 import com.artemis.annotations.Wire;
 import com.artemis.systems.EntityProcessingSystem;
-import com.artemis.utils.EntityBuilder;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Pos;
-import net.mostlyoriginal.api.component.graphics.*;
+import net.mostlyoriginal.api.component.graphics.Anim;
+import net.mostlyoriginal.api.component.graphics.Color;
+import net.mostlyoriginal.api.component.graphics.ColorAnimation;
+import net.mostlyoriginal.api.component.graphics.InterpolationStrategy;
 import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.component.script.Schedule;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.game.component.ShowerLiquid;
 import net.mostlyoriginal.game.component.Sprinkle;
 import net.mostlyoriginal.game.component.Wet;
+import net.mostlyoriginal.game.component.common.JamBuilder;
 import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
 
 /**
@@ -28,6 +30,8 @@ public class LiquidSystem extends EntityProcessingSystem {
 	protected M<Pos> mPos;
 	protected M<Wet> mWet;
 	protected M<Sprinkle> mSprinkle;
+
+	JamBuilder jamBuilder = new JamBuilder();
 
 	public LiquidSystem() {
 		super(Aspect.all(Pos.class).one(Sprinkle.class, Wet.class));
@@ -46,8 +50,8 @@ public class LiquidSystem extends EntityProcessingSystem {
 		if (wet.cooldown <= 0) {
 			wet.cooldown = 0.1f + (1 - (wet.duration / wet.DEFAULT_DURATION)) * 0.4f;
 			final Pos pos = mPos.get(e);
-			createLiquidParticle(pos.x + 2, pos.y + 8, true, wet.liquid);
-			createLiquidParticle(pos.x + 2, pos.y + 8, true, wet.liquid);
+			createLiquidParticle(pos.xy.x + 2, pos.xy.y + 8, true, wet.liquid);
+			createLiquidParticle(pos.xy.x + 2, pos.xy.y + 8, true, wet.liquid);
 		}
 
 		wet.duration -= world.delta;
@@ -63,11 +67,10 @@ public class LiquidSystem extends EntityProcessingSystem {
 		if (sprinkle.cooldown <= 0) {
 			sprinkle.cooldown = 0.1f;
 			final Pos pos = mPos.get(shower);
-			createLiquidParticle(pos.x + 4, pos.y + 8, false, sprinkle.liquid);
-			if ( sprinkle.liquid == ShowerLiquid.DUST )
-			{
+			createLiquidParticle(pos.xy.x + 4, pos.xy.y + 8, false, sprinkle.liquid);
+			if (sprinkle.liquid == ShowerLiquid.DUST) {
 				for (int i = 0; i < 10; i++) {
-					createLiquidParticle(pos.x + 4, pos.y + 8, false, sprinkle.liquid);
+					createLiquidParticle(pos.xy.x + 4, pos.xy.y + 8, false, sprinkle.liquid);
 				}
 			}
 		}
@@ -131,24 +134,21 @@ public class LiquidSystem extends EntityProcessingSystem {
 			y += MathUtils.random(-1f, 1f);
 		}
 
-		if ( liquid == ShowerLiquid.STEAM )
-		{
+		if (liquid == ShowerLiquid.STEAM) {
 			v.y = 5;
-			x+= 10;
-			y+= 5+MathUtils.random(13);
+			x += 10;
+			y += 5 + MathUtils.random(13);
 		}
 
-		if ( liquid == ShowerLiquid.DUST )
-		{
-			v.set(0, 10).setAngle(MathUtils.random(0,360));
+		if (liquid == ShowerLiquid.DUST) {
+			v.set(0, 10).setAngle(MathUtils.random(0, 360));
 			x += v.x;
 			y += v.y;
 			v.scl(4);
 		}
 
-		if ( liquid == ShowerLiquid.SPARKLE )
-		{
-			v.set(0, 10).setAngle(MathUtils.random(0,360));
+		if (liquid == ShowerLiquid.SPARKLE) {
+			v.set(0, 10).setAngle(MathUtils.random(0, 360));
 			x += v.x;
 			y += v.y;
 			v.scl(4);
@@ -159,17 +159,24 @@ public class LiquidSystem extends EntityProcessingSystem {
 		physics.vy = v.y;
 		physics.vr = MathUtils.random(-1f, 1f);
 
-		return new EntityBuilder(world).with(
-				new Pos(x, y),
-				newColorAnimation(colorA, colorB, 0.5f),
-				new Color(),
-				anim,
-				new Renderable(liquid == ShowerLiquid.STEAM ? GameScreenSetupSystem.LAYER_OVERLAYS+1 :
-						liquid == ShowerLiquid.SPARKLE ? GameScreenSetupSystem.LAYER_OVERLAYS+100 :
-						liquid == ShowerLiquid.DUST ? GameScreenSetupSystem.LAYER_CONVEYER-1 : GameScreenSetupSystem.LAYER_VAPOR),
-				new Schedule().wait(0.5f).deleteFromWorld(),
-				new Angle(MathUtils.random(100)),
-				physics).build();
+		Entity entity = jamBuilder.create(world)
+				.Pos(x, y)
+				.Color("000000")
+				.Renderable(liquid == ShowerLiquid.STEAM ? GameScreenSetupSystem.LAYER_OVERLAYS + 1 :
+						liquid == ShowerLiquid.SPARKLE ? GameScreenSetupSystem.LAYER_OVERLAYS + 100 :
+								liquid == ShowerLiquid.DUST ? GameScreenSetupSystem.LAYER_CONVEYER - 1 : GameScreenSetupSystem.LAYER_VAPOR)
+				.Angle(MathUtils.random(100)).build();
+
+		entity.edit().add(
+				newColorAnimation(colorA, colorB, 0.5f))
+				.add(anim)
+				.add(new Schedule()
+						.wait(0.5f)
+						.deleteFromWorld())
+				.add(physics);
+
+		return entity;
+
 	}
 
 	private ColorAnimation newColorAnimation(Color colorA, Color colorB, float speed) {

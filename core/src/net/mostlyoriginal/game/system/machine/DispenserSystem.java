@@ -54,6 +54,6 @@ public class DispenserSystem extends IntervalEntityProcessingSystem {
 
 	private void dispense(Entity e, Ingredient.Type type) {
 		final Pos pos = mPos.get(e);
-		setupSystem.createIngredient(pos.x + G.TILE_SIZE / 2, pos.y + G.TILE_SIZE / 2, type);
+		setupSystem.createIngredient(pos.xy.x + G.TILE_SIZE / 2, pos.xy.y + G.TILE_SIZE / 2, type);
 	}
 }

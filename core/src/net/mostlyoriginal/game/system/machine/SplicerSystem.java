@@ -45,7 +45,7 @@ public class SplicerSystem extends IntervalEntityProcessingSystem  {
 			inventory.dec(Ingredient.Type.CHICK, 1);
 			inventory.dec(Ingredient.Type.BUNNY, 1);
 
-			setupSystem.createIngredient(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.CHICKBUNNY);
+			setupSystem.createIngredient(pos.xy.x + 2 + G.TILE_SIZE / 2, pos.xy.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.CHICKBUNNY);
 		}
 
 		if ( inventory.has(Ingredient.Type.MINION_PAINTED, 1) && inventory.has(Ingredient.Type.GOOGLIE_EYE, 1) )
@@ -55,7 +55,7 @@ public class SplicerSystem extends IntervalEntityProcessingSystem  {
 			inventory.dec(Ingredient.Type.MINION_PAINTED, 1);
 			inventory.dec(Ingredient.Type.GOOGLIE_EYE, 1);
 
-			setupSystem.createIngredient(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.MINION_GOOGLED);
+			setupSystem.createIngredient(pos.xy.x + 2 + G.TILE_SIZE / 2, pos.xy.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.MINION_GOOGLED);
 		}
 	}
 

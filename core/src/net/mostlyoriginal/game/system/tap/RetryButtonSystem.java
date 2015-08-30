@@ -36,8 +36,8 @@ public class RetryButtonSystem extends EntityProcessingSystem {
 		mTapped.remove(e);
 		mAnim.get(e).scale = 0.9f;
 		final Pos pos = mPos.get(e);
-		pos.x+=2;
-		pos.y+=2;
+		pos.xy.x+=2;
+		pos.xy.y+=2;
 
 		e.edit().add(new Schedule().wait(0.1f).deleteFromWorld());
 

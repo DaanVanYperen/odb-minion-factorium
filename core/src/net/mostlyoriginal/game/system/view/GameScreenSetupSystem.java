@@ -10,13 +10,13 @@ import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Json;
-import net.mostlyoriginal.api.component.basic.Angle;
 import net.mostlyoriginal.api.component.basic.Bounds;
 import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.*;
 import net.mostlyoriginal.api.component.mouse.MouseCursor;
 import net.mostlyoriginal.api.component.physics.Physics;
 import net.mostlyoriginal.api.component.script.Schedule;
+import net.mostlyoriginal.api.component.ui.Font;
 import net.mostlyoriginal.api.component.ui.Label;
 import net.mostlyoriginal.api.manager.AbstractAssetSystem;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
@@ -24,10 +24,9 @@ import net.mostlyoriginal.api.system.core.PassiveSystem;
 import net.mostlyoriginal.game.G;
 import net.mostlyoriginal.game.GdxArtemisGame;
 import net.mostlyoriginal.game.component.*;
+import net.mostlyoriginal.game.component.common.JamBuilder;
 import net.mostlyoriginal.game.component.logic.RetryButton;
 import net.mostlyoriginal.game.util.Anims;
-
-import java.time.temporal.TemporalAmount;
 
 /**
  * @author Daan van Yperen
@@ -55,6 +54,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	M<Anim> mAnim;
 	private int levelIndex;
 
+	JamBuilder builder = new JamBuilder();
 
 	@Override
 	protected void initialize() {
@@ -68,17 +68,26 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 	private void initStars() {
 		for (int i = 0; i < 5; i++) {
-			new EntityBuilder(world).with(new Anim("star-0"),
-					new Star(i),
-					new Pos(G.VIEPORT_WIDTH/2 - 13*5 + i*13 - 2,G.VIEPORT_HEIGHT/2-11 - 2), new Renderable(LAYER_OVERLAYS+4));
+			builder.create(world).Anim("star-0")
+					.Star(i)
+					.Pos(G.VIEPORT_WIDTH / 2 - 13 * 5 + i * 13 - 2, G.VIEPORT_HEIGHT / 2 - 11 - 2)
+					.Renderable(LAYER_OVERLAYS + 4).build();
 		}
 	}
 
 	private void initResetButton() {
-		new EntityBuilder(world)
-				.with(new Tappable(), new RetryButton(), new Color())
-				.with(new Schedule().wait(2f).remove(Invisible.class).add(newColorAnimation(new Color(1f,1f,1f,0f), new Color(1f,1f,1f,1f),1f)), new Invisible())
-				.with(new Anim("button-restart"), new Bounds(0, 0, 24, 24), new Renderable(LAYER_OVERLAYS), new Pos(G.VIEPORT_WIDTH / G.ZOOM - 5 - 24, 5 + G.FOOTER_H)).build();
+		Entity entity = builder.create(world)
+				.with(Tappable.class, RetryButton.class, Color.class, Invisible.class)
+				.Anim("button-restart")
+				.Bounds(0, 0, 24, 24)
+				.Renderable(LAYER_OVERLAYS)
+				.Pos(G.VIEPORT_WIDTH / G.ZOOM - 5 - 24, 5 + G.FOOTER_H)
+				.build();
+
+		entity.edit().add(new Schedule()
+				.wait(2f)
+				.remove(Invisible.class)
+				.add(newColorAnimation(new Color(1f, 1f, 1f, 0f), new Color(1f, 1f, 1f, 1f), 1f)));
 	}
 
 
@@ -93,40 +102,28 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 	private void loadLevel(int levelIndex) {
 
+
 		//final Json json = new Json();
 		//json.setUsePrototypes(false);
 		//System.out.println(json.prettyPrint(new Level()));
 
 		final Level level = new Json().fromJson(Level.class, Gdx.files.internal("level/level" + levelIndex + ".json"));
 
-		Label label = new Label("level " + levelIndex);
-		label.fontName="5x5";
-		new EntityBuilder(world).with(new Color("eed6ee"), new Pos(4, G.VIEPORT_HEIGHT/2 - 2), label, new Renderable(LAYER_OVERLAYS+1));
+		builder.create(world).Color("eed6ee").Label("level " + levelIndex).Font("5x5").Pos(4, G.VIEPORT_HEIGHT / 2 - 2).Renderable(LAYER_OVERLAYS + 1);
+		builder.create(world).Color("ffe6ff").Label(level.name).Font("5x5").Pos(4, G.VIEPORT_HEIGHT / 2 - 9).Renderable(LAYER_OVERLAYS + 1);
 
-		label = new Label(level.name);
-		label.fontName="5x5";
-		new EntityBuilder(world).with(new Color("ffe6ff"),new Pos(4, G.VIEPORT_HEIGHT/2 - 9), label, new Renderable(LAYER_OVERLAYS+1));
-
-		if (level.tutorial )
-		{
-			new EntityBuilder(world).with(new Pos(75, 115), new Anim("mouse"), new Renderable(LAYER_OVERLAYS+1));
+		if (level.tutorial) {
+			builder.create(world).Pos(75, 115).Anim("mouse").Renderable(LAYER_OVERLAYS + 1);
 		}
 
-		if (level.scoreboard )
-		{
-			label = new Label("Winner!");
-			label.fontName="5x5";
-			new EntityBuilder(world).with(new Color("000000"),new Pos(G.VIEPORT_WIDTH/4 - 20, G.VIEPORT_HEIGHT/4 + 30), label, new Renderable(LAYER_OVERLAYS+1));
-			label = new Label(GdxArtemisGame.getInstance().starsCollected + " stars!");
-			label.fontName="5x5";
-			new EntityBuilder(world).with(new Color("000000"),new Pos(G.VIEPORT_WIDTH/4 - 20, G.VIEPORT_HEIGHT/4 - 9 + 30), label, new Renderable(LAYER_OVERLAYS+1));
-			label = new Label("(You monster)");
-			label.fontName="5x5";
-			new EntityBuilder(world).with(new Color("000000"),new Pos(G.VIEPORT_WIDTH/4 - 35, G.VIEPORT_HEIGHT/4 - 18 + 30), label, new Renderable(LAYER_OVERLAYS+1));
+		if (level.scoreboard) {
+			builder.create(world).Color("000000").Label("Winner!").Font("5x5").Pos(G.VIEPORT_WIDTH / 4 - 20, G.VIEPORT_HEIGHT / 4 + 30).Renderable(LAYER_OVERLAYS + 1);
+			builder.create(world).Color("000000").Label(GdxArtemisGame.getInstance().starsCollected + " stars!").Font("5x5").Pos(G.VIEPORT_WIDTH / 4 - 20, G.VIEPORT_HEIGHT / 4 - 9 + 30).Renderable(LAYER_OVERLAYS + 1);
+			builder.create(world).Color("000000").Label("(You monster)").Font("5x5").Pos(G.VIEPORT_WIDTH / 4 - 35, G.VIEPORT_HEIGHT / 4 - 18 + 30).Renderable(LAYER_OVERLAYS + 1);
 		}
 
 		// spawn as entity so we can use it to track progress towards goal.
-		new EntityBuilder(world).with(level, new Inventory()).build();
+		builder.create(world).Inventory().build().edit().add(level);
 
 		initMap(level);
 	}
@@ -134,8 +131,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 	private void initCursor() {
 		new EntityBuilder(world).with(
 				new MouseCursor(),
-				new Bounds(-3, -3, 3, 3),
-				new Pos()).build();
+				new Bounds(-3, -3, 3, 3))
+				.with(Pos.class).build();
 	}
 
 	/**
@@ -163,15 +160,15 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				Entity e = null;
 				int angle = 0;
 				switch (id) {
-					case '.' :
+					case '.':
 						break;
-					case '<' :
+					case '<':
 						angle -= 90;
-					case 'v' :
+					case 'v':
 						angle -= 90;
-					case '>' :
+					case '>':
 						angle -= 90;
-					case '^' :
+					case '^':
 						if (id2 == 'c') {
 							e = createDispenser(cx, cy, angle, Ingredient.Type.CHICK);
 						} else if (id2 == 'b') {
@@ -203,49 +200,49 @@ public class GameScreenSetupSystem extends PassiveSystem {
 								createPainter(cx, cy);
 							}
 							if (id2 == 'C') {
-								e = createSink(cx, cy,angle, Ingredient.Type.CHICK);
+								e = createSink(cx, cy, angle, Ingredient.Type.CHICK);
 							}
 							if (id2 == 'B') {
-								e = createSink(cx, cy,angle, Ingredient.Type.BUNNY);
+								e = createSink(cx, cy, angle, Ingredient.Type.BUNNY);
 							}
 							if (id2 == 'G') {
-								e = createSink(cx, cy,angle, Ingredient.Type.GOOGLIE_EYE);
+								e = createSink(cx, cy, angle, Ingredient.Type.GOOGLIE_EYE);
 							}
 							if (id2 == 'Y') {
-								e = createSink(cx, cy,angle, Ingredient.Type.BLIND_CHICK);
+								e = createSink(cx, cy, angle, Ingredient.Type.BLIND_CHICK);
 							}
 							if (id2 == 'M') {
-								e = createSink(cx, cy,angle, Ingredient.Type.CHICKBUNNY);
+								e = createSink(cx, cy, angle, Ingredient.Type.CHICKBUNNY);
 							}
 							if (id2 == 'G') {
-								e = createSink(cx, cy,angle, Ingredient.Type.GOOGLIE_EYE);
+								e = createSink(cx, cy, angle, Ingredient.Type.GOOGLIE_EYE);
 							}
 							if (id2 == 'Z') {
-								e = createSink(cx, cy,angle, Ingredient.Type.MINION_ENLARGED);
+								e = createSink(cx, cy, angle, Ingredient.Type.MINION_ENLARGED);
 							}
 						}
 
 						break;
-					case '4' :
+					case '4':
 						angle -= 90;
-					case '3' :
+					case '3':
 						angle -= 90;
-					case '2' :
+					case '2':
 						angle -= 90;
-					case '1' :
+					case '1':
 						if (id2 == 'i' || id2 == 'I') {
 							e = createBeltBendInverse(cx, cy, angle);
 						} else e = createBeltBend(cx, cy, angle);
 
 						break;
-					case 'S' :
+					case 'S':
 						e = createSplicer(cx, cy);
 						break;
 				}
 
 				switch (id2) {
-					case 'd' :
-					case 'I' :
+					case 'd':
+					case 'I':
 						if (e != null) {
 							makeDraggable(e);
 						}
@@ -264,170 +261,177 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 		spawnPointer(x, y, angle, type, false);
 
-		return new EntityBuilder(world).with(
-				new Pos(x, y),
-				new Bounds(2, 2, 18, 18),
-				new Conveyer(90f),
-				new Angle(angle),
-				new Dispenser(type)).build();
+		return builder.create(world)
+				.Pos(x, y)
+				.Bounds(2, 2, 18, 18)
+				.Conveyer(90f)
+				.Angle(angle)
+				.Dispenser(type).build();
 	}
 
 	private void spawnPointer(int x, int y, int angle, Ingredient.Type type, boolean inverted) {
-		int i =angle+90;
+		int i = angle + 90;
 		vector2 = v2.set(0, -G.TILE_SIZE - 3).setAngle(i);
 
-		new EntityBuilder(world).with(
-				new Pos(x + 3 + vector2.x, y + 6  + vector2.y),
-				new Angle(i-90+(inverted?-180:0), 7, 5),
-				new Anim("pointer"),
-				new Color(1f,1f,1f,0.6f),
-				new Renderable(LAYER_CONVEYER + 1)
-		).build();
+		builder.create(world)
+				.Pos(x + 3 + vector2.x, y + 6 + vector2.y)
+				.Angle(i - 90 + (inverted ? -180 : 0), 7, 5)
+				.Anim("pointer")
+				.Color(1f, 1f, 1f, 0.6f)
+				.Renderable(LAYER_CONVEYER + 1)
+				.build();
 
-//		for (i =0; i>-360; i--) {
-			vector2 = v2.set(-15, -G.TILE_SIZE + 4).setAngle(i);
+		vector2 = v2.set(-15, -G.TILE_SIZE + 4).setAngle(i);
 
 		final String id = "ingredient-" + type.name();
 		final Animation animation = abstractAssetSystem.get(id);
 		final TextureRegion region = animation.getKeyFrames()[0];
-		new EntityBuilder(world).with(
-					new Pos(x + vector2.x + 10 - region.getRegionWidth()/2, y + 10 + vector2.y - region.getRegionHeight()/2),
-					new Color(1f, 1f, 1f, 0.8f),
-					new Anim(id),
-					new Renderable(LAYER_CONVEYER + 2)
-			).build();
-		//}
+		builder.create(world)
+				.Pos(x + vector2.x + 10 - region.getRegionWidth() / 2, y + 10 + vector2.y - region.getRegionHeight() / 2)
+				.Color(1f, 1f, 1f, 0.8f)
+				.Anim(id)
+				.Renderable(LAYER_CONVEYER + 2)
+				.build();
 	}
 
 	private Entity createSink(int x, int y, int angle, Ingredient.Type type) {
-		spawnPointer(x, y, angle-180, type, true);
+		spawnPointer(x, y, angle - 180, type, true);
 
-		return new EntityBuilder(world).with(
-				new Pos(x, y),
-				new Bounds(2, 2, 16, 16),
-				new Inventory(),
-				new Autopickup(),
-				new Sink()).build();
+		return builder.create(world)
+				.Pos(x, y)
+				.Bounds(2, 2, 16, 16)
+				.Inventory()
+				.Autopickup()
+				.with(Sink.class)
+				.build();
 	}
 
 	private Entity createBeltStraight(int x, int y, int angle) {
-		return new EntityBuilder(world).with(
-				new Pos(x, y),
-				new Bounds(2, 2, 18, 18),
-				new Anim("belt-straight"),
-				new Renderable(1000),
-				new Angle(angle),
-				new Conveyer(90f)).build();
+		return builder.create(world)
+				.Pos(x, y)
+				.Bounds(2, 2, 18, 18)
+				.Anim("belt-straight")
+				.Renderable(1000)
+				.Angle(angle)
+				.Conveyer(90f)
+				.build();
 	}
 
 	public Entity createIngredient(float x, float y, Ingredient.Type type) {
-		return new EntityBuilder(world).with(
-				new Pos(x - 3, y - 3),
-				new Bounds(0, 0, 3, 3),
-				new Anim("ingredient-" + type.name()),
-				new Ingredient(type),
-				new Renderable(LAYER_CONVEYABLE),
-				new Conveyable(),
-				new SpawnProtected(),
-				new Physics()).build();
+		return builder.create(world)
+				.Pos(x - 3, y - 3)
+				.Bounds(0, 0, 3, 3)
+				.Anim("ingredient-" + type.name())
+				.Ingredient(type)
+				.Renderable(LAYER_CONVEYABLE)
+				.SpawnProtected()
+				.Physics()
+				.with(Conveyable.class)
+				.build();
 	}
 
 	private Entity createBeltBend(int x, int y, int angle) {
-		return new EntityBuilder(world).with(
-				new Pos(x, y),
-				new Bounds(2, 2, 18, 18),
-				new Anim("belt-bend"),
-				new Renderable(LAYER_CONVEYER),
-				new Angle(angle),
-				new Conveyer(45)).build();
+		return builder.create(world)
+				.Pos(x, y)
+				.Bounds(2, 2, 18, 18)
+				.Anim("belt-bend")
+				.Renderable(LAYER_CONVEYER)
+				.Angle(angle)
+				.Conveyer(45)
+				.build();
 	}
 
 	private Entity createBeltBendInverse(int x, int y, int angle) {
-		return new EntityBuilder(world).with(
-				new Pos(x, y),
-				new Bounds(2, 2, 18, 18),
-				new Anim("belt-bend-inverse"),
-				new Renderable(LAYER_CONVEYER),
-				new Angle(angle),
-				new Conveyer(45 + 180)).build();
+		return builder.create(world)
+				.Pos(x, y)
+				.Bounds(2, 2, 18, 18)
+				.Anim("belt-bend-inverse")
+				.Renderable(LAYER_CONVEYER)
+				.Angle(angle)
+				.Conveyer(45 + 180)
+				.build();
 	}
 
 	private Entity createCrusherY(int x, int y) {
-		return new EntityBuilder(world).with(
-				new Pos(x, y + 1),
-				new Bounds(5, 0, 15, 20),
-				new Anim("factory-crusher"),
-				new Renderable(LAYER_FACTORIES),
-				new Angle(0f),
-				new Crusher()).build();
+		return builder.create(world)
+				.Pos(x, y + 1)
+				.Bounds(5, 0, 15, 20)
+				.Anim("factory-crusher")
+				.Renderable(LAYER_FACTORIES)
+				.Angle(0f)
+				.with(Crusher.class)
+				.build();
 	}
 
 	private Entity createShowerY(int x, int y) {
-		return new EntityBuilder(world).with(
-				new Pos(x, y),
-				new Bounds(0, 0, 20, 20),
-				new Anim("factory-shower"),
-				new Renderable(LAYER_FACTORIES),
-				new Angle(0f),
-				new Shower()).build();
+		return builder.create(world)
+				.Pos(x, y)
+				.Bounds(0, 0, 20, 20)
+				.Anim("factory-shower")
+				.Renderable(LAYER_FACTORIES)
+				.Angle(0f)
+				.with(Shower.class).build();
 	}
 
 
 	private Entity createCrusherX(int x, int y) {
-		return new EntityBuilder(world).with(
-				new Pos(x+2, y),
-				new Bounds(0, 5, 20, 15),
-				new Anim("factory-crusher"),
-				new Renderable(LAYER_FACTORIES),
-				new Angle(-90f),
-				new Crusher()).build();
+		return builder.create(world)
+				.Pos(x + 2, y)
+				.Bounds(0, 5, 20, 15)
+				.Anim("factory-crusher")
+				.Renderable(LAYER_FACTORIES)
+				.Angle(-90f)
+				.with(Crusher.class).build();
 	}
 
 	private Entity createShowerX(int x, int y) {
-		return new EntityBuilder(world).with(
-				new Pos(x+6, y),
-				new Bounds(0, 0, 20, 20),
-				new Anim("factory-shower"),
-				new Renderable(LAYER_FACTORIES),
-				new Angle(-90f),
-				new Shower()).build();
+		return builder.create(world)
+				.Pos(x + 6, y)
+				.Bounds(0, 0, 20, 20)
+				.Anim("factory-shower")
+				.Renderable(LAYER_FACTORIES)
+				.Angle(-90f)
+				.with(Shower.class)
+				.build();
 	}
 
 	private Entity createPainter(int x, int y) {
-		final Shower shower = new Shower();
-		shower.liquid = ShowerLiquid.PAINT;
-		return new EntityBuilder(world).with(
-				new Pos(x, y),
-				new Bounds(0, 0, 20, 20),
-				new Anim("factory-shower"),
-				new Renderable(LAYER_FACTORIES),
-				new Angle(0f),
-				shower).build();
+		return builder.create(world)
+				.Pos(x, y)
+				.Bounds(0, 0, 20, 20)
+				.Anim("factory-shower")
+				.Renderable(LAYER_FACTORIES)
+				.Angle(0f)
+				.Shower(ShowerLiquid.PAINT)
+				.build();
 	}
 
 	private Entity createGouger(int x, int y) {
-		return new EntityBuilder(world).with(
-				new Pos(x-2, y-2),
-				new Bounds(0, 0, 20, 20),
-				new Anim("factory-gouger"),
-				new Renderable(LAYER_FACTORIES),
-				new Angle(0f),
-				new Gouger()).build();
+		return builder.create(world)
+				.Pos(x - 2, y - 2)
+				.Bounds(0, 0, 20, 20)
+				.Anim("factory-gouger")
+				.Renderable(LAYER_FACTORIES)
+				.Angle(0f)
+				.with(Gouger.class)
+				.build();
 	}
 
 
 	private Entity createSplicer(int x, int y) {
-		return new EntityBuilder(world).with(
-				new Pos(x - 2, y - 2),
-				new Bounds(6, 0, 25 - 6, 26),
-				new Anim("factory-splicer"),
-				new Inventory(),
-				new Autopickup(),
-				new Splicer(),
-				new Renderable(LAYER_FACTORIES),
-				new Angle(0f),
-				new Conveyer(90f)).build();
+		return builder.create(world)
+				.Pos(x - 2, y - 2)
+				.Bounds(6, 0, 25 - 6, 26)
+				.Anim("factory-splicer")
+				.Inventory()
+				.Autopickup()
+				.with(Splicer.class)
+				.Renderable(LAYER_FACTORIES)
+				.Angle(0f)
+				.Conveyer(90f)
+				.build();
 	}
+
 
 	private void initBackground() {
 
@@ -436,8 +440,8 @@ public class GameScreenSetupSystem extends PassiveSystem {
 				createBackground(x * G.TILE_SIZE, y * G.TILE_SIZE + G.FOOTER_H, getBackgroundCellId(x, y));
 			}
 		}
-		new EntityBuilder(world).with(new Pos(0, G.VIEPORT_HEIGHT/2 - G.HEADER_H), new Anim("header"), new Renderable(LAYER_OVERLAYS));
-		new EntityBuilder(world).with(new Pos(0, 0), new Anim("footer"), new Renderable(LAYER_OVERLAYS));
+		builder.create(world).Pos(0, G.VIEPORT_HEIGHT / 2 - G.HEADER_H).Anim("header").Renderable(LAYER_OVERLAYS);
+		builder.create(world).Pos(0, 0).Anim("footer").Renderable(LAYER_OVERLAYS);
 	}
 
 	private String getBackgroundCellId(int x, int y) {
@@ -462,7 +466,7 @@ public class GameScreenSetupSystem extends PassiveSystem {
 
 		final Physics physics = mPhysics.get(ingredient);
 
-		v2.set(50,0).setAngle(-angle+90);
+		v2.set(50, 0).setAngle(-angle + 90);
 		physics.vx = v2.x;
 		physics.vy = v2.y;
 

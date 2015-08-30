@@ -8,6 +8,7 @@ import com.artemis.Component;
 public class Ingredient extends Component {
 	public Type type;
 
+	public Ingredient() {}
 	public Ingredient(Type type) {
 		this.type = type;
 	}

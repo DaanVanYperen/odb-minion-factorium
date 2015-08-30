@@ -9,6 +9,7 @@ import net.mostlyoriginal.game.component.Ingredient;
 public class Dispenser extends Component {
 	public Ingredient.Type type;
 
+	public Dispenser() {}
 	public Dispenser(Ingredient.Type type) {
 		this.type = type;
 	}

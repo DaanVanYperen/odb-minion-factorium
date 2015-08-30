@@ -58,8 +58,8 @@ public class GougerSystem extends DualEntityProcessingSystem {
 			case CHICK:
 				playSfx();
 				final Pos pos = mPos.get(gouger);
-				setupSystem.createIngredientEject(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.BEAD_EYE, 0f);
-				setupSystem.createIngredientEject(pos.x + 2 + G.TILE_SIZE / 2, pos.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.BLIND_CHICK, -90f);
+				setupSystem.createIngredientEject(pos.xy.x + 2 + G.TILE_SIZE / 2, pos.xy.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.BEAD_EYE, 0f);
+				setupSystem.createIngredientEject(pos.xy.x + 2 + G.TILE_SIZE / 2, pos.xy.y + 2 + G.TILE_SIZE / 2, Ingredient.Type.BLIND_CHICK, -90f);
 				break;
 		}
 	}

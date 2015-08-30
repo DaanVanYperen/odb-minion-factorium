@@ -93,14 +93,13 @@ public class CrusherSystem extends DualEntityProcessingSystem {
 
 	public Entity replace( Entity ingredient, Ingredient.Type type) {
 
-		final Pos sourcePos = mPos.get(ingredient);
-		ingredient.deleteFromWorld();
+		Entity oldIngredient = ingredient;
 
-		ingredient = setupSystem.createIngredient(0,0, type);
-		final Pos newIngredient = mPos.get(ingredient);
-		newIngredient.x = sourcePos.x;
-		newIngredient.y = sourcePos.y;
+		ingredient = setupSystem.createIngredient(0, 0, type);
 
+		mPos.mirror(ingredient, oldIngredient);
+
+		oldIngredient.deleteFromWorld();
 
 		if ( type == Ingredient.Type.BLOOD) {
 			mSpawnProtected.create(ingredient);

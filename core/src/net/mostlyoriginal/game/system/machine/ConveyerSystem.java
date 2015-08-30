@@ -92,8 +92,8 @@ public class ConveyerSystem extends DualEntityProcessingSystem {
 
 		final TextureRegion frame = assetSystem.get(mAnim.get(item).id).getKeyFrame(0);
 
-		final int x = (int) (pos.x + frame.getRegionWidth() / 2);
-		final int y = (int) (pos.y + frame.getRegionHeight() / 2 - G.FOOTER_H);
+		final int x = (int) (pos.xy.x + frame.getRegionWidth() / 2);
+		final int y = (int) (pos.xy.y + frame.getRegionHeight() / 2 - G.FOOTER_H);
 
 		beltAngle = Math.abs(beltAngle);
 		if (beltAngle == 0 || beltAngle == 180) {

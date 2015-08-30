@@ -106,12 +106,12 @@ public class TileDropSystem extends EntityProcessingSystem {
 		final int x = gridX * G.TILE_SIZE;
 		final int y = gridY * G.TILE_SIZE + G.FOOTER_H;
 
-		if ( pos.x != x || pos.y != y ) {
+		if ( pos.xy.x != x || pos.xy.y != y ) {
 			isDragging = true;
 		}
 
-		pos.x = x;
-		pos.y = y;
+		pos.xy.x = x;
+		pos.xy.y = y;
 
 	}
 

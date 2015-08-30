@@ -8,6 +8,7 @@ import com.artemis.Component;
 public class Star extends Component {
 	public int point;
 
+	public Star() {}
 	public Star(int point) {
 		this.point = point;
 	}

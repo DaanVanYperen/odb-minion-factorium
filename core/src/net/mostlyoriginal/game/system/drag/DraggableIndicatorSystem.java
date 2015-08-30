@@ -10,6 +10,7 @@ import net.mostlyoriginal.api.component.basic.Pos;
 import net.mostlyoriginal.api.component.graphics.*;
 import net.mostlyoriginal.api.plugin.extendedcomponentmapper.M;
 import net.mostlyoriginal.game.component.Draggable;
+import net.mostlyoriginal.game.component.common.JamBuilder;
 import net.mostlyoriginal.game.system.view.GameScreenSetupSystem;
 
 /**
@@ -23,8 +24,10 @@ public class DraggableIndicatorSystem extends EntityProcessingSystem {
 	protected M<Draggable> mDraggable;
 	protected M<Pos> mPos;
 	protected M<Invisible> mInvisible;
-
+	
 	protected DragStartSystem dragStartSystem;
+	
+	private JamBuilder builder = new JamBuilder();
 
 	public DraggableIndicatorSystem() {
 		super(Aspect.all(Draggable.class));
@@ -38,10 +41,8 @@ public class DraggableIndicatorSystem extends EntityProcessingSystem {
 	private void updateIndicatorPos(Entity e) {
 		final Draggable draggable = mDraggable.get(e);
 		final Entity indicator = draggable.indicator;
-		final Pos indicatorPos = mPos.get(indicator);
-		final Pos topicPos = mPos.get(e);
-		indicatorPos.x = topicPos.x;
-		indicatorPos.y = topicPos.y;
+
+		mPos.mirror(indicator, e);
 
 		if (shouldShowIndicators())
 		{
@@ -58,13 +59,12 @@ public class DraggableIndicatorSystem extends EntityProcessingSystem {
 	@Override
 	protected void inserted(int entityId) {
 		final Draggable draggable = mDraggable.get(entityId);
-		draggable.indicator = new EntityBuilder(world)
-				.with(
-						new Anim("draggable-indicator"),
-						new Renderable(GameScreenSetupSystem.LAYER_OVERLAYS),
-						new Color(),
-						newColorAnimation(new Color("3e233600"), new Color(1f,1f,1f,1f),1f),
-						new Pos()).build();
+		draggable.indicator =
+				builder.create(world).Anim("draggable-indicator")
+						.Renderable(GameScreenSetupSystem.LAYER_OVERLAYS)
+						.Color("000000").Pos(0,0).build();
+
+		draggable.indicator.edit().add(newColorAnimation(new Color("3e233600"), new Color(1f,1f,1f,1f),1f));
 	}
 
 	private ColorAnimation newColorAnimation(Color colorA, Color colorB, float speed) {

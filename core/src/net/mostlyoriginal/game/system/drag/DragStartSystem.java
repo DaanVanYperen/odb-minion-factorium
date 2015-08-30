@@ -79,7 +79,6 @@ public class DragStartSystem extends DualEntityProcessingSystem {
 
 	private void createDraggingIndicator(Entity draggable) {
 		final Anim sourceAnim = mAnim.get(draggable);
-		final Pos sourcePos = mPos.get(draggable);
 		final Bounds sourceBounds = mBounds.get(draggable);
 
 		final Anim anim = new Anim();
@@ -87,16 +86,14 @@ public class DragStartSystem extends DualEntityProcessingSystem {
 		anim.speed = sourceAnim.speed;
 		anim.age = sourceAnim.age;
 
-		final Pos pos = new Pos();
-		pos.x = sourcePos.x;
-		pos.y = sourcePos.y;
-
-
 		NO_ANGLE = new Angle(0);
-		new EntityBuilder(world)
+		Entity indicator = new EntityBuilder(world)
+				.with(Pos.class)
 				.with(new Dragging(draggable), new Renderable(GameScreenSetupSystem.LAYER_DRAGGING),
 						new Bounds(sourceBounds.minx, sourceBounds.miny, sourceBounds.maxx, sourceBounds.maxy),
-						anim, pos, new Angle(mAngle.getSafe(draggable, NO_ANGLE).rotation), new Color(1f, 1f, 1f, 0.5f)
+						anim, new Angle(mAngle.getSafe(draggable, NO_ANGLE).rotation), new Color(1f, 1f, 1f, 0.5f)
 				).build();
+
+		mPos.mirror(indicator, draggable);
 	}
 }

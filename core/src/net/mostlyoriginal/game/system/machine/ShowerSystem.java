@@ -66,7 +66,7 @@ public class ShowerSystem extends DualEntityProcessingSystem {
 					// replace minion with correct type.
 					final Pos sourcePos = mPos.get(ingredient);
 					ingredient.deleteFromWorld();
-					ingredient = setupSystem.createIngredient(sourcePos.x + 3, sourcePos.y + 3, Ingredient.Type.MINION_PAINTED);
+					ingredient = setupSystem.createIngredient(sourcePos.xy.x + 3, sourcePos.xy.y + 3, Ingredient.Type.MINION_PAINTED);
 					break;
 				}
 		}
